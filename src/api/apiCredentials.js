@@ -1,6 +1,6 @@
 export default {
-    client_id: 2,
+    client_id: 3,
     grant_type: 'password',
-    client_secret: 'CNLoUJ7kpNgJrFwMPbGs1uxcU8mrTjtITSU7d8ZD',
+    client_secret: 'hcMlQHxPwQOixzYiySKb9TysbMCJMqt8mkrqgpaQ',
     scope: ''
 }
