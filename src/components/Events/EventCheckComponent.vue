@@ -13,7 +13,7 @@
                             </template>
                             <EventApplicationComponent v-on:close="application.show = false"></EventApplicationComponent>
                         </v-dialog>
-                        <v-btn to="/singup" v-else color="error" dark outlined rounded>Зарегистрироваться</v-btn>
+                        <v-btn to="/signup" v-else color="error" dark outlined rounded>Зарегистрироваться</v-btn>
 
 
                     </template>
