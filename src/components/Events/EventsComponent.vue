@@ -27,7 +27,7 @@
                                color="blue"
                                text
                         >
-                            Заявка подана
+                            Подробнее
                         </v-btn>
 
                         <v-spacer></v-spacer>

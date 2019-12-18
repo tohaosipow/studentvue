@@ -1,1 +1,1 @@
-export default 'http://api.student.surgu.ru';
+export default 'http://localhost:8000';
