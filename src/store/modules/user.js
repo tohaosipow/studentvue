@@ -24,6 +24,7 @@ export default {
                 let {data} = await user.getUser();
                 commit('setUser', data);
             } catch (err) {
+                localStorage.removeItem('token');
                 commit('setAuthError', err);
             }
 
@@ -40,6 +41,7 @@ export default {
 
                 }).catch((error) => {
                     reject(error);
+                    localStorage.removeItem('token');
                     commit('setAuthError', error);
                 });
             })
@@ -62,6 +64,7 @@ export default {
         },
 
         logout({commit}){
+            localStorage.removeItem('token');
             commit('setUser', {});
         },
 
