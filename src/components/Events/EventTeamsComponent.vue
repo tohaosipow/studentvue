@@ -27,10 +27,12 @@
                     Подать заявку
                 </v-btn>
             </v-list-item-action>
-            <v-list-item-action v-if="team.user_id === $store.state.user.currentUser.id">
+            <v-list-item-action v-if="team.user_id === $store.state.user.currentUser.id || $store.state.user.currentUser.admin === 1">
                 <v-btn icon>
-                    <v-icon color="blue darken-2">mdi-settings</v-icon>
+                    <v-icon @click="currentTeam = team; controlTeamDialog = true" color="blue darken-2">mdi-settings</v-icon>
                 </v-btn>
+
+
             </v-list-item-action>
 
         </v-list-item>
@@ -39,8 +41,14 @@
                 <v-list-item-title></v-list-item-title>
             </v-list-item-content>
         </v-list-item>
+        <v-dialog v-model="controlTeamDialog"  max-width="600">
+            <template v-slot:activator="{ on }">
 
-        <v-dialog v-if="this.$store.state.user.currentUser.id > 0" max-width="600px" persistent v-model="editTeamDialog">
+            </template>
+            <EventTeamControlComponent :team="currentTeam"></EventTeamControlComponent>
+        </v-dialog>
+
+        <v-dialog v-if="$store.state.user.currentUser.id > 0" max-width="600px" persistent v-model="editTeamDialog">
             <template v-slot:activator="{ on }">
                 <v-btn absolute
                        bottom
@@ -61,11 +69,12 @@
 
 <script>
     import TeamCreateEditComponent from "@/components/Events/TeamCreateEditComponent";
+    import EventTeamControlComponent from "@/components/Events/EventTeamControlComponent";
 
     export default {
         name: "EventTeamsComponent",
         components: {
-            TeamCreateEditComponent
+            TeamCreateEditComponent, EventTeamControlComponent
         },
         methods:{
           join(team_id){
@@ -75,7 +84,9 @@
         data() {
             return {
                 loading: false,
-                editTeamDialog: false
+                editTeamDialog: false,
+                controlTeamDialog: false,
+                currentTeam: null
             }
         },
         computed: {

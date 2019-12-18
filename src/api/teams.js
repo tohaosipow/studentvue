@@ -12,5 +12,13 @@ export default {
 
     join(team_id){
         return window.axios.post(endpoint+'/api/teams/'+team_id+'/join')
+    },
+
+    acceptMember(team_id, user_id){
+        return window.axios.post(endpoint+'/api/teams/'+team_id+'/participants/'+user_id+'/accept');
+    },
+
+    declineMember(team_id, user_id){
+        return window.axios.post(endpoint+'/api/teams/'+team_id+'/participants/'+user_id+'/decline');
     }
 }

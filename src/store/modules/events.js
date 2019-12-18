@@ -61,6 +61,15 @@ export default {
             });
             state.teams = teams;
 
+        },
+        updateTeamMembers(state, {team_id, members}){
+            let teams = state.teams.slice(0);
+            teams.forEach((t, index) => {
+                if(t.id === team_id){
+                    teams[index].members = members;
+                }
+            });
+            state.teams = teams;
         }
 
     },
@@ -144,6 +153,18 @@ export default {
         joinTeam({commit}, {team_id}){
             return teams.join(team_id).then((response) => {
                  commit('updateTeam', response.data);
+            });
+        },
+
+        acceptMember({commit}, {team_id, user_id}){
+            return teams.acceptMember(team_id, user_id).then((response) => {
+                commit('updateTeamMembers', {team_id: team_id, members: response.data});
+            });
+        },
+
+        declineMember({commit}, {team_id, user_id}){
+            return teams.declineMember(team_id, user_id).then((response) => {
+                commit('updateTeamMembers', {team_id: team_id, members: response.data});
             });
         }
     }

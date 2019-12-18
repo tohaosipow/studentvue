@@ -1,0 +1,57 @@
+<template>
+    <v-card>
+        <v-card-title>{{team.name}}</v-card-title>
+        <v-card-subtitle>управление командой</v-card-subtitle>
+        <v-subheader>Настройте состав</v-subheader>
+        <v-list-item :key="member.id" v-for="member in team.members">
+            <v-list-item-icon>
+                <v-icon color="orange" v-if="member.id === $store.state.user.currentUser.id">mdi-crown</v-icon>
+                <v-icon color="blue darken-2" v-else>mdi-account</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+                <v-list-item-title>{{member.name}}</v-list-item-title>
+                <v-list-item-subtitle>{{member.event_checks[0].event_check_roles.map((el) => {return
+                    el.event_role.role.name}).join(',')}}
+                </v-list-item-subtitle>
+            </v-list-item-content>
+            <v-list-item-action v-if="!member.pivot.approved">
+                <v-btn @click="acceptMember(team.id, member.id)" color="success" outlined small>
+                    <v-icon left>mdi-check</v-icon>
+                    Одобрить
+                </v-btn>
+            </v-list-item-action>
+            <v-list-item-action v-else>
+                <v-btn  color="success" icon>
+                    <v-icon>mdi-check</v-icon>
+                </v-btn>
+            </v-list-item-action>
+            <v-list-item-action>
+                <v-btn :disabled="$store.state.user.currentUser.id === member.id" @click="declineMember(team.id, member.id)" color="red lighten-2" icon>
+                    <v-icon >mdi-delete</v-icon>
+                </v-btn>
+            </v-list-item-action>
+        </v-list-item>
+    </v-card>
+</template>
+
+<script>
+    export default {
+        name: "EventTeamControlComponent",
+        props: {
+            team: {}
+        },
+        methods: {
+            acceptMember(team_id, user_id) {
+                this.$store.dispatch('acceptMember', {team_id, user_id});
+            },
+
+            declineMember(team_id, user_id) {
+                this.$store.dispatch('declineMember', {team_id, user_id});
+            }
+        }
+    }
+</script>
+
+<style scoped>
+
+</style>
