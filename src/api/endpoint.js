@@ -1,1 +1,1 @@
-export default process.env.NODE_ENV === 'development'?'http://localhost:8000':'http://api.student.surgu.ru'
+export default 'http://api.student.surgu.ru'
