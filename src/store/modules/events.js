@@ -11,7 +11,8 @@ export default {
         admins: [],
         userPoints: [],
         userStatus: {},
-        teams: []
+        teams: [],
+        userTeam: []
     },
     mutations: {
         setEvents(state, events) {
@@ -70,6 +71,10 @@ export default {
                 }
             });
             state.teams = teams;
+        },
+
+        setUserTeam(state, team){
+            state.userTeam = team;
         }
 
     },
@@ -131,6 +136,13 @@ export default {
                     commit('setUserStatus', response.data);
             });
         },
+
+        getUserTeam({commit}, {event_id}) {
+            return teams.userTeam(event_id).then((response) => {
+                commit('setUserTeam', response.data);
+            });
+        },
+
 
         checkIn({commit}, {event_id, event_role_id}){
             return event_checks.create(event_id, event_role_id).then((response) => {

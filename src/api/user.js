@@ -16,5 +16,7 @@ export default {
 
     events(){
         return window.axios.get(endpoint+'/api/user/events');
-    }
+    },
+
+
 }

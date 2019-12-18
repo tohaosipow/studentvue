@@ -23,7 +23,7 @@
                     <v-icon left>mdi-update</v-icon>
                     Подана заявка
                 </v-btn>
-                <v-btn @click="join(team.id)" class="ma-2" color="blue" outlined rounded tile v-else>
+                <v-btn v-else-if="$store.state.events.userTeam.length === 0" @click="join(team.id)" class="ma-2" color="blue" outlined rounded tile>
                     Подать заявку
                 </v-btn>
             </v-list-item-action>
@@ -79,6 +79,7 @@
         methods:{
           join(team_id){
               this.$store.dispatch('joinTeam', {team_id});
+              this.$store.dispatch('userTeam', {event_id: this.$store.state.events.currentEvent.id});
           }
         },
         data() {
@@ -98,7 +99,8 @@
             this.loading = true;
             this.$store.dispatch('getTeams', {event_id: this.$store.state.events.currentEvent.id}).then(() => {
                 this.loading = false;
-            })
+            });
+            this.$store.dispatch('getUserTeam', {event_id: this.$store.state.events.currentEvent.id});
             // eslint-disable-next-line no-console
             console.log(this.$store.state.user.currentUser.id);
         }

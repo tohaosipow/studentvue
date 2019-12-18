@@ -29,7 +29,7 @@
                 </v-btn>
             </v-list-item-action>
             <v-list-item-action>
-                <v-btn :disabled="$store.state.user.currentUser.id === member.id" @click="declineMember(team.id, member.id)" color="red lighten-2" icon>
+                <v-btn :disabled="team.user_id === member.id" @click="declineMember(team.id, member.id)" color="red lighten-2" icon>
                     <v-icon >mdi-delete</v-icon>
                 </v-btn>
             </v-list-item-action>
@@ -46,10 +46,12 @@
         methods: {
             acceptMember(team_id, user_id) {
                 this.$store.dispatch('acceptMember', {team_id, user_id});
+                this.$store.dispatch('userTeam', {event_id: this.$store.state.events.currentEvent.id});
             },
 
             declineMember(team_id, user_id) {
                 this.$store.dispatch('declineMember', {team_id, user_id});
+                this.$store.dispatch('userTeam', {event_id: this.$store.state.events.currentEvent.id});
             }
         }
     }
