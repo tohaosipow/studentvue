@@ -17,11 +17,7 @@ new Vue({
     store: index,
     vuetify: new Vuetify({}),
     mounted(){
-        let token = localStorage.getItem('access_token');
-        if(token){
-            window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
-            this.$store.dispatch('getUser');
-        }
+
 
     }
 }).$mount('#app')

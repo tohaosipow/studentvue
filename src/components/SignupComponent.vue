@@ -100,11 +100,19 @@
                         </v-container>
                     </v-item-group>
                     <v-card-text>
-                        <v-text-field  v-model="user.name"  :rules="[ v => !!v || 'Обязательно для заполнения']" label="Имя" outlined></v-text-field>
-                        <v-text-field  v-model="user.email" :rules="[ v => !!v || 'E-mail обязателен', v => /.+@.+\..+/.test(v) || 'E-mail должен быть корретным']" label="Email" outlined type="email"></v-text-field>
-                        <v-text-field  v-model="user.password" :rules="[ v => !!v || 'Обязательно для заполнения']" label="Пароль" outlined type="password"></v-text-field>
-                        <v-text-field v-model="user.password_confirm" :rules="[ v => v === user.password    || 'Должен совпадать с паролем']" label="Подтверждение пароля" outlined type="password"></v-text-field>
-                        <v-btn color="blue" @click="signUp" outlined>Зарегистрироваться</v-btn>
+                        <v-text-field :error-messages="errors.name" :rules="[ v => !!v || 'Обязательно для заполнения']"
+                                      label="Имя" outlined
+                                      v-model="user.name"></v-text-field>
+                        <v-text-field :error-messages="errors.email" :rules="[ v => !!v || 'E-mail обязателен', v => /.+@.+\..+/.test(v) || 'E-mail должен быть корретным']"
+                                      label="Email"
+                                      outlined type="email" v-model="user.email"></v-text-field>
+                        <v-text-field :error-messages="errors.password" :rules="[ v => !!v || 'Обязательно для заполнения']"
+                                      label="Пароль" outlined type="password"
+                                      v-model="user.password"></v-text-field>
+                        <v-text-field  :rules="[ v => v === user.password    || 'Должен совпадать с паролем']"
+                                      label="Подтверждение пароля"
+                                      outlined type="password" v-model="user.password_confirm"></v-text-field>
+                        <v-btn @click="signUp" color="blue" outlined>Зарегистрироваться</v-btn>
                     </v-card-text>
 
                 </v-card>
@@ -116,23 +124,29 @@
 <script>
     export default {
         name: "SignupComponent",
-        data(){
-            return{
-                user:{
+        data() {
+            return {
+                user: {
                     name: '',
                     email: '',
                     password: '',
                     password_confirm: ''
-                }
+                },
+                errors: {}
             }
         },
-        methods:{
-            signUp(){
+        methods: {
+            signUp() {
                 this.$store.dispatch('signUp', this.user).then(() => {
-                    this.$store.dispatch('authUser', {username: this.user.email, password: this.user.password}).then(() => {
+                    this.$store.dispatch('authUser', {
+                        username: this.user.email,
+                        password: this.user.password
+                    }).then(() => {
                         this.$router.push('/');
                     })
-                })
+                }).catch((error) => {
+                    this.errors = error.response.data.errors;
+                });
             }
         }
     }

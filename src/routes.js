@@ -1,15 +1,14 @@
 import EventsComponent from "@/components/Events/EventsComponent";
 import VueRouter from 'vue-router'
-import LoginComponent from "@/components/LoginComponent";
 import EventItemComponent from "@/components/Events/EventItemComponent";
-import SignupComponent from "@/components/SignupComponent";
+import AuthComponent from "@/components/AuthComponent";
 
 
 const routes = [
     { path: '/', component: EventsComponent, name: 'events'},
+    { path: '/events/my', component: EventsComponent, name: 'user.events', props: { my: true}},
     { path: '/events/:id', component: EventItemComponent, name: 'events.item'},
-    { path: '/login', component: LoginComponent },
-    { path: '/signup', component: SignupComponent },
+    { path: '/auth', component: AuthComponent },
 ]
 
 // 3. Создаём экземпляр маршрутизатора и передаём маршруты в опции `routes`

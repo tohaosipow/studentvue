@@ -12,5 +12,9 @@ export default {
 
     signUp(name, email, password){
         return window.axios.post(endpoint+'/api/user/signup', {name, email, password});
+    },
+
+    events(){
+        return window.axios.get(endpoint+'/api/user/events');
     }
 }

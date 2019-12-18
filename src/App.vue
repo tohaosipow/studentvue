@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <v-app light>
+        <v-app v-if="loaded" light>
             <v-navigation-drawer :mini-variant.sync="mini"
                                  :value="drawer"
                                  app
@@ -8,7 +8,7 @@
                                  light
             >
 
-                <v-list-item>
+                <v-list-item v-if="$store.state.user.currentUser.id > 0">
                     <v-list-item-avatar>
                         <v-img :src="$store.state.user.currentUser.avatar"></v-img>
                     </v-list-item-avatar>
@@ -39,7 +39,7 @@
                         </v-list-item-content>
 
                     </v-list-item>
-                    <v-list-item @click="() => {}">
+                    <v-list-item :to="{name: 'user.events'}" v-if="$store.state.user.currentUser.id > 0">
                         <v-list-item-icon>
                             <v-icon>mdi-account</v-icon>
                         </v-list-item-icon>
@@ -86,6 +86,12 @@
                     <span class="title">АИС "Студент СурГУ"</span>
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
+                <v-toolbar-items>
+                    <v-btn v-if="$store.state.user.currentUser.id > 0" @click="$store.dispatch('logout'); $router.push('/auth')" text>Выйти</v-btn>
+                    <template v-else>
+                        <v-btn to="/auth" text>Вход / Регистрация</v-btn>
+                    </template>
+                </v-toolbar-items>
 
             </v-app-bar>
             <div style="margin-top: 64px;">
@@ -102,11 +108,21 @@
     export default {
         name: 'app',
         components: {},
+        mounted(){
+            let token = localStorage.getItem('access_token');
+            if(token){
+                window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+                this.$store.dispatch('getUser').then(() => {
+                   this.loaded = true;
+                });
+            }
+        },
         data: () => ({
             drawer: null,
             items: [],
             items2: [],
-            mini: true
+            mini: true,
+            loaded: false
         }),
         created() {
 

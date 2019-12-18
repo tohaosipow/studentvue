@@ -3,6 +3,7 @@ import user from "@/api/user";
 export default {
     state: {
         currentUser: {},
+        currentUserEvents: [],
         error: {}
     },
     mutations: {
@@ -11,6 +12,9 @@ export default {
         },
         setAuthError(state, error){
             state.error = error;
+        },
+        setCurrentUserEvents(state, events){
+            state.currentUserEvents = events;
         }
     }
     ,
@@ -26,16 +30,28 @@ export default {
         },
 
         // eslint-disable-next-line no-unused-vars
-        async authUser({commit, dispatch}, {username, password}){
-            try {
-                let {data} = await user.authUser(username, password);
-                localStorage.setItem('access_token', data.access_token);
-                window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + data.access_token;
-                dispatch('getUser');
-            } catch (err) {
-                commit('setAuthError', err);
+        authUser({commit, dispatch}, {username, password}){
+            return new Promise((resolve, reject) => {
+                user.authUser(username, password).then((response) => {
+                    localStorage.setItem('access_token', response.data.access_token);
+                    window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.access_token;
+                    dispatch('getUser');
+                    resolve()
 
-            }
+                }).catch((error) => {
+                    reject(error);
+                    commit('setAuthError', error);
+                });
+            })
+
+            /*
+            then(response => {
+
+            }, error => {
+
+
+            });
+             */
 
         },
 
@@ -44,6 +60,16 @@ export default {
                 commit('setUser', response.data);
             })
         },
+
+        logout({commit}){
+            commit('setUser', {});
+        },
+
+        getUserEvents({commit}){
+            return user.events().then((response) => {
+               commit('setCurrentUserEvents', response.data);
+            });
+        }
 
     }
 }
