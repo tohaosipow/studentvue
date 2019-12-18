@@ -5,7 +5,7 @@
         <v-subheader>Настройте состав</v-subheader>
         <v-list-item :key="member.id" v-for="member in team.members">
             <v-list-item-icon>
-                <v-icon color="orange" v-if="member.id === $store.state.user.currentUser.id">mdi-crown</v-icon>
+                <v-icon color="orange" v-if="parseInt(member.id) === parseInt($store.state.user.currentUser.id)">mdi-crown</v-icon>
                 <v-icon color="blue darken-2" v-else>mdi-account</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
