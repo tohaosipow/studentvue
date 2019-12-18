@@ -8,8 +8,7 @@
                 <v-list-item-title>{{team.name}}</v-list-item-title>
                 <v-list-item-subtitle>{{team.description}}</v-list-item-subtitle>
             </v-list-item-content>
-
-            <v-list-item-action>
+            <v-list-item-action v-if="$store.state.user.currentUser.id > 0">
                 <v-btn class="ma-2"
                        color="success"
                        outlined rounded tile
@@ -41,7 +40,7 @@
             </v-list-item-content>
         </v-list-item>
 
-        <v-dialog max-width="600px" persistent v-model="editTeamDialog">
+        <v-dialog v-if="this.$store.state.user.currentUser.id > 0" max-width="600px" persistent v-model="editTeamDialog">
             <template v-slot:activator="{ on }">
                 <v-btn absolute
                        bottom
