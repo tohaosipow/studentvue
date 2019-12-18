@@ -101,7 +101,7 @@
                     </v-item-group>
                     <v-card-text>
                         <v-text-field :error-messages="errors.name" :rules="[ v => !!v || 'Обязательно для заполнения']"
-                                      label="Имя" outlined
+                                      label="Имя Фамилия" outlined
                                       v-model="user.name"></v-text-field>
                         <v-text-field :error-messages="errors.email" :rules="[ v => !!v || 'E-mail обязателен', v => /.+@.+\..+/.test(v) || 'E-mail должен быть корретным']"
                                       label="Email"
