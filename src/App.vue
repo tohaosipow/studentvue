@@ -116,6 +116,9 @@
                    this.loaded = true;
                 });
             }
+            else{
+                this.loaded = true;
+            }
         },
         data: () => ({
             drawer: null,

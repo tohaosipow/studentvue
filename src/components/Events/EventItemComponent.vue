@@ -34,7 +34,7 @@
                     <v-tabs-items v-model="part">
                         <v-tab-item>
                             <v-card flat>
-                                <v-textarea
+                                <v-textarea readonly
                                         solo :value="event.description"
                                         name="input-7-4"
                                         label="Описание"
