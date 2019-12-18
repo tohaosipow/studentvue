@@ -10,8 +10,11 @@
             </v-list-item-icon>
             <v-list-item-content>
                 <v-list-item-title>{{member.name}}</v-list-item-title>
-                <v-list-item-subtitle>{{member.event_checks[0].event_check_roles.map((el) => {return
+                <v-list-item-subtitle v-if="member.event_checks[0]">{{member.event_checks[0].event_check_roles.map((el) => {return
                     el.event_role.role.name}).join(',')}}
+                </v-list-item-subtitle>
+                <v-list-item-subtitle v-else>
+                    Роль не выбрана
                 </v-list-item-subtitle>
             </v-list-item-content>
             <v-list-item-action v-if="!member.pivot.approved">
