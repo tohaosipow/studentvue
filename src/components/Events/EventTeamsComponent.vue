@@ -9,46 +9,54 @@
                 <v-list-item-subtitle>{{team.description}}</v-list-item-subtitle>
             </v-list-item-content>
             <v-list-item-action v-if="$store.state.user.currentUser.id > 0">
-                <v-btn class="ma-2"
-                       color="success"
-                       outlined rounded tile
-                       v-if="team.members.map((el) => {return parseInt(el.pivot.approved) === 1?el.id:-1}).includes($store.state.user.currentUser.id)">
-                    <v-icon left>mdi-check</v-icon>
-                    Вы участник
-                </v-btn>
-                <v-btn class="ma-2"
-                       color="warning"
-                       outlined rounded tile
-                       v-else-if="team.members.map((el) => {return el.id}).includes($store.state.user.currentUser.id)">
-                    <v-icon left>mdi-update</v-icon>
-                    Подана заявка
-                </v-btn>
-                <v-btn v-else-if="$store.state.events.userTeam.length === 0" @click="join(team.id)" class="ma-2" color="blue" outlined rounded tile>
-                    Подать заявку
-                </v-btn>
+                <template v-if="$store.state.events.userStatus.id === undefined">
+                    Необходимо "Подать заявку" на мероприятие
+                </template>
+                <template v-else>
+                    <v-btn class="ma-2"
+                           color="success"
+                           outlined rounded tile
+                           v-if="team.members.map((el) => {return parseInt(el.pivot.approved) === 1?el.id:-1}).includes($store.state.user.currentUser.id)">
+                        <v-icon left>mdi-check</v-icon>
+                        Вы участник
+                    </v-btn>
+                    <v-btn class="ma-2"
+                           color="warning"
+                           outlined rounded tile
+                           v-else-if="team.members.map((el) => {return el.id}).includes($store.state.user.currentUser.id)">
+                        <v-icon left>mdi-update</v-icon>
+                        Подана заявка
+                    </v-btn>
+                    <v-btn @click="join(team.id)" class="ma-2" color="blue"
+                           outlined rounded tile v-else-if="$store.state.events.userTeam.length === 0">
+                        Подать заявку
+                    </v-btn>
+                </template>
             </v-list-item-action>
-            <v-list-item-action v-if="team.user_id === $store.state.user.currentUser.id || $store.state.user.currentUser.admin === 1">
+            <v-list-item-action
+                    v-if="team.user_id === $store.state.user.currentUser.id || $store.state.user.currentUser.admin === 1">
                 <v-btn icon>
-                    <v-icon @click="currentTeam = team; controlTeamDialog = true" color="blue darken-2">mdi-settings</v-icon>
+                    <v-icon @click="currentTeam = team; controlTeamDialog = true" color="blue darken-2">mdi-settings
+                    </v-icon>
                 </v-btn>
 
 
             </v-list-item-action>
 
         </v-list-item>
-        <v-list-item >
+        <v-list-item>
             <v-list-item-content>
                 <v-list-item-title></v-list-item-title>
             </v-list-item-content>
         </v-list-item>
-        <v-dialog v-model="controlTeamDialog"  max-width="600">
+        <v-dialog max-width="600" v-model="controlTeamDialog">
             <template v-slot:activator="{ on }">
 
             </template>
             <EventTeamControlComponent :team="currentTeam"></EventTeamControlComponent>
         </v-dialog>
 
-        <v-dialog v-if="$store.state.user.currentUser.id > 0" max-width="600px" persistent v-model="editTeamDialog">
+        <v-dialog max-width="600px" persistent v-if="$store.state.user.currentUser.id > 0" v-model="editTeamDialog">
             <template v-slot:activator="{ on }">
                 <v-btn absolute
                        bottom
@@ -76,11 +84,11 @@
         components: {
             TeamCreateEditComponent, EventTeamControlComponent
         },
-        methods:{
-          join(team_id){
-              this.$store.dispatch('joinTeam', {team_id});
-              this.$store.dispatch('userTeam', {event_id: this.$store.state.events.currentEvent.id});
-          }
+        methods: {
+            join(team_id) {
+                this.$store.dispatch('joinTeam', {team_id});
+                this.$store.dispatch('userTeam', {event_id: this.$store.state.events.currentEvent.id});
+            }
         },
         data() {
             return {
