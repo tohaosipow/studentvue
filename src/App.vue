@@ -14,7 +14,7 @@
                     </v-list-item-avatar>
 
 
-                    <v-list-item-title>{{$store.state.user.currentUser.name}}</v-list-item-title>
+                    <v-list-item-title>{{$store.state.user.currentUser.first_name}} {{$store.state.user.currentUser.last_name}}</v-list-item-title>
 
 
                     <v-btn
