@@ -218,7 +218,7 @@
                                         <v-text-field
                                                 label="Должность"
                                                 outlined
-                                                v-model="user.employees_post"
+                                                v-model="user.employee_post"
                                         ></v-text-field>
 
 
@@ -288,7 +288,7 @@
                     phone: '',
                     student_group: '',
                     department: '',
-                    employees_post: '',
+                    employee_post: '',
                     pupil_school: '',
                     pupil_class: ''
                 },
