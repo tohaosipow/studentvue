@@ -57,8 +57,8 @@ export default {
 
         },
 
-        signUp({commit}, {name, email, password}){
-            return user.signUp(name, email, password).then((response) =>{
+        signUp({commit}, user_object){
+            return user.signUp(user_object).then((response) =>{
                 commit('setUser', response.data);
             })
         },

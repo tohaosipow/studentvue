@@ -10,8 +10,8 @@ export default {
         return window.axios.post(endpoint+'/oauth/token', {...apiCredentials, username, password})
     },
 
-    signUp(name, email, password){
-        return window.axios.post(endpoint+'/api/user/signup', {name, email, password});
+    signUp(user){
+        return window.axios.post(endpoint+'/api/user/signup', user);
     },
 
     events(){

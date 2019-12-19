@@ -115,6 +115,9 @@
                 this.$store.dispatch('getUser').then(() => {
                    this.loaded = true;
                 });
+
+                this.$store.dispatch('getDepartments');
+                this.$store.dispatch('getStudentGroups');
             }
             else{
                 this.loaded = true;

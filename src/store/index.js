@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import user from './modules/user'
 import axios from 'axios';
 import events from "@/store/modules/events";
+import dictionaries from "@/store/modules/dictionaries";
 
 
 
@@ -15,7 +16,7 @@ const debug = process.env.NODE_ENV !== 'production';
 
 export default new Vuex.Store({
     modules: {
-        user, events
+        user, events, dictionaries
     },
     strict: debug
 })
