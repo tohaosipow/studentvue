@@ -85,6 +85,13 @@ export default {
 
     },
     getters: {
+
+        getTeamsSortByPoints(state){
+            let teams = state.teams.slice(0);
+            teams.sort((a, b) => {return parseInt(b.points) - parseInt(a.points)});
+            return teams;
+        },
+
         getEventUserPointsByParticipantIdAndAdminIDAndRubricID(state) {
             return (participant_id, admin_id, rubric_id) => {
                 return state.userPoints.filter((point) => {
@@ -102,6 +109,16 @@ export default {
                         && parseInt(point.evaluated_by) === parseInt(admin_id)
                         && parseInt(point.rubric_id) === parseInt(rubric_id)
                 })
+            }
+        },
+
+        getTotalTeamPointsByTeamIdAndAdminID(state) {
+            return (team_id, admin_id) => {
+                let points = 0;
+                state.teamPoints.forEach((point) => {
+                    if(parseInt(point.team_id) === parseInt(team_id)  && parseInt(point.evaluated_by) === parseInt(admin_id)) points += point.points_earned;
+                });
+                return points;
             }
         },
         jury: function(state){

@@ -42,6 +42,7 @@
                             <th :key="rubric.id" class="text-left"
                                 v-for="rubric in $store.state.events.currentEvent.rubrics">{{rubric.title}}
                             </th>
+                            <th>Общий балл</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -63,6 +64,9 @@
                                             v-on:change="updatePoint(user.id, rubric.id, $event)"
                                     ></v-text-field>
                                 </v-list-item>
+                            </td>
+                            <td>
+                                {{$store.getters.getTotalTeamPointsByTeamIdAndAdminID(team.id, user.id)}}
                             </td>
                         </tr>
                         </tbody>

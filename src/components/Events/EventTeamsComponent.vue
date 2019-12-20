@@ -1,6 +1,6 @@
 <template>
     <v-card v-if="!loading">
-        <v-list-item :key="team.id" v-for="team in this.$store.state.events.teams">
+        <v-list-item :key="team.id" v-for="(team, index) in this.$store.getters.getTeamsSortByPoints">
             <v-list-item-avatar>
                 <v-img :src="team.logo"></v-img>
             </v-list-item-avatar>
@@ -42,7 +42,17 @@
 
 
             </v-list-item-action>
-
+            <template v-if="parseInt($store.state.events.currentEvent.show_points_to_participants) === 1 || $store.getters.checkCanSetPoints($store.state.user.currentUser.id)">
+                <v-list-item-avatar color="#ffd700" size="36" v-if="index === 0">
+                    <span class="white--text">{{team.points}}</span>
+                </v-list-item-avatar>
+                <v-list-item-avatar color="#c0c0c0" size="36" v-else-if="index === 1">
+                    <span class="white--text">{{team.points}}</span>
+                </v-list-item-avatar>
+                <v-list-item-avatar color="#cd7f32" size="36" v-else-if="index === 2">
+                    <span class="white--text">{{team.points}}</span>
+                </v-list-item-avatar>
+            </template>
         </v-list-item>
         <v-list-item>
             <v-list-item-content>
