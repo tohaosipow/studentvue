@@ -21,8 +21,16 @@ export default {
         return window.axios.get(endpoint+'/api/event/'+id+'/user_points');
     },
 
+    getEventTeamPoints(id){
+        return window.axios.get(endpoint+'/api/event/'+id+'/team_points');
+    },
+
     updateUserEventPoints(participant_id, admin_id, rubric_id, points_earned){
         return window.axios.get(endpoint+'/api/user_points/update', {params: {participant_id, admin_id, rubric_id, points_earned}});
+    },
+
+    updateTeamEventPoints(team_id, admin_id, rubric_id, points_earned){
+        return window.axios.get(endpoint+'/api/team_points/update', {params: {team_id, admin_id, rubric_id, points_earned}});
     },
 
     userEventCheck(user_id, event_id){

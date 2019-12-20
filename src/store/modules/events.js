@@ -10,6 +10,7 @@ export default {
         participants: [],
         admins: [],
         userPoints: [],
+        teamPoints: [],
         userStatus: {},
         teams: [],
         userTeam: []
@@ -42,38 +43,43 @@ export default {
             state.userPoints = user_points;
         },
 
-        setUserStatus(state, user_status){
+        setEventTeamPoints(state, team_points) {
+            state.teamPoints = team_points;
+        },
+
+
+        setUserStatus(state, user_status) {
             state.userStatus = user_status;
         },
-        setTeams(state, teams){
+        setTeams(state, teams) {
             state.teams = teams;
         },
 
-        addTeam(state, team){
+        addTeam(state, team) {
             state.teams.push(team);
         },
 
-        updateTeam(state, team){
+        updateTeam(state, team) {
             let teams = state.teams.slice(0);
             teams.forEach((t, index) => {
-                if(t.id === team.id){
+                if (t.id === team.id) {
                     teams[index] = team;
                 }
             });
             state.teams = teams;
 
         },
-        updateTeamMembers(state, {team_id, members}){
+        updateTeamMembers(state, {team_id, members}) {
             let teams = state.teams.slice(0);
             teams.forEach((t, index) => {
-                if(t.id === team_id){
+                if (t.id === team_id) {
                     teams[index].members = members;
                 }
             });
             state.teams = teams;
         },
 
-        setUserTeam(state, team){
+        setUserTeam(state, team) {
             state.userTeam = team;
         }
 
@@ -86,6 +92,37 @@ export default {
                         && parseInt(point.evaluated_by) === parseInt(admin_id)
                         && parseInt(point.rubric_id) === parseInt(rubric_id)
                 })
+            }
+        },
+
+        getEventTeamPointsByTeamIdAndAdminIDAndRubricID(state) {
+            return (team_id, admin_id, rubric_id) => {
+                return state.teamPoints.filter((point) => {
+                    return parseInt(point.team_id) === parseInt(team_id)
+                        && parseInt(point.evaluated_by) === parseInt(admin_id)
+                        && parseInt(point.rubric_id) === parseInt(rubric_id)
+                })
+            }
+        },
+        checkCanSetPoints: function (state) {
+            return (user_id) => {
+                let can = false;
+                state.participants.forEach((user) => {
+                    // eslint-disable-next-line no-console
+                    console.log(user);
+                    // eslint-disable-next-line no-console
+                    console.log(user_id);
+                    if (user.id === user_id) {
+                        if (parseInt(user.admin) === 1) can = true;
+                        else {
+                            user.roles.forEach((role) => {
+                                if (role.event_role.can_set_points === 1) can = true;
+                                if (role.event_role.admin === 1) can = true;
+                            });
+                        }
+                    }
+                });
+                return can;
             }
         }
     },
@@ -125,15 +162,27 @@ export default {
             })
         },
 
-        updateEventUserPoint({state, dispatch}, {participant_id, admin_id, rubric_id, points_earned}){
+        getEventTeamPoints({commit}, {id}) {
+            return events.getEventTeamPoints(id).then((r) => {
+                commit('setEventTeamPoints', r.data);
+            })
+        },
+
+        updateEventUserPoint({state, dispatch}, {participant_id, admin_id, rubric_id, points_earned}) {
             return events.updateUserEventPoints(participant_id, admin_id, rubric_id, points_earned).then(() => {
                 dispatch('getEventUserPoints', {id: state.currentEvent.id});
             })
         },
 
+        updateEventTeamPoint({state, dispatch}, {team_id, admin_id, rubric_id, points_earned}) {
+            return events.updateTeamEventPoints(team_id, admin_id, rubric_id, points_earned).then(() => {
+                dispatch('getEventTeamPoints', {id: state.currentEvent.id});
+            })
+        },
+
         getUserStatus({commit}, {id}) {
             return events.getUserStatus(id).then((response) => {
-                    commit('setUserStatus', response.data);
+                commit('setUserStatus', response.data);
             });
         },
 
@@ -144,37 +193,37 @@ export default {
         },
 
 
-        checkIn({commit}, {event_id, event_role_id}){
+        checkIn({commit}, {event_id, event_role_id}) {
             return event_checks.create(event_id, event_role_id).then((response) => {
                 commit('setUserStatus', response.data);
             });
         },
 
-        getTeams({commit}, {event_id}){
+        getTeams({commit}, {event_id}) {
             return teams.getAll(event_id).then((response) => {
                 commit('setTeams', response.data);
             })
         },
 
-        createTeam({commit}, {event_id, form_data}){
+        createTeam({commit}, {event_id, form_data}) {
             return teams.create(event_id, form_data).then((r) => {
                 commit('addTeam', r.data);
             });
         },
 
-        joinTeam({commit}, {team_id}){
+        joinTeam({commit}, {team_id}) {
             return teams.join(team_id).then((response) => {
-                 commit('updateTeam', response.data);
+                commit('updateTeam', response.data);
             });
         },
 
-        acceptMember({commit}, {team_id, user_id}){
+        acceptMember({commit}, {team_id, user_id}) {
             return teams.acceptMember(team_id, user_id).then((response) => {
                 commit('updateTeamMembers', {team_id: team_id, members: response.data});
             });
         },
 
-        declineMember({commit}, {team_id, user_id}){
+        declineMember({commit}, {team_id, user_id}) {
             return teams.declineMember(team_id, user_id).then((response) => {
                 commit('updateTeamMembers', {team_id: team_id, members: response.data});
             });

@@ -27,7 +27,7 @@
                         <v-tab v-if="$store.state.user.currentUser.admin === 1">
                             Критерии
                         </v-tab>
-                        <v-tab v-if="$store.state.user.currentUser.admin === 1">
+                        <v-tab v-if="$store.getters.checkCanSetPoints($store.state.user.currentUser.id)">
                             Оценки
                         </v-tab>
                     </v-tabs>
@@ -56,9 +56,10 @@
                                 <EventRubricsComponent :rubrics="event.rubrics"></EventRubricsComponent>
                             </v-card>
                         </v-tab-item>
-                        <v-tab-item v-if="$store.state.user.currentUser.admin === 1">
+                        <v-tab-item v-if="$store.getters.checkCanSetPoints($store.state.user.currentUser.id)">
                             <v-card flat color="basil">
-                                <EventUserPointSetComponent></EventUserPointSetComponent>
+                                <EventTeamPointSetComponent v-if="$store.state.events.currentEvent.teams_allowed"></EventTeamPointSetComponent>
+                                <EventUserPointSetComponent v-else></EventUserPointSetComponent>
                             </v-card>
                         </v-tab-item>
 
@@ -76,11 +77,12 @@
     import EventUserPointSetComponent from "@/components/Events/EventUserPointSetComponent";
     import EventCheckComponent from "@/components/Events/EventCheckComponent";
     import EventTeamsComponent from "@/components/Events/EventTeamsComponent";
+    import EventTeamPointSetComponent from "@/components/Events/EventTeamPointSetComponent";
 
     export default {
         name: "EventItemComponent",
         components:{
-          EventParticipantComponent, EventRubricsComponent, EventUserPointSetComponent, EventCheckComponent, EventTeamsComponent
+          EventParticipantComponent, EventRubricsComponent, EventUserPointSetComponent, EventCheckComponent, EventTeamsComponent, EventTeamPointSetComponent
         },
         mounted(){
             this.$store.dispatch('getEvent', {id: this.$route.params.id}).then(() => {
