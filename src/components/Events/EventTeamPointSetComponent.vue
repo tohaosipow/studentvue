@@ -8,10 +8,10 @@
                             v-model="mode"
                     >
                         <v-btn :value="1" small>
-                            По участникам
+                            По командам
                         </v-btn>
                         <v-btn :value="0" small>
-                            Сводный
+                            По членам жюри
                         </v-btn>
 
 
