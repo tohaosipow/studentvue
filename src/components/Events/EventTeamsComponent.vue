@@ -52,6 +52,9 @@
                 <v-list-item-avatar color="#cd7f32" size="36" v-else-if="index === 2">
                     <span class="white--text">{{team.points}}</span>
                 </v-list-item-avatar>
+                <v-list-item-avatar color="black" size="36" v-else>
+                    <span class="white--text">{{team.points}}</span>
+                </v-list-item-avatar>
             </template>
         </v-list-item>
         <v-list-item>
