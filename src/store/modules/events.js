@@ -104,14 +104,23 @@ export default {
                 })
             }
         },
+        jury: function(state){
+          return state.participants.filter((user) => {
+                  if (parseInt(user.admin) === 1) return true;
+                  let can = false;
+                  user.roles.forEach((role) => {
+                      if (role.event_role.can_set_points === 1) can = true;
+                      if (role.event_role.admin === 1) can = true;
+                  });
+                  return can;
+
+              })
+        },
+
         checkCanSetPoints: function (state) {
             return (user_id) => {
                 let can = false;
                 state.participants.forEach((user) => {
-                    // eslint-disable-next-line no-console
-                    console.log(user);
-                    // eslint-disable-next-line no-console
-                    console.log(user_id);
                     if (user.id === user_id) {
                         if (parseInt(user.admin) === 1) can = true;
                         else {

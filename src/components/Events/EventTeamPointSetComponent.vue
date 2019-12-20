@@ -45,7 +45,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr :key="user.id" v-for="user in $store.state.events.admins">
+                        <tr :key="user.id" v-for="user in $store.getters.jury">
                             <td>{{ user.name }}</td>
                             <td :key="rubric.id" class="text-left"
                                 v-for="rubric in $store.state.events.currentEvent.rubrics">
