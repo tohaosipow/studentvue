@@ -7,12 +7,14 @@
                             mandatory
                             v-model="mode"
                     >
-                        <v-btn small>
+                        <v-btn :value="1" small>
                             По участникам
                         </v-btn>
-                        <v-btn small>
+                        <v-btn :value="0" small>
                             Сводный
                         </v-btn>
+
+
                     </v-btn-toggle>
                 </v-col>
                 <v-col md="4">
@@ -27,6 +29,52 @@
                     </template>
                 </v-col>
             </v-row>
+            <template v-if="mode === 1">
+                <v-simple-table>
+                    <template v-slot:default>
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th :colspan="$store.state.events.currentEvent.rubrics.length" class="text-center">
+                                Критерии
+                            </th>
+                        </tr>
+                        <tr>
+                            <th class="text-left">Команда</th>
+                            <th :key="rubric.id" class="text-left"
+                                v-for="rubric in $store.state.events.currentEvent.rubrics">{{rubric.title}}
+                            </th>
+                            <th>Общий балл</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr :key="team_.id" v-for="team_ in $store.state.events.teams">
+                            <td>{{ team_.name }}</td>
+                            <td :key="rubric.id" class="text-left"
+                                v-for="rubric in $store.state.events.currentEvent.rubrics">
+                                <v-list-item>
+                                    <v-text-field
+                                            :loading="loading"
+                                            :value="getPointEarned(team_.id, $store.state.user.currentUser.id, rubric.id)"
+                                            label="Выставите балл"
+                                            :min="0"
+                                            :rules="[value => value >= 0 && value <= rubric.points_max || 'Недопустимый балл']"
+                                            :max="rubric.points_max"
+                                            single-line
+                                            :suffix="'/ '+rubric.points_max"
+                                            type="number"
+                                            v-on:change="updatePoint($store.state.user.currentUser.id, rubric.id, $event, team_.id)"
+                                    ></v-text-field>
+                                </v-list-item>
+                            </td>
+                            <td>
+                                {{$store.getters.getTotalTeamPointsByTeamIdAndAdminID(team_.id, $store.state.user.currentUser.id)}}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </template>
+                </v-simple-table>
+            </template>
             <template v-if="mode === 0 && team">
                 <v-simple-table>
                     <template v-slot:default>
@@ -61,7 +109,7 @@
                                             single-line
                                             :suffix="'/ '+rubric.points_max"
                                             type="number"
-                                            v-on:change="updatePoint(user.id, rubric.id, $event)"
+                                            v-on:change="updatePoint(user.id, rubric.id, $event, team.id)"
                                     ></v-text-field>
                                 </v-list-item>
                             </td>
@@ -84,7 +132,7 @@
         name: "EventUserPointSetComponent",
         data() {
             return {
-                mode: 0,
+                mode: 1,
                 loading: false,
                 team: null
             }
@@ -100,10 +148,10 @@
                 let result = this.getPoint(team_id, admin_id, rubric_id)[0];
                 return !result ? null : result.points_earned;
             },
-            updatePoint(admin_id, rubric_id, points_earned) {
+            updatePoint(admin_id, rubric_id, points_earned, team_id) {
                 this.loading = true;
                 this.$store.dispatch('updateEventTeamPoint', {
-                    team_id: this.team.id,
+                    team_id,
                     admin_id,
                     rubric_id,
                     points_earned
