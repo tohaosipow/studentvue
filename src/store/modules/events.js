@@ -2,6 +2,7 @@ import events from "@/api/events";
 import rubrics from "@/api/rubrics";
 import event_checks from "@/api/event_checks";
 import teams from "@/api/teams";
+import team_projects from "@/api/team_projects";
 
 export default {
     state: {
@@ -13,9 +14,14 @@ export default {
         teamPoints: [],
         userStatus: {},
         teams: [],
-        userTeam: []
+        userTeam: [],
+        teamProjects: [],
+        currentTeam: null
     },
     mutations: {
+        setCurrentTeam(state, team){
+          state.currentTeam = team;
+        },
         setEvents(state, events) {
             state.events = events
         },
@@ -55,6 +61,15 @@ export default {
             state.teams = teams;
         },
 
+        setTeamProjects(state, team_projects) {
+            state.teamProjects = team_projects;
+        },
+
+
+        addTeamProject(state, team_project) {
+            state.teamProjects.push(team_project);
+        },
+
         addTeam(state, team) {
             state.teams.push(team);
         },
@@ -86,9 +101,11 @@ export default {
     },
     getters: {
 
-        getTeamsSortByPoints(state){
+        getTeamsSortByPoints(state) {
             let teams = state.teams.slice(0);
-            teams.sort((a, b) => {return parseInt(b.points) - parseInt(a.points)});
+            teams.sort((a, b) => {
+                return parseInt(b.points) - parseInt(a.points)
+            });
             return teams;
         },
 
@@ -116,22 +133,22 @@ export default {
             return (team_id, admin_id) => {
                 let points = 0;
                 state.teamPoints.forEach((point) => {
-                    if(parseInt(point.team_id) === parseInt(team_id)  && parseInt(point.evaluated_by) === parseInt(admin_id)) points += point.points_earned;
+                    if (parseInt(point.team_id) === parseInt(team_id) && parseInt(point.evaluated_by) === parseInt(admin_id)) points += point.points_earned;
                 });
                 return points;
             }
         },
-        jury: function(state){
-          return state.participants.filter((user) => {
-                  if (parseInt(user.admin) === 1) return true;
-                  let can = false;
-                  user.roles.forEach((role) => {
-                      if (role.event_role.can_set_points === 1) can = true;
-                      if (role.event_role.admin === 1) can = true;
-                  });
-                  return can;
+        jury: function (state) {
+            return state.participants.filter((user) => {
+                if (parseInt(user.admin) === 1) return true;
+                let can = false;
+                user.roles.forEach((role) => {
+                    if (role.event_role.can_set_points === 1) can = true;
+                    if (role.event_role.admin === 1) can = true;
+                });
+                return can;
 
-              })
+            })
         },
 
         checkCanSetPoints: function (state) {
@@ -253,6 +270,24 @@ export default {
             return teams.declineMember(team_id, user_id).then((response) => {
                 commit('updateTeamMembers', {team_id: team_id, members: response.data});
             });
+        },
+
+        getTeamProjects({commit}, {team_id}) {
+            return team_projects.all(team_id).then((r) => {
+                commit('setTeamProjects', r.data);
+            })
+        },
+
+        createTeamProject({dispatch}, {team_id, form_data}) {
+            return team_projects.create(team_id, form_data).then(() => {
+                dispatch('getTeamProjects', {team_id})
+            })
+        },
+
+        getCurrentTeam({commit}, {team_id}){
+            return teams.item(team_id).then(response => {
+                commit('setCurrentTeam', response.data);
+            })
         }
     }
 }

@@ -1,6 +1,6 @@
 <template>
     <v-card v-if="!loading">
-        <v-list-item :key="team.id" v-for="(team, index) in this.$store.getters.getTeamsSortByPoints">
+        <v-list-item :to="{name: 'teams.item', params: {id: $store.state.events.currentEvent.id, team_id: team.id}}" :key="team.id" v-for="(team, index) in this.$store.getters.getTeamsSortByPoints">
             <v-list-item-avatar>
                 <v-img :src="team.logo"></v-img>
             </v-list-item-avatar>
@@ -15,6 +15,7 @@
                 <template v-else>
                     <v-btn class="ma-2"
                            color="success"
+                           @click.prevent.stop="() => {}"
                            outlined rounded tile
                            v-if="team.members.map((el) => {return parseInt(el.pivot.approved) === 1?el.id:-1}).includes($store.state.user.currentUser.id)">
                         <v-icon left>mdi-check</v-icon>
@@ -27,7 +28,7 @@
                         <v-icon left>mdi-update</v-icon>
                         Подана заявка
                     </v-btn>
-                    <v-btn @click="join(team.id)" class="ma-2" color="blue"
+                    <v-btn @click.prevent.stop="join(team.id)" class="ma-2" color="blue"
                            outlined rounded tile v-else-if="$store.state.events.userTeam.length === 0">
                         Подать заявку
                     </v-btn>
@@ -36,7 +37,7 @@
             <v-list-item-action
                     v-if="team.user_id === $store.state.user.currentUser.id || $store.state.user.currentUser.admin === 1">
                 <v-btn icon>
-                    <v-icon @click="currentTeam = team; controlTeamDialog = true" color="blue darken-2">mdi-settings
+                    <v-icon @click.prevent.stop.prevent.stop="currentTeam = team; controlTeamDialog = true" color="blue darken-2">mdi-settings
                     </v-icon>
                 </v-btn>
 

@@ -24,5 +24,9 @@ export default {
 
     userTeam(event_id){
         return window.axios.get(endpoint+'/api/event/'+event_id+'/user_team');
+    },
+
+    item(team_id){
+        return window.axios.get(endpoint+'/api/teams/'+team_id);
     }
 }
