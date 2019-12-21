@@ -83,11 +83,13 @@
     import EventParticipantComponent from "@/components/Events/EventParticipantComponent";
     import EventRubricsComponent from "@/components/Events/EventRubricsComponent";
     import EventCheckComponent from "@/components/Events/EventCheckComponent";
+    import EventTeamsComponent from "@/components/Events/EventTeamsComponent";
 
     export default {
         name: "EventItemComponent",
         components:{
-          EventParticipantComponent, EventRubricsComponent,  EventCheckComponent,
+
+          EventParticipantComponent, EventRubricsComponent,  EventCheckComponent, EventTeamsComponent
         },
         mounted(){
             this.$store.dispatch('getEvent', {id: this.$route.params.id}).then(() => {
