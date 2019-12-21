@@ -59,6 +59,7 @@
                                             :min="0"
                                             outlined
                                             dense
+                                            full-width
                                             :rules="[value => value >= 0 && value <= rubric.points_max || 'Недопустимый балл']"
                                             :max="rubric.points_max"
                                             single-line
@@ -108,6 +109,7 @@
                                             :max="rubric.points_max"
                                             single-line
                                             outlined
+                                            full-width
                                             dense
                                             :suffix="'/ '+rubric.points_max"
                                             type="number"
