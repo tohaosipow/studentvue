@@ -9,7 +9,7 @@
                     <v-text-field v-model="team_project.objective" counter dense prepend-icon="mdi-text" outlined label="Цель проекта"></v-text-field>
                     <v-text-field v-model="team_project.tasks" counter dense prepend-icon="mdi-text" outlined label="Задачи проекта"></v-text-field>
                     <v-text-field v-model="team_project.roles" counter dense prepend-icon="mdi-text" outlined label="Роли в проекте"></v-text-field>
-                    <v-file-input v-model="team_project.presentation" outlined prepend-icon="mdi-camera" dense accept="image/*" label="Презентация проекта"></v-file-input>
+                    <v-file-input v-model="team_project.presentation" outlined prepend-icon="mdi-camera" dense  label="Презентация проекта"></v-file-input>
                 </v-col>
 
             </v-row>
