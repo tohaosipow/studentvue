@@ -110,6 +110,7 @@
                                             v-on:change="updatePoint(user.id, rubric.id, $event, team.id)"
                                     ></v-text-field>
                                 </v-list-item>
+
                             </td>
                             <td>
                                 {{$store.getters.getTotalTeamPointsByTeamIdAndAdminID(team.id, user.id)}}
