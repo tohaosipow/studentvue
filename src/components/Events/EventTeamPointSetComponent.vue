@@ -58,6 +58,8 @@
                                             :value="getPointEarned(team_.id, $store.state.user.currentUser.id, rubric.id)"
                                             label="Выставите балл"
                                             :min="0"
+                                            outlined
+                                            dense
                                             :rules="[value => value >= 0 && value <= rubric.points_max || 'Недопустимый балл']"
                                             :max="rubric.points_max"
                                             single-line
@@ -107,6 +109,8 @@
                                             :rules="[value => value >= 0 && value <= rubric.points_max || 'Недопустимый балл']"
                                             :max="rubric.points_max"
                                             single-line
+                                            outlined
+                                            dense
                                             :suffix="'/ '+rubric.points_max"
                                             type="number"
                                             v-on:change="updatePoint(user.id, rubric.id, $event, team.id)"
@@ -157,7 +161,9 @@
                     points_earned
                 }).then(() => {
                     this.loading = false
-                });
+                }).catch(() => {
+                    this.loading = false;
+                })
             }
         },
         mounted() {
