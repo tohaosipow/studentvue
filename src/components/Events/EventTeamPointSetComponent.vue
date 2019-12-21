@@ -61,7 +61,6 @@
                                             full-width
                                             :rules="[value => value >= 0 && value <= rubric.points_max || 'Недопустимый балл']"
                                             :max="rubric.points_max"
-                                            :suffix="'/ '+rubric.points_max"
                                             type="number"
                                             v-on:change="updatePoint($store.state.user.currentUser.id, rubric.id, $event, team_.id)"
                                     ></v-text-field>
@@ -107,7 +106,6 @@
                                             :max="rubric.points_max"
                                             outlined
                                             full-width
-                                            :suffix="'/ '+rubric.points_max"
                                             type="number"
                                             v-on:change="updatePoint(user.id, rubric.id, $event, team.id)"
                                     ></v-text-field>
