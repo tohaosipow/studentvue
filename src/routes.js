@@ -11,7 +11,7 @@ const routes = [
     { path: '/events/my', component: EventsComponent, name: 'user.events', props: { my: true}},
     { path: '/events/:id', component: EventItemComponent, name: 'events.item'},
     { path: '/events/:id/teams/:team_id', component: TeamComponent, name: 'teams.item'},
-    { path: '/points', component: EventPointComponent, name: 'points'},
+    { path: '/points/:id', component: EventPointComponent, name: 'points'},
     { path: '/auth', component: AuthComponent },
 ]
 

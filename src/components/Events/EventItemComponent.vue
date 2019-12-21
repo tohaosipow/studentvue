@@ -27,7 +27,7 @@
                         <v-tab v-if="$store.state.user.currentUser.admin === 1">
                             Критерии
                         </v-tab>
-                        <v-tab  to="/points" v-if="$store.getters.checkCanSetPoints($store.state.user.currentUser.id)">
+                        <v-tab  :to="'/points/'+$route.params.id" v-if="$store.getters.checkCanSetPoints($store.state.user.currentUser.id)">
                             Оценки
                         </v-tab>
                         <v-tab>

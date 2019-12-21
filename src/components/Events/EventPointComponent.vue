@@ -14,6 +14,12 @@
         components:{
             EventTeamPointSetComponent,
             EventUserPointSetComponent
+        },
+        mounted(){
+            this.$store.dispatch('getEvent', {id: this.$route.params.id}).then(() => {
+                this.$store.dispatch('getEventParticipants', {id: this.$store.state.events.currentEvent.id});
+                this.$store.dispatch('getUserStatus', {id: this.$route.params.id});
+            });
         }
     }
 </script>
