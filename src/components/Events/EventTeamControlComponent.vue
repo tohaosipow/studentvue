@@ -9,7 +9,7 @@
                 <v-icon color="blue darken-2" v-else>mdi-account</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
-                <v-list-item-title>{{member.name}}</v-list-item-title>
+                <v-list-item-title>{{member.first_name}}  {{member.last_name}} {{member.third_name}}</v-list-item-title>
                 <v-list-item-subtitle v-if="member.event_checks[0]">{{member.event_checks[0].event_check_roles.map((el) => {return
                     el.event_role.role.name}).join(',')}}
                 </v-list-item-subtitle>
