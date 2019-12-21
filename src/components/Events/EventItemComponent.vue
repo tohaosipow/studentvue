@@ -85,6 +85,7 @@
     import EventCheckComponent from "@/components/Events/EventCheckComponent";
     import EventTeamsComponent from "@/components/Events/EventTeamsComponent";
 
+
     export default {
         name: "EventItemComponent",
         components:{
