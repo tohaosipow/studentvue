@@ -1,5 +1,5 @@
 <template>
-    <v-container flat color="basil">
+    <v-container  flat color="basil">
         <EventTeamPointSetComponent v-if="$store.state.events.currentEvent.teams_allowed"></EventTeamPointSetComponent>
         <EventUserPointSetComponent v-else></EventUserPointSetComponent>
     </v-container>
