@@ -27,7 +27,7 @@
                         <v-tab v-if="$store.state.user.currentUser.admin === 1">
                             Критерии
                         </v-tab>
-                        <v-tab v-if="$store.getters.checkCanSetPoints($store.state.user.currentUser.id)">
+                        <v-tab  to="/points" v-if="$store.getters.checkCanSetPoints($store.state.user.currentUser.id)">
                             Оценки
                         </v-tab>
                         <v-tab>
@@ -61,10 +61,6 @@
                             </v-card>
                         </v-tab-item>
                         <v-tab-item v-if="$store.getters.checkCanSetPoints($store.state.user.currentUser.id)">
-                            <v-card flat color="basil">
-                                <EventTeamPointSetComponent v-if="$store.state.events.currentEvent.teams_allowed"></EventTeamPointSetComponent>
-                                <EventUserPointSetComponent v-else></EventUserPointSetComponent>
-                            </v-card>
                         </v-tab-item>
                         <v-tab-item>
                             <v-card>
@@ -86,15 +82,12 @@
 <script>
     import EventParticipantComponent from "@/components/Events/EventParticipantComponent";
     import EventRubricsComponent from "@/components/Events/EventRubricsComponent";
-    import EventUserPointSetComponent from "@/components/Events/EventUserPointSetComponent";
     import EventCheckComponent from "@/components/Events/EventCheckComponent";
-    import EventTeamsComponent from "@/components/Events/EventTeamsComponent";
-    import EventTeamPointSetComponent from "@/components/Events/EventTeamPointSetComponent";
 
     export default {
         name: "EventItemComponent",
         components:{
-          EventParticipantComponent, EventRubricsComponent, EventUserPointSetComponent, EventCheckComponent, EventTeamsComponent, EventTeamPointSetComponent
+          EventParticipantComponent, EventRubricsComponent,  EventCheckComponent,
         },
         mounted(){
             this.$store.dispatch('getEvent', {id: this.$route.params.id}).then(() => {
