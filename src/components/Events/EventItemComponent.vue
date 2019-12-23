@@ -33,6 +33,9 @@
                         <v-tab>
                             Задания
                         </v-tab>
+                        <v-tab>
+                            QR вход
+                        </v-tab>
 
                     </v-tabs>
                     <v-tabs-items v-model="part">
@@ -70,6 +73,11 @@
 
                             </v-card>
                         </v-tab-item>
+                        <v-tab-item>
+                            <v-card>
+                                <EventQRRegisterComponent></EventQRRegisterComponent>
+                            </v-card>
+                        </v-tab-item>
 
                     </v-tabs-items>
                 </v-card>
@@ -84,13 +92,14 @@
     import EventRubricsComponent from "@/components/Events/EventRubricsComponent";
     import EventCheckComponent from "@/components/Events/EventCheckComponent";
     import EventTeamsComponent from "@/components/Events/EventTeamsComponent";
+    import EventQRRegisterComponent from "@/components/Events/EventQRRegisterComponent";
 
 
     export default {
         name: "EventItemComponent",
         components:{
 
-          EventParticipantComponent, EventRubricsComponent,  EventCheckComponent, EventTeamsComponent
+          EventParticipantComponent, EventRubricsComponent,  EventCheckComponent, EventTeamsComponent, EventQRRegisterComponent
         },
         mounted(){
             this.$store.dispatch('getEvent', {id: this.$route.params.id}).then(() => {

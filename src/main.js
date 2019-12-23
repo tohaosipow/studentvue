@@ -6,7 +6,9 @@ import VueRouter from 'vue-router'
 import {router} from "@/routes";
 import index from "@/store";
 import Vuex from 'vuex'
+import VueQrcodeReader from "vue-qrcode-reader";
 
+Vue.use(VueQrcodeReader);
 Vue.use(Vuetify);
 Vue.use(VueRouter);
 Vue.use(Vuex);
