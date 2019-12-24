@@ -30,7 +30,7 @@
                         <v-tab  :to="'/points/'+$route.params.id" v-if="$store.getters.checkCanSetPoints($store.state.user.currentUser.id)">
                             Оценки
                         </v-tab>
-                        <v-tab>
+                        <v-tab  v-if="$store.getters.checkCanSetPoints($store.state.user.currentUser.id)">
                             QR вход
                         </v-tab>
 
@@ -62,7 +62,7 @@
                         </v-tab-item>
                         <v-tab-item v-if="$store.getters.checkCanSetPoints($store.state.user.currentUser.id)">
                         </v-tab-item>
-                        <v-tab-item>
+                        <v-tab-item  v-if="$store.getters.checkCanSetPoints($store.state.user.currentUser.id)">
                             <v-card>
                                 <EventQRRegisterComponent></EventQRRegisterComponent>
                             </v-card>
