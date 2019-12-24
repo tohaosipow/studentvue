@@ -10,6 +10,10 @@
             <EventUserCheckSwitch :user="item" :event="$store.state.events.currentEvent"></EventUserCheckSwitch>
         </template>
 
+        <template v-slot:item.is_visit="{ item }">
+            <EventUserIsVisitSwitch :user="item" :event="$store.state.events.currentEvent"></EventUserIsVisitSwitch>
+        </template>
+
         <template v-slot:item.rubrics="{ item }">
             <v-btn>Протокол</v-btn>
         </template>
@@ -18,10 +22,11 @@
 
 <script>
     import EventUserCheckSwitch from "@/components/Events/EventUserCheckSwitch";
+    import EventUserIsVisitSwitch from "@/components/Events/EventUserIsVisitSwitch";
 
     export default {
         name: "EventParticipantComponent",
-        components: {EventUserCheckSwitch},
+        components: {EventUserCheckSwitch, EventUserIsVisitSwitch},
         data(){
             return {
                 loading: true,
@@ -36,7 +41,7 @@
                     { text: 'Email', value: 'email' },
                     {text: 'Баллы', value: 'points'},
                     {text: 'Одобрение заявки', value: 'approve'},
-                    {text: 'Протокол участия', value: 'rubrics'},
+                    {text: 'Присутствие', value: 'is_visit'},
                 ],
             }
         },
