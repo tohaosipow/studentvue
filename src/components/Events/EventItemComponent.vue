@@ -31,9 +31,6 @@
                             Оценки
                         </v-tab>
                         <v-tab>
-                            Задания
-                        </v-tab>
-                        <v-tab>
                             QR вход
                         </v-tab>
 
@@ -64,14 +61,6 @@
                             </v-card>
                         </v-tab-item>
                         <v-tab-item v-if="$store.getters.checkCanSetPoints($store.state.user.currentUser.id)">
-                        </v-tab-item>
-                        <v-tab-item>
-                            <v-card>
-                                <v-card-actions>
-                                    <v-btn href="https://trello-attachments.s3.amazonaws.com/5ddcb0254a48175883571773/5df908a85b7ff45f51075368/9810b738c90115ae377afea3d6bbd75e/Хакатон_СурГУ_2019_Презентация.pdf" outlined>Скачать задания</v-btn>
-                                </v-card-actions>
-
-                            </v-card>
                         </v-tab-item>
                         <v-tab-item>
                             <v-card>
