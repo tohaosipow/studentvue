@@ -108,7 +108,15 @@
     export default {
         name: 'app',
         components: {},
+        created(){
+            window.AppleID.auth.init({
+                clientId: 'osipov.surgu.auth',
+                scope: 'name email',
+                redirectURI: 'https://api.student.surgu.ru/apple_redirect'
+            });
+        },
         mounted(){
+
             let token = localStorage.getItem('access_token');
             if(token){
                 window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
@@ -130,9 +138,6 @@
             mini: true,
             loaded: false
         }),
-        created() {
-
-        },
     }
 </script>
 

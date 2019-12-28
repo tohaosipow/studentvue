@@ -4,6 +4,9 @@
             <v-col lg="12">
                 <v-card>
                     <v-card-title class="headline">Войдите или зарегистрируйтесь</v-card-title>
+                    <v-card-actions>
+                        <img @click="byApple" width="200" src="https://developer.apple.com/design/human-interface-guidelines/sign-in-with-apple/images/apple-id-sign-in-with_2x.png" alt="">
+                    </v-card-actions>
                     <v-tabs
                             background-color="transparent"
                             color="blue"
@@ -25,6 +28,7 @@
                             <SignupComponent></SignupComponent>
                         </v-tab-item>
                     </v-tabs-items>
+
                 </v-card>
             </v-col>
         </v-row>
@@ -47,6 +51,11 @@
         data() {
             return {
                 state: 0
+            }
+        },
+        methods:{
+            byApple(){
+                window.AppleID.auth.signIn();
             }
         }
     }
