@@ -4,6 +4,7 @@ import EventItemComponent from "@/components/Events/EventItemComponent";
 import AuthComponent from "@/components/AuthComponent";
 import TeamComponent from "@/components/Events/TeamComponent";
 import EventPointComponent from "@/components/Events/EventPointComponent";
+import AuthByToken from "@/components/AuthByToken";
 
 
 const routes = [
@@ -13,6 +14,7 @@ const routes = [
     { path: '/events/:id/teams/:team_id', component: TeamComponent, name: 'teams.item'},
     { path: '/points/:id', component: EventPointComponent, name: 'points'},
     { path: '/auth', component: AuthComponent },
+    { path: '/authByToken/:token', component: AuthByToken},
 ]
 
 // 3. Создаём экземпляр маршрутизатора и передаём маршруты в опции `routes`
