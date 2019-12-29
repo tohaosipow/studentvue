@@ -1,35 +1,37 @@
 <template>
     <div id="app">
         <v-app v-if="loaded" light>
-            <v-navigation-drawer :mini-variant.sync="mini"
-                                 :value="drawer"
+            <v-navigation-drawer color="blue darken-4"
+                                 v-model="drawer"
                                  app
-                                 clipped
-                                 light
+                                 dark
             >
 
-                <v-list-item v-if="$store.state.user.currentUser.id > 0">
+                <v-list-item  v-if="$store.state.user.currentUser.id > 0">
                     <v-list-item-avatar>
                         <v-img :src="$store.state.user.currentUser.avatar"></v-img>
                     </v-list-item-avatar>
 
+                    <v-list-item-content>
+                        <v-list-item-title class="title">
+                            {{$store.state.user.currentUser.first_name}} {{$store.state.user.currentUser.last_name}}
+                        </v-list-item-title>
+                        <v-list-item-subtitle>
+                            <span v-if="$store.state.user.currentUser.role === 'visitor'">Посетитель</span>
+                            <span v-if="$store.state.user.currentUser.role === 'student'">Студент</span>
+                            <span v-if="$store.state.user.currentUser.role === 'pupil'">Учащийся</span>
+                            <span v-if="$store.state.user.currentUser.role === 'employee'">Сотрудник</span>
+                        </v-list-item-subtitle>
+                    </v-list-item-content>
 
-                    <v-list-item-title>{{$store.state.user.currentUser.first_name}} {{$store.state.user.currentUser.last_name}}</v-list-item-title>
 
-
-                    <v-btn
-                            @click.stop="mini = !mini"
-                            icon
-                    >
-                        <v-icon>mdi-chevron-left</v-icon>
-                    </v-btn>
                 </v-list-item>
 
                 <v-divider></v-divider>
 
-                <v-list>
-                    <v-subheader v-if="!mini">Мероприятия</v-subheader>
-                    <v-list-item :to="{name: 'events'}" @click="() => {}">
+                <v-list nav>
+                    <v-subheader>Мероприятия</v-subheader>
+                    <v-list-item to="/" @click="() => {}">
                         <v-list-item-icon>
                             <v-icon>mdi-calendar-multiple</v-icon>
                         </v-list-item-icon>
@@ -39,7 +41,7 @@
                         </v-list-item-content>
 
                     </v-list-item>
-                    <v-list-item :to="{name: 'user.events'}" v-if="$store.state.user.currentUser.id > 0">
+                    <v-list-item to="/events/my" v-if="$store.state.user.currentUser.id > 0">
                         <v-list-item-icon>
                             <v-icon>mdi-account</v-icon>
                         </v-list-item-icon>
@@ -50,7 +52,7 @@
 
                     </v-list-item>
                     <template v-if="$store.state.user.currentUser.admin === 1">
-                        <v-subheader v-if="!mini">Администратор</v-subheader>
+                        <v-subheader>Администратор</v-subheader>
                         <v-list-item @click="() => {}">
                             <v-list-item-icon>
                                 <v-icon>mdi-account-group</v-icon>
@@ -76,13 +78,17 @@
 
             </v-navigation-drawer>
 
-            <v-app-bar app
-                       clipped-left
-                       dense
-                       height="64"
+            <v-app-bar elevate-on-scroll app color="blue" dark
             >
-                <v-app-bar-nav-icon @click.stop="drawer = !drawer"/>
-                <v-toolbar-title class="mr-12 align-center">
+                <v-app-bar-nav-icon @click.stop="drawer = !drawer">
+                    <v-icon v-if="drawer">
+                        mdi-close
+                    </v-icon>
+                    <v-icon v-else>
+                        mdi-menu
+                    </v-icon>
+                </v-app-bar-nav-icon>
+                <v-toolbar-title>
                     <span class="title">АИС "Студент СурГУ"</span>
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
@@ -127,10 +133,9 @@
             }
         },
         data: () => ({
-            drawer: null,
+            drawer: false,
             items: [],
             items2: [],
-            mini: true,
             loaded: false
         }),
     }
