@@ -3,10 +3,6 @@
         <v-row>
             <v-col lg="12">
                 <v-card>
-                    <v-card-title class="headline">Войдите или зарегистрируйтесь</v-card-title>
-                    <v-card-actions>
-                        <img @click="byApple" width="200" src="https://developer.apple.com/design/human-interface-guidelines/sign-in-with-apple/images/apple-id-sign-in-with_2x.png" alt="">
-                    </v-card-actions>
                     <v-tabs
                             background-color="transparent"
                             color="blue"
@@ -22,15 +18,21 @@
                     </v-tabs>
                     <v-tabs-items v-model="state">
                         <v-tab-item>
+
                             <LoginComponent></LoginComponent>
                         </v-tab-item>
                         <v-tab-item>
                             <SignupComponent></SignupComponent>
                         </v-tab-item>
                     </v-tabs-items>
+                    <v-card-actions>
 
+                    </v-card-actions>
                 </v-card>
+                <div class="signin-button">
+                </div>
             </v-col>
+
         </v-row>
 
     </v-container>
@@ -53,14 +55,24 @@
                 state: 0
             }
         },
-        methods:{
-            byApple(){
+        mounted() {
+            window.AppleID.auth.init({
+                clientId: 'osipov.surgu.auth',
+                scope: 'name email',
+                redirectURI: 'https://api.student.surgu.ru/apple_redirect'
+            });
+        },
+        methods: {
+            byApple() {
                 window.AppleID.auth.signIn();
             }
         }
     }
 </script>
 
-<style scoped>
-
+<style>
+    .signin-button, .signin-button div{
+        width: 210px;
+        height: 40px;
+    }
 </style>

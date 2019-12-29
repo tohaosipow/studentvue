@@ -1,5 +1,5 @@
 <template>
-    <v-card>
+    <div>
         <v-card-text>
             <v-form>
                 <v-text-field
@@ -22,10 +22,13 @@
             </v-form>
         </v-card-text>
         <v-card-actions>
-            <v-btn color="blue" outlined @click="singIn">Войти в систему</v-btn>
-        </v-card-actions>
-    </v-card>
+            <v-btn depressed @click="singIn" color="blue darken-2" icon class="ma-2" tile dark>
+                <v-icon left>mdi-login</v-icon>  Войти в систему</v-btn>
+            <v-spacer></v-spacer>
+            <div class="signin-button ml-4" data-color="black" data-type="sign in" id="appleid-signin"></div>
 
+        </v-card-actions>
+    </div>
 </template>
 
 <script>
