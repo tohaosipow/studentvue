@@ -58,12 +58,16 @@
             RubricCreateEditComponent
         },
         props: {
-            rubrics: {}
+
         },
         data(){
             return{
-                editRubricDialog: false
+                editRubricDialog: false,
+                rubrics: []
             }
+        },
+        mounted(){
+            this.rubrics = this.$store.state.events.currentEvent.rubrics;
         }
     }
 </script>

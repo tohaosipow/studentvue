@@ -1,9 +1,8 @@
 <template>
-    <v-data-table show-select loading="loading" loading-text="Загружаем ... "
+    <v-data-table show-select :loading="loading" loading-text="Загружаем ... "
             :headers="headers"
             :items="this.$store.state.events.participants"
-            :items-per-page="5"
-            class="elevation-1"
+            :items-per-page="10"
     >
 
         <template v-slot:item.approve="{ item }">
@@ -14,15 +13,12 @@
             <EventUserIsVisitSwitch :user="item" :event="$store.state.events.currentEvent"></EventUserIsVisitSwitch>
         </template>
 
-        <template v-slot:item.rubrics="{ item }">
-            <v-btn>Протокол</v-btn>
-        </template>
     </v-data-table>
 </template>
 
 <script>
-    import EventUserCheckSwitch from "@/components/Events/EventUserCheckSwitch";
-    import EventUserIsVisitSwitch from "@/components/Events/EventUserIsVisitSwitch";
+    import EventUserCheckSwitch from "@/components/Events/EventParticipants/EventUserCheckSwitch";
+    import EventUserIsVisitSwitch from "@/components/Events/EventParticipants/EventUserIsVisitSwitch";
 
     export default {
         name: "EventParticipantComponent",

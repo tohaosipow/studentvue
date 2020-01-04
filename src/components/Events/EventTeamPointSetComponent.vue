@@ -1,5 +1,5 @@
 <template>
-    <v-card>
+    <div>
         <v-card-text>
             <v-row align="center">
                 <v-col>
@@ -121,7 +121,7 @@
                 </v-simple-table>
             </template>
         </v-card-text>
-    </v-card>
+    </div>
 </template>
 
 <script>

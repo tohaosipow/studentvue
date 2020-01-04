@@ -15,26 +15,24 @@
                             background-color="transparent"
                             color="blue"
                     >
-                        <v-tab>
-                            Описание
-                        </v-tab>
-                        <v-tab v-if="$store.state.user.currentUser.admin === 1">
+                        <v-tab v-if="$store.state.user.currentUser.admin === 1" :to="{name: 'event.participants', params: {id: $store.state.events.currentEvent.id}}">
                             Участники
                         </v-tab>
-                        <v-tab v-if="$store.state.events.currentEvent.teams_allowed">
+                        <v-tab v-if="$store.state.events.currentEvent.teams_allowed" :to="{name: 'event.teams', params: {id: $store.state.events.currentEvent.id}}">
                             Команды
                         </v-tab>
-                        <v-tab v-if="$store.state.user.currentUser.admin === 1">
+                        <v-tab v-if="$store.state.user.currentUser.admin === 1" :to="{name: 'event.criteria', params: {id: $store.state.events.currentEvent.id}}">
                             Критерии
                         </v-tab>
-                        <v-tab  :to="'/points/'+$route.params.id" v-if="$store.getters.checkCanSetPoints($store.state.user.currentUser.id)">
+                        <v-tab  v-if="$store.getters.checkCanSetPoints($store.state.user.currentUser.id)" :to="{name: 'event.points', params: {id: $store.state.events.currentEvent.id}}"  >
                             Оценки
                         </v-tab>
-                        <v-tab  v-if="$store.getters.checkCanSetPoints($store.state.user.currentUser.id)">
+                        <v-tab  v-if="$store.getters.checkCanSetPoints($store.state.user.currentUser.id)" :to="{name: 'event.qr_enter', params: {id: $store.state.events.currentEvent.id}}" >
                             QR вход
                         </v-tab>
 
                     </v-tabs>
+                    <router-view></router-view>
                     <v-tabs-items v-model="part">
                         <v-tab-item>
                             <v-card flat>
@@ -43,11 +41,6 @@
                                         name="input-7-4"
                                         label="Описание"
                                 ></v-textarea>
-                            </v-card>
-                        </v-tab-item>
-                        <v-tab-item v-if="$store.state.user.currentUser.admin === 1">
-                            <v-card flat color="basil">
-                                <EventParticipantComponent></EventParticipantComponent>
                             </v-card>
                         </v-tab-item>
                         <v-tab-item  v-if="$store.state.events.currentEvent.teams_allowed">
@@ -77,7 +70,7 @@
 </template>
 
 <script>
-    import EventParticipantComponent from "@/components/Events/EventParticipantComponent";
+    import EventParticipantComponent from "@/components/Events/EventParticipants/EventParticipantsComponent";
     import EventRubricsComponent from "@/components/Events/EventRubricsComponent";
     import EventCheckComponent from "@/components/Events/EventCheckComponent";
     import EventTeamsComponent from "@/components/Events/EventTeamsComponent";
@@ -88,6 +81,7 @@
         name: "EventItemComponent",
         components:{
 
+            // eslint-disable-next-line vue/no-unused-components
           EventParticipantComponent, EventRubricsComponent,  EventCheckComponent, EventTeamsComponent, EventQRRegisterComponent
         },
         mounted(){
