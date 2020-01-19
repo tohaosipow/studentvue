@@ -18,5 +18,9 @@ export default {
         return window.axios.get(endpoint+'/api/user/events');
     },
 
+    employees(){
+        return window.axios.get(endpoint+'/api/users/employees');
+    }
+
 
 }

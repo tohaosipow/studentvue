@@ -4,6 +4,8 @@ import user from './modules/user'
 import axios from 'axios';
 import events from "@/store/modules/events";
 import dictionaries from "@/store/modules/dictionaries";
+import timetables from "@/store/modules/timetables";
+import discreator from "@/store/modules/discreator";
 
 
 
@@ -16,7 +18,7 @@ const debug = process.env.NODE_ENV !== 'production';
 
 export default new Vuex.Store({
     modules: {
-        user, events, dictionaries
+        user, events, dictionaries, timetables, discreator
     },
     strict: debug
 })

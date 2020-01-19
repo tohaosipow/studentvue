@@ -51,6 +51,18 @@
                         </v-list-item-content>
 
                     </v-list-item>
+                    <v-subheader>Учебная часть</v-subheader>
+                    <v-list-item to="/timetable" @click="() => {}">
+                        <v-list-item-icon>
+                            <v-icon>mdi-account-network</v-icon>
+                        </v-list-item-icon>
+
+                        <v-list-item-content>
+                            <v-list-item-title>Мои пары</v-list-item-title>
+                        </v-list-item-content>
+
+
+                    </v-list-item>
                     <template v-if="$store.state.user.currentUser.admin === 1">
                         <v-subheader>Администратор</v-subheader>
                         <v-list-item @click="() => {}">
@@ -131,6 +143,7 @@
             else{
                 this.loaded = true;
             }
+            this.$store.commit('setFluid', !this.drawer)
         },
         data: () => ({
             drawer: false,
@@ -138,6 +151,12 @@
             items2: [],
             loaded: false
         }),
+
+        watch:{
+            drawer(){
+                this.$store.commit('setFluid', !this.drawer)
+            }
+        }
     }
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-    <v-container v-if="$store.state.events.currentEvent">
+    <v-container :fluid="$store.state.user.fluid" v-if="$store.state.events.currentEvent">
         <v-row>
             <v-col lg="12">
                 <v-card>

@@ -4,7 +4,8 @@ export default {
     state: {
         currentUser: {},
         currentUserEvents: [],
-        error: {}
+        error: {},
+        fluid: false
     },
     mutations: {
         setUser(state, user){
@@ -15,6 +16,9 @@ export default {
         },
         setCurrentUserEvents(state, events){
             state.currentUserEvents = events;
+        },
+        setFluid(state, fluid){
+            state.fluid = fluid;
         }
     }
     ,

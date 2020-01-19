@@ -1,5 +1,5 @@
 <template>
-    <v-container>
+    <v-container :fluid="$store.state.user.fluid">
         <v-row>
             <v-col :key="event.id" lg="4" v-for="event in events">
                 <v-card

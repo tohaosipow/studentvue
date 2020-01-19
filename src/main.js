@@ -7,6 +7,10 @@ import {router} from "@/routes";
 import index from "@/store";
 import Vuex from 'vuex'
 import VueQrcodeReader from "vue-qrcode-reader";
+import moment from "moment";
+
+Vue.prototype.$moment = moment;
+
 Vue.use(VueQrcodeReader);
 Vue.use(Vuetify);
 Vue.use(VueRouter);
