@@ -127,6 +127,7 @@
             events() {
 
                 return this.d_state.discipline.schedules.map((s, index) => {
+                    if(s.start_at === null || s.time_end_at === null || s.time_start_at === null || s.day_of_week === -1) return {};
                     try {
                         return this.scheduleToEvent(s, index)
                     } catch (e) {
@@ -188,23 +189,29 @@
                     start_at: null,
                     time_start_at: null,
                     time_end_at: null,
+                    lesson_num: null,
+                    period: this.d_state.discipline.period
                 });
             },
 
             scheduleToEvent(schedule, id) {
                 // eslint-disable-next-line no-debugger,no-console
-                let duration = this.$moment.duration(this.$moment(schedule.start_at + " " + schedule.time_end_at).diff(this.$moment(schedule.start_at + " " + schedule.time_start_at))).hours() + ":" + this.$moment.duration(this.$moment(schedule.start_at + " " + schedule.time_end_at).diff(this.$moment(schedule.start_at + " " + schedule.time_start_at))).minutes()
                 //debugger;
+                if(schedule.start_at.split(" ").length > 1){
+                    schedule.start_at = schedule.start_at.split(" ")[0];
+                }
+                let duration = this.$moment.duration(this.$moment(schedule.start_at + " " + schedule.time_end_at).diff(this.$moment(schedule.start_at + " " + schedule.time_start_at))).hours() + ":" + this.$moment.duration(this.$moment(schedule.start_at + " " + schedule.time_end_at).diff(this.$moment(schedule.start_at + " " + schedule.time_start_at))).minutes()
+
                 return {
                     groupId: id,
                     title: this.d_state.discipline.name,
-                    //endRecur: this.$moment(this.d_state.discipline.period.end_at + " " + schedule.num_lesson.end_at).toISOString(),
-                    // startRecur: this.$moment(schedule.start_at + " " + schedule.num_lesson.end_at).toISOString(),
+                    //endRecur: this.$moment(this.d_state.discipline.period.end_at + " " + schedule.lesson_num.end_at).toISOString(),
+                    // startRecur: this.$moment(schedule.start_at + " " + schedule.lesson_num.end_at).toISOString(),
                     // daysOfWeek: [schedule.day_of_week],
-                    //startTime: schedule.num_lesson.start_at,
-                    //endTime: schedule.num_lesson.end_at,
+                    //startTime: schedule.lesson_num.start_at,
+                    //endTime: schedule.lesson_num.end_at,
                     editable: true,
-                    backgroundColor: 'green',
+                    backgroundColor: 'gray',
                     textColor: 'white',
                     borderColor: 'black',
                     rrule: {
@@ -215,8 +222,8 @@
                         until: schedule.periodicity === 0 ? this.$moment(schedule.start_at + " " + schedule.time_end_at).toISOString() : this.$moment(this.d_state.discipline.period.end_at + " " + schedule.time_end_at).toISOString(),
                     },
                     duration: duration
-                    //schedule.start_at + " " + schedule.num_lesson.start_at
-                    // duration: this.$moment.duration(this.$moment(schedule.start_at + " " + schedule.num_lesson.start_at).diff(this.$moment(schedule.start_at + " " + schedule.num_lesson.end_at))).format('HH:mm')
+                    //schedule.start_at + " " + schedule.lesson_num.start_at
+                    // duration: this.$moment.duration(this.$moment(schedule.start_at + " " + schedule.lesson_num.start_at).diff(this.$moment(schedule.start_at + " " + schedule.lesson_num.end_at))).format('HH:mm')
                 }
             },
 

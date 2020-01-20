@@ -1,3 +1,5 @@
+import schedules from "@/api/schedules";
+
 export default {
     state: {
         discipline: null,
@@ -22,6 +24,13 @@ export default {
 
         updateScheduleTeacher(state, {index, teacher}) {
             state.discipline.schedules[index].teacher = teacher
+        }
+    },
+    actions: {
+        storeSchedule({commit}, data) {
+            return schedules.create(data).then((response) => {
+                commit('updateScheduleByIndex', {index: data.index, schedule: response.data})
+            })
         }
     },
     getters: {},

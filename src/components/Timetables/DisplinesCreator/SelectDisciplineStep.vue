@@ -66,7 +66,7 @@
             discipline_id(){
                 if(this.discipline_id > 0){
                     this.$emit('step_ok');
-                    this.$store.commit('setCreationDiscipline', {...this.$store.getters.getDisciplineByID(this.discipline_id), schedules: []});
+                    this.$store.commit('setCreationDiscipline', {...this.$store.getters.getDisciplineByID(this.discipline_id)});
                 }
             }
         }

@@ -22,7 +22,7 @@
                             label="Номер пары"
                             no-data-text="Не найдено"
                             return-object
-                            v-model="num_lesson"
+                            v-model="lesson_num"
             ></v-autocomplete>
             <InputTimePicker min="08:00" max="21:30" label="Время начала пары" :value="time_start_at"  @input="time_start_at = $event"></InputTimePicker>
             <InputTimePicker min="08:00" max="21:30" label="Время конца пары" :value="time_end_at" @input="time_end_at = $event"></InputTimePicker>
@@ -43,6 +43,17 @@
                             label="Переодичность"
                             no-data-text="Не найдено"
                             v-model="periodicity"
+            ></v-autocomplete>
+
+            <v-autocomplete :clearable="true"
+                            :items="$store.state.timetables.periods"
+                            aria-autocomplete="none"
+                            item-text="name"
+                            item-value="id"
+                            label="Период"
+                            no-data-text="Период"
+                            return-object
+                            v-model="period"
             ></v-autocomplete>
 
             <v-autocomplete :clearable="true"
@@ -78,6 +89,9 @@
                     readonly
                     :value="d_state.discipline.schedules[schedule_index].day_of_week"
             ></v-autocomplete> !-->
+            <v-card-actions>
+                <v-btn @click="storeSchedule" color="blue darken-2" text>Сохранить</v-btn>
+            </v-card-actions>
         </v-card-text>
     </v-card>
 </template>
@@ -117,6 +131,15 @@
                 return this.$store.state.discreator;
             },
 
+            period: {
+                get() {
+                    return makeScheduleGetterAndSetter('period', this).get();
+                },
+                set(value) {
+                    return makeScheduleGetterAndSetter('period', this).set(value);
+                }
+            },
+
             teacher: {
                 get() {
                     return makeScheduleGetterAndSetter('teacher', this).get();
@@ -134,9 +157,9 @@
                 }
             },
 
-            num_lesson: {
+            lesson_num: {
                 get() {
-                    return makeScheduleGetterAndSetter('num_lesson', this).get();
+                    return makeScheduleGetterAndSetter('lesson_num', this).get();
                 },
                 set(value) {
                     /*if(value) {
@@ -146,7 +169,7 @@
                         makeScheduleGetterAndSetter('time_end_at', this).set(value.end_at);
 
                     } */
-                    makeScheduleGetterAndSetter('num_lesson', this).set(value);
+                    makeScheduleGetterAndSetter('lesson_num', this).set(value);
                     makeScheduleGetterAndSetter('time_start_at', this).set(value.start_at);
                     makeScheduleGetterAndSetter('time_end_at', this).set(value.end_at);
 
@@ -188,8 +211,21 @@
         },
 
         methods: {
-            preview() {
-
+            storeSchedule() {
+                let schedule = this.d_state.discipline.schedules[this.schedule_index];
+                this.$store.dispatch('storeSchedule', {
+                    index: this.schedule_index,
+                    discipline_id: schedule.discipline.id,
+                    teacher_id: schedule.teacher.id,
+                    place_id: schedule.place.id,
+                    day_of_week: schedule.day_of_week,
+                    periodicity: schedule.periodicity,
+                    period_id: schedule.period.id,
+                    lesson_num_id: schedule.lesson_num.id,
+                    start_at: schedule.start_at,
+                    time_start_at: schedule.time_start_at,
+                    time_end_at: schedule.time_end_at
+                });
             },
 
 
