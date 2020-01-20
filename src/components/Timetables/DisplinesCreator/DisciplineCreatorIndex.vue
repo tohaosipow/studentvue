@@ -125,15 +125,32 @@
             },
 
             events() {
-
-                return this.d_state.discipline.schedules.map((s, index) => {
-                    if(s.start_at === null || s.time_end_at === null || s.time_start_at === null || s.day_of_week === -1) return {};
-                    try {
-                        return this.scheduleToEvent(s, index)
-                    } catch (e) {
-                        return {}
+                let events = [];
+                this.d_state.discipline.schedules.forEach((schedule, index) => {
+                    if (!schedule.lessons || schedule.lessons.length === 0) {
+                        if(schedule.start_at === null || schedule.time_end_at === null || schedule.time_start_at === null || schedule.day_of_week === -1) return {};
+                        try {
+                            events.push(this.scheduleToEvent(schedule, index));
+                        } catch (e) {
+                            return {}
+                        }
+                    } else {
+                        schedule.lessons.forEach((lesson) => {
+                            events.push({
+                                start: lesson.actual_start_at,
+                                end: lesson.actual_end_at,
+                                title: this.d_state.discipline.name,
+                                backgroundColor: 'green',
+                                textColor: 'white',
+                                borderColor: 'black',
+                            })
+                        })
                     }
                 });
+                return events;
+                /*return this.d_state.discipline.schedules.map((s, index) => {
+
+                }); */
 
             }
         },
@@ -197,7 +214,7 @@
             scheduleToEvent(schedule, id) {
                 // eslint-disable-next-line no-debugger,no-console
                 //debugger;
-                if(schedule.start_at.split(" ").length > 1){
+                if (schedule.start_at.split(" ").length > 1) {
                     schedule.start_at = schedule.start_at.split(" ")[0];
                 }
                 let duration = this.$moment.duration(this.$moment(schedule.start_at + " " + schedule.time_end_at).diff(this.$moment(schedule.start_at + " " + schedule.time_start_at))).hours() + ":" + this.$moment.duration(this.$moment(schedule.start_at + " " + schedule.time_end_at).diff(this.$moment(schedule.start_at + " " + schedule.time_start_at))).minutes()
