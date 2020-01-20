@@ -215,6 +215,7 @@
                 let schedule = this.d_state.discipline.schedules[this.schedule_index];
                 this.$store.dispatch('storeSchedule', {
                     index: this.schedule_index,
+                    id: schedule.id,
                     discipline_id: schedule.discipline.id,
                     teacher_id: schedule.teacher.id,
                     place_id: schedule.place.id,
