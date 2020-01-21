@@ -97,7 +97,7 @@
 </template>
 
 <script>
-    import SelectDisciplineStep from './SelectDisciplineStep'
+    import SelectDisciplineStep from './DisciplineSelectStep'
     import FullCalendar from '@fullcalendar/vue'
     import dayGridPlugin from '@fullcalendar/daygrid'
     import timeGrid from '@fullcalendar/timegrid'
@@ -128,20 +128,18 @@
                 let events = [];
                 this.d_state.discipline.schedules.forEach((schedule, index) => {
                     if (!schedule.lessons || schedule.lessons.length === 0) {
-                        if(schedule.start_at === null || schedule.time_end_at === null || schedule.time_start_at === null || schedule.day_of_week === -1) return {};
-                        try {
-                            events.push(this.scheduleToEvent(schedule, index));
-                        } catch (e) {
-                            return {}
-                        }
+                        if (schedule.start_at === null || schedule.time_end_at === null || schedule.time_start_at === null || schedule.day_of_week === -1) return {};
+                        events.push(this.scheduleToEvent(schedule, index));
                     } else {
                         schedule.lessons.forEach((lesson) => {
                             events.push({
+                                groupId: schedule.id,
                                 start: lesson.actual_start_at,
                                 end: lesson.actual_end_at,
                                 title: this.d_state.discipline.name,
                                 backgroundColor: 'green',
                                 textColor: 'white',
+                                editable: true,
                                 borderColor: 'black',
                             })
                         })
@@ -207,8 +205,10 @@
                     time_start_at: null,
                     time_end_at: null,
                     lesson_num: null,
+                    editable: true,
                     period: this.d_state.discipline.period
                 });
+                this.tab = this.d_state.discipline.schedules.length - 1;
             },
 
             scheduleToEvent(schedule, id) {
@@ -280,6 +280,7 @@
             this.$store.dispatch('getEmployees');
             this.$store.dispatch('getPlaces');
             this.$store.dispatch('getLessonNums');
+            this.$store.dispatch('getSubgroups');
         }
     }
 </script>

@@ -4,6 +4,8 @@ import periods from "@/api/periods";
 import user from "@/api/user";
 import places from "@/api/places";
 import lesson_nums from "@/api/lesson_nums";
+import subgroups from "@/api/subgroups";
+
 
 export default {
     state: {
@@ -12,7 +14,8 @@ export default {
         periods: [],
         employees: [],
         places: [],
-        lesson_nums: []
+        lesson_nums: [],
+        subgroups: []
     },
     mutations: {
         setLessons(state, lessons) {
@@ -37,6 +40,12 @@ export default {
             state.lesson_nums = lesson_nums;
         },
 
+        setSubgroups(state, subgroups) {
+            state.subgroups = subgroups
+        },
+        addSubgroup(state, subgroup) {
+            state.subgroups.push(subgroup)
+        },
 
     },
     getters: {
@@ -56,6 +65,20 @@ export default {
         }
     },
     actions: {
+
+        createSubgroup({commit}, data) {
+            return subgroups.create(data).then((response) => {
+                commit('addSubgroup', response.data);
+            })
+        },
+
+        getSubgroups({commit}) {
+            return subgroups.all().then((response) => {
+                commit('setSubgroups', response.data);
+            })
+        },
+
+
         getLessons({commit}, {user_id}) {
             return lessons.all(user_id).then((response) => {
                 commit('setLessons', response.data);

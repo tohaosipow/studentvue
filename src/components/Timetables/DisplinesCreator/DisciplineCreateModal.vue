@@ -49,7 +49,7 @@
                                     :error-messages="errors.period_id"
                                     v-model="discipline.period_id"
                                     item-value="id"
-                                    label="Семестр"
+                                    label="v"
                                     no-data-text="Такого преподавателя у нас нет"
                     >
 

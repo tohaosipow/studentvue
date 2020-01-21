@@ -1,7 +1,8 @@
 <template>
-    <v-card elevation="0" class="mt-2">
+    <v-card class="mt-2" elevation="0">
         <v-card-text>
-            <InputDatePicker :min="d_state.discipline.period.start_at" label="Дата первого занятия" @input="start_at = $event" :value="start_at"></InputDatePicker>
+            <InputDatePicker :min="d_state.discipline.period.start_at" :value="start_at"
+                             @input="start_at = $event" label="Дата первого занятия"></InputDatePicker>
 
             <v-autocomplete :clearable="true"
                             :items="$store.state.timetables.places"
@@ -24,8 +25,10 @@
                             return-object
                             v-model="lesson_num"
             ></v-autocomplete>
-            <InputTimePicker min="08:00" max="21:30" label="Время начала пары" :value="time_start_at"  @input="time_start_at = $event"></InputTimePicker>
-            <InputTimePicker min="08:00" max="21:30" label="Время конца пары" :value="time_end_at" @input="time_end_at = $event"></InputTimePicker>
+            <InputTimePicker :value="time_start_at" @input="time_start_at = $event" label="Время начала пары" max="21:30"
+                             min="08:00"></InputTimePicker>
+            <InputTimePicker :value="time_end_at" @input="time_end_at = $event" label="Время конца пары" max="21:30"
+                             min="08:00"></InputTimePicker>
 
             <v-autocomplete :clearable="true"
                             :items="[
@@ -67,28 +70,35 @@
                             v-model="teacher"
             ></v-autocomplete>
 
+            <v-autocomplete :clearable="true"
+                            :items="$store.state.timetables.subgroups"
+                            aria-autocomplete="none"
+                            chips
+                            item-text="name"
+                            item-value="id"
+                            label="Участники"
+                            multiple
+                            no-data-text="Такой подгруппы нет"
+                            return-object
+            >
+                <template v-slot:prepend-item>
+                    <v-list-item @click="() => {createSubgroupModalShow = true}"
+                                 ripple
+                    >
+                        <v-list-item-action>
+                            <v-icon color="green">mdi-plus</v-icon>
+                        </v-list-item-action>
+                        <v-list-item-content>
+                            <v-list-item-title>Создать подгруппу</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                    <v-divider class="mt-2"></v-divider>
+                </template>
+            </v-autocomplete>
 
-
-
-
-           <!-- <v-autocomplete
-                    :items="[
-                                {id: -1, name: 'Укажите дату начала'},
-                                {id: 1, name: 'Понедельник'},
-                                {id: 2, name: 'Вторник'},
-                                {id: 3, name: 'Среда'},
-                                {id: 4, name: 'Четверг'},
-                                {id: 5, name: 'Пятница'},
-                                {id: 6, name: 'Суббота'},
-                            ]"
-                    aria-autocomplete="none"
-                    item-text="name"
-                    item-value="id"
-                    label="День недели"
-                    no-data-text="Не найдено"
-                    readonly
-                    :value="d_state.discipline.schedules[schedule_index].day_of_week"
-            ></v-autocomplete> !-->
+            <v-dialog max-width="800" v-model="createSubgroupModalShow">
+                <CreateSubgroupModal @close="createSubgroupModalShow = false"></CreateSubgroupModal>
+            </v-dialog>
             <v-card-actions>
                 <v-btn @click="storeSchedule" color="blue darken-2" text>Сохранить</v-btn>
             </v-card-actions>
@@ -100,9 +110,10 @@
 
     import InputDatePicker from "@/components/Utility/InputDatePicker";
     import InputTimePicker from "@/components/Utility/InputTimePicker";
+    import CreateSubgroupModal from "@/components/Timetables/EditSubgroupsModal";
 
     let makeScheduleGetterAndSetter = (property, context) => {
-        return{
+        return {
             get() {
                 return context.d_state.discipline.schedules[context.schedule_index][property];
             },
@@ -118,7 +129,7 @@
         name: "CreateScheduleComponent",
         data() {
             return {
-
+                createSubgroupModalShow: false
             }
         },
 
@@ -238,7 +249,7 @@
 
         },
         components: {
-            InputDatePicker, InputTimePicker
+            InputDatePicker, InputTimePicker, CreateSubgroupModal
         }
     }
 </script>

@@ -10,29 +10,43 @@ export default {
         setDepartments(state, departments) {
             state.departments = departments
         },
-        setStudentGroups(state, student_groups){
+        setStudentGroups(state, student_groups) {
             state.studentGroups = student_groups;
+        },
+        addStudentGroup(state, student_group) {
+            state.studentGroups.push(student_group);
         }
 
     },
     getters: {
-        getStudentsDepartments(state){
+        getStudentsDepartments(state) {
             return state.departments.filter(department => {
                 return department.for_students === 1;
             })
         }
     },
     actions: {
-        getDepartments({commit}){
+        getDepartments({commit}) {
             return departments.all().then((response) => {
                 commit('setDepartments', response.data);
             })
         },
 
-        getStudentGroups({commit}){
+        getStudentGroups({commit}) {
             return student_groups.all().then((response) => {
                 commit('setStudentGroups', response.data);
             })
+        },
+
+        createStudentGroup({commit}, data) {
+            return new Promise((resolve, reject) => {
+                student_groups.create(data).then((response) => {
+                    resolve(response.data);
+                    commit('addStudentGroup', response.data);
+                }).catch(error => {
+                    reject(error);
+                })
+            });
         }
     }
 }
