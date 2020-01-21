@@ -206,7 +206,8 @@
                     time_end_at: null,
                     lesson_num: null,
                     editable: true,
-                    period: this.d_state.discipline.period
+                    period: this.d_state.discipline.period,
+                    subgroups: []
                 });
                 this.tab = this.d_state.discipline.schedules.length - 1;
             },

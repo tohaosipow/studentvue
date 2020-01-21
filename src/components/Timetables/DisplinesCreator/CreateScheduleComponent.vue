@@ -77,6 +77,7 @@
                             chips
                             item-text="name"
                             item-value="id"
+                            v-model="subgroups"
                             label="Участники"
                             multiple
                             no-data-text="Такой подгруппы нет"
@@ -221,6 +222,14 @@
                     return makeScheduleGetterAndSetter('time_end_at', this).set(value);
                 }
             },
+            subgroups: {
+                get() {
+                    return makeScheduleGetterAndSetter('subgroups', this).get();
+                },
+                set(value) {
+                    return makeScheduleGetterAndSetter('subgroups', this).set(value);
+                }
+            },
         },
 
         methods: {
@@ -238,7 +247,9 @@
                     lesson_num_id: schedule.lesson_num.id,
                     start_at: schedule.start_at,
                     time_start_at: schedule.time_start_at,
-                    time_end_at: schedule.time_end_at
+                    time_end_at: schedule.time_end_at,
+                    subgroups: schedule.subgroups.map((el) => {return el.id}).join(",")
+
                 });
             },
 
