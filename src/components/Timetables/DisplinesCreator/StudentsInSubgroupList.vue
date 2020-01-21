@@ -28,13 +28,13 @@
         },
         methods:{
             change(user){
-
-                let state = this.$store.getters.getStudentInSubgroup(user, this.subgroup);
-                if(state){
-                    this.$store.dispatch('removeUserFromSubgroup', {user, subgroup: this.subgroup})
-                }
-                else{
-                    this.$store.dispatch('addUserToSubgroup', {user, subgroup: this.subgroup})
+                if(!this.$store.getters.getStudentInOtherSubgroup(user, this.subgroup)) {
+                    let state = this.$store.getters.getStudentInSubgroup(user, this.subgroup);
+                    if (state) {
+                        this.$store.dispatch('removeUserFromSubgroup', {user, subgroup: this.subgroup})
+                    } else {
+                        this.$store.dispatch('addUserToSubgroup', {user, subgroup: this.subgroup})
+                    }
                 }
             }
         }
