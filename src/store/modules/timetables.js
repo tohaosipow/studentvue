@@ -79,8 +79,8 @@ export default {
         },
 
 
-        getLessons({commit}, {user_id}) {
-            return lessons.all(user_id).then((response) => {
+        getLessons({commit}, data) {
+            return lessons.all(data).then((response) => {
                 commit('setLessons', response.data);
             })
         },
@@ -113,6 +113,7 @@ export default {
                 commit('setLessonNums', response.data);
             })
         },
+
 
         createDiscipline({commit}, discipline) {
             return disciplines.create(discipline).then((response) => {

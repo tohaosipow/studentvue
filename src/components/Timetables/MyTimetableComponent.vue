@@ -1,82 +1,116 @@
 <template>
     <v-container :fluid="$store.state.user.fluid" class="mh-100">
-        <v-skeleton-loader :boilerplate="false"
-                           :tile="false"
-                           class="mx-auto"
-                           ref="skeleton"
-                           type="table"
-                           v-if="loading"
-        ></v-skeleton-loader>
-        <template v-else>
-            <v-calendar
-                        :events="events"
-                        locale="ru"
-                        ref="calendar"
-                        event-color="green"
-                        start="2020-02-03"
-                        event-start="actual_start_at"
-                        event-end="actual_start_end"
-                        type="week"
-                        event-height="60"
-                        :weekdays="[1,2,3,4,5, 6]"
-                        v-model="value"
-            >
-                <template v-slot:event="{event, present, past, date }">
-                    <div>
-                        <div class="pa-1 darken-2 green">
-                            {{new Date(event.actual_start_at).getHours()}}:{{new Date(event.actual_start_at).getMinutes()}}
-                            {{event.teacher.name}}
-                            {{event.place.name}}
-                        </div>
-                        <div class="pa-1">{{event.schedule.discipline.name}}</div>
+        <v-card>
+            <v-card-title>Расписание</v-card-title>
+            <v-card-subtitle>Сургутского государственного университета</v-card-subtitle>
 
-
-                    </div>
+            <v-card-text>
+                <v-row align-content="center" justify="space-around">
+                    <v-col lg="3">
+                        <v-autocomplete v-model="filter.place_ids" multiple :items="$store.state.timetables.places"
+                                        clearable item-text="name" item-value="id"
+                                        label="Аудитория"/>
+                    </v-col>
+                    <v-col lg="3">
+                        <v-autocomplete v-model="filter.teacher_ids" multiple clearable :items="$store.state.timetables.employees"
+                                        item-text="name" item-value="id" label="Преподаватель"/>
+                    </v-col>
+                    <v-col lg="3">
+                        <v-autocomplete v-model="filter.group_ids" multiple clearable :items="$store.state.dictionaries.studentGroups"
+                                        item-text="name" item-value="id" label="Группа"/>
+                    </v-col>
+                    <v-col lg="2">
+                        <v-btn @click="search" outlined color="blue">Найти пары</v-btn>
+                    </v-col>
+                </v-row>
+            </v-card-text>
+        </v-card>
+        <v-card class="mt-2">
+            <v-card-text>
+                <v-skeleton-loader :boilerplate="false"
+                                   :tile="false"
+                                   class="mx-auto"
+                                   ref="skeleton"
+                                   type="table"
+                                   v-if="loading"
+                />
+                <template v-else>
+                    <FullCalendar
+                            :all-day-slot="false"
+                            :business-hours="{daysOfWeek: [ 1, 2, 3, 4, 5, 6 ],   startTime: '08:00',   endTime: '21:30'}"
+                            :button-text="{today: 'сегодня', month:    'месяц',  week:     'неделя', day:      'день', list:     'список'}"
+                            :events="events"
+                            :first-day="1"
+                            :header="{center: 'title', left: 'prev, next',  right: 'dayGridMonth,timeGridWeek,timeGridDay'}"
+                            :height="500"
+                            :hidden-days="[0]"
+                            :plugins="calendarPlugins"
+                            :selectable="true"
+                            defaultView="timeGridWeek"
+                            locale="ru" max-time="21:30" min-time="08:00"
+                            ref="fullCalendar" slot-duration='0:40:00' slot-label-interval="0:30:00"/>
                 </template>
-            </v-calendar>
-        </template>
+            </v-card-text>
+        </v-card>
     </v-container>
 </template>
 
 <script>
+    import dayGridPlugin from "@fullcalendar/daygrid";
+    import timeGrid from "@fullcalendar/timegrid";
+    import interaction from "@fullcalendar/interaction";
+    import rrulePlugin from "@fullcalendar/rrule";
+    import FullCalendar from "@fullcalendar/vue";
+
     export default {
         name: "MyTimetableComponent",
         mounted() {
-            this.$store.dispatch('getLessons', {user_id: this.$store.state.user.currentUser.id}).then(() => {
-                this.loading = false;
-
-            })
+            this.$store.dispatch('getEmployees');
+            this.$store.dispatch('getPlaces');
+            this.$store.dispatch('getSubgroups');
+            this.$store.dispatch('getStudentGroups');
         },
         methods: {
-            getEventColor() {
-                return 'blue';
-            },
+            search(){
+                this.$store.dispatch('getLessons', {filter: this.filter}).then(() => {
+                    this.loading = false;
+
+                });
+            }
 
         },
-        computed:{
-          events(){
-              return this.$store.state.timetables.lessons;
-          }
+        computed: {
+            events() {
+                return this.$store.state.timetables.lessons.map((lesson) => {
+                    return {
+                        start: lesson.actual_start_at,
+                        end: lesson.actual_end_at,
+                        title: lesson.schedule.discipline.name,
+                        backgroundColor: 'green',
+                        textColor: 'white',
+                        borderColor: 'black',
+                    }
+                });
+            }
         },
         data: () => ({
             loading: true,
-            type: 'month',
-            types: ['month', 'week', 'day', '4day'],
-            mode: 'stack',
-            modes: ['stack', 'column'],
-            value: '',
-            colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
-            names: ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party'],
+            calendarPlugins: [dayGridPlugin, timeGrid, interaction, rrulePlugin],
+            filter:{
+                group_ids: null,
+                teacher_ids: null,
+                place_ids: null
+
+            }
         }),
+        components: {
+            FullCalendar
+        },
     }
 </script>
 
-<style>
-    .v-calendar .v-event {
-        white-space: normal !important;
-    }
-
-    .nowrap{
-        white-space: nowrap;
-    }
+<style lang="scss">
+    @import '~@fullcalendar/core/main.css';
+    @import '~@fullcalendar/daygrid/main.css';
+    @import '~@fullcalendar/timegrid/main.css';
 </style>
