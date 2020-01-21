@@ -96,6 +96,9 @@
                         @create="() => {criterion = $event; updateSubgroups()}"/>
             </v-dialog>
         </v-card-text>
+        <v-card-actions>
+            <v-btn color="blue" @click="$emit('close')" text>Сохранить</v-btn>
+        </v-card-actions>
     </v-card>
 </template>
 

@@ -25,7 +25,8 @@
                             return-object
                             v-model="lesson_num"
             ></v-autocomplete>
-            <InputTimePicker :value="time_start_at" @input="time_start_at = $event" label="Время начала пары" max="21:30"
+            <InputTimePicker :value="time_start_at" @input="time_start_at = $event" label="Время начала пары"
+                             max="21:30"
                              min="08:00"></InputTimePicker>
             <InputTimePicker :value="time_end_at" @input="time_end_at = $event" label="Время конца пары" max="21:30"
                              min="08:00"></InputTimePicker>
@@ -97,7 +98,8 @@
             </v-autocomplete>
 
             <v-dialog max-width="800" v-model="createSubgroupModalShow">
-                <CreateSubgroupModal @close="createSubgroupModalShow = false"></CreateSubgroupModal>
+                <CreateSubgroupModal
+                        @close="() => {this.createSubgroupModalShow = false; this.$store.dispatch('getSubgroups');}"/>
             </v-dialog>
             <v-card-actions>
                 <v-btn @click="storeSchedule" color="blue darken-2" text>Сохранить</v-btn>

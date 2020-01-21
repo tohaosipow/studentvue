@@ -1,5 +1,6 @@
 import student_groups from "@/api/student_groups";
 import criteria from "@/api/criteria";
+import subgroups from "@/api/subgroups";
 
 
 export default {
@@ -61,10 +62,15 @@ export default {
     },
     actions: {
         removeUserFromSubgroup({commit}, data) {
-            commit('removeUserFromSubgroup', data)
+            subgroups.leftUser({id: data.subgroup.id, user_id: data.user.id}).then(() => {
+                commit('removeUserFromSubgroup', data)
+            })
+
         },
         addUserToSubgroup({commit}, data) {
-            commit('addUserToSubgroup', data)
+            subgroups.joinUser({id: data.subgroup.id, user_id: data.user.id}).then(() => {
+                commit('addUserToSubgroup', data)
+            });
         },
 
         getCriteriaAndUsers({dispatch}) {
