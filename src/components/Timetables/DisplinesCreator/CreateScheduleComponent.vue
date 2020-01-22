@@ -14,7 +14,22 @@
                             no-data-text="Такой аудитории у нас нет"
                             return-object
                             v-model="place"
-            ></v-autocomplete>
+            >
+                <template v-slot:prepend-item>
+                    <v-list-item @click="() => {createPlaceModalShow = true}"
+                                 ripple
+                    >
+                        <v-list-item-action>
+                            <v-icon color="green">mdi-plus</v-icon>
+                        </v-list-item-action>
+                        <v-list-item-content>
+                            <v-list-item-title>Создать аудиторию</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                    <v-divider class="mt-2"></v-divider>
+                </template>
+
+            </v-autocomplete>
 
             <v-autocomplete :clearable="true"
                             :items="$store.state.timetables.lesson_nums"
@@ -73,7 +88,21 @@
                             no-data-text="Такого преподавателя у нас нет"
                             return-object
                             v-model="teacher"
-            ></v-autocomplete>
+            >
+                <template v-slot:prepend-item>
+                    <v-list-item @click="() => {createTeacherModalShow = true}"
+                                 ripple
+                    >
+                        <v-list-item-action>
+                            <v-icon color="green">mdi-plus</v-icon>
+                        </v-list-item-action>
+                        <v-list-item-content>
+                            <v-list-item-title>Создать преподавателя</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                    <v-divider class="mt-2"></v-divider>
+                </template>
+            </v-autocomplete>
 
             <v-autocomplete :clearable="true"
                             :items="$store.state.timetables.subgroups"
@@ -93,10 +122,10 @@
                                  ripple
                     >
                         <v-list-item-action>
-                            <v-icon color="green">mdi-plus</v-icon>
+                            <v-icon color="green">mdi-settings</v-icon>
                         </v-list-item-action>
                         <v-list-item-content>
-                            <v-list-item-title>Создать подгруппу</v-list-item-title>
+                            <v-list-item-title>Управление подгруппами</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
                     <v-divider class="mt-2"></v-divider>
@@ -106,6 +135,15 @@
             <v-dialog max-width="800" v-model="createSubgroupModalShow">
                 <CreateSubgroupModal
                         @close="() => {this.createSubgroupModalShow = false; this.$store.dispatch('getSubgroups');}"/>
+            </v-dialog>
+            <v-dialog max-width="500" v-model="createPlaceModalShow">
+                <CreatePlaceModal
+                        @close="() => {this.createPlaceModalShow = false;}" @create="place = $event"/>
+            </v-dialog>
+
+            <v-dialog max-width="500" v-model="createTeacherModalShow">
+                <CreateTeacherModal
+                        @close="() => {this.createTeacherModalShow = false;}" @create="teacher = $event"/>
             </v-dialog>
             <v-card-actions>
                 <v-btn @click="storeSchedule" color="blue darken-2" text>Сохранить</v-btn>
@@ -119,6 +157,8 @@
     import InputDatePicker from "@/components/Utility/InputDatePicker";
     import InputTimePicker from "@/components/Utility/InputTimePicker";
     import CreateSubgroupModal from "@/components/Timetables/EditSubgroupsModal";
+    import CreatePlaceModal from "@/components/Timetables/DisplinesCreator/CreatePlaceModal";
+    import CreateTeacherModal from "@/components/Timetables/DisplinesCreator/CreateTeacherModal";
 
     let makeScheduleGetterAndSetter = (property, context) => {
         return {
@@ -137,7 +177,9 @@
         name: "CreateScheduleComponent",
         data() {
             return {
-                createSubgroupModalShow: false
+                createSubgroupModalShow: false,
+                createPlaceModalShow: false,
+                createTeacherModalShow: false,
             }
         },
 
@@ -267,6 +309,8 @@
 
         },
         components: {
+            CreateTeacherModal,
+            CreatePlaceModal,
             InputDatePicker, InputTimePicker, CreateSubgroupModal
         }
     }

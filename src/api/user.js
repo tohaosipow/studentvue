@@ -20,6 +20,9 @@ export default {
 
     employees(){
         return window.axios.get(endpoint+'/api/users/employees');
+    },
+    createTeacher(data){
+        return window.axios.post(endpoint+'/api/employees/fastCreate', data);
     }
 
 

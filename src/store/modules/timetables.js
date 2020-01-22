@@ -33,8 +33,17 @@ export default {
         setEmployees(state, employees) {
             state.employees = employees;
         },
+
+        addEmployee(state, employee) {
+            state.employees.push(employee);
+        },
+
         setPlaces(state, places) {
             state.places = places;
+        },
+
+        addPlace(state, place) {
+            state.places.push(place);
         },
         setLessonNums(state, lesson_nums) {
             state.lesson_nums = lesson_nums;
@@ -66,6 +75,26 @@ export default {
     },
     actions: {
 
+        createPlace({commit}, data){
+            return new Promise(((resolve, reject) => {
+                places.create(data).then((response) => {
+                    resolve(response.data)
+                    commit('addPlace', response.data)
+                }).catch((error) => {
+                    reject(error)
+                })
+            }))
+        },
+        createTeacher({commit}, data){
+            return new Promise(((resolve, reject) => {
+                user.createTeacher(data).then((response) => {
+                    resolve(response.data)
+                    commit('addEmployee', response.data)
+                }).catch((error) => {
+                    reject(error)
+                })
+            }))
+        },
         createSubgroup({commit}, data) {
             return subgroups.create(data).then((response) => {
                 commit('addSubgroup', response.data);
