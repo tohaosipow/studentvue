@@ -78,7 +78,7 @@ export default {
         createPlace({commit}, data){
             return new Promise(((resolve, reject) => {
                 places.create(data).then((response) => {
-                    resolve(response.data)
+                    resolve(response.data);
                     commit('addPlace', response.data)
                 }).catch((error) => {
                     reject(error)
