@@ -40,6 +40,7 @@
                             :business-hours="{daysOfWeek: [ 1, 2, 3, 4, 5, 6 ],   startTime: '08:00',   endTime: '21:30'}"
                             :button-text="{today: 'сегодня', month:    'месяц',  week:     'неделя', day:      'день', list:     'список'}"
                             :events="events"
+                            :slot-event-overlap="false"
                             :first-day="1"
                             :header="{center: 'title', left: 'prev, next',  right: 'dayGridMonth,timeGridWeek,timeGridDay'}"
                             :height="500"
