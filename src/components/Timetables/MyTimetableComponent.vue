@@ -80,7 +80,7 @@
             },
 
             getColor(id){
-                let colors = ['#e39c4b', '#e34b4b', '#4bc5e3', '#c0e34b',  '#4be3b3',  '#4b8fe3', '#854be3', '#d64be3', '#4be362', '#e34b97'];
+                let colors = ['#4be362', '#e34b4b', '#e34b97', '#854be3', '#4be3b3',  '#d64be3', '#4be362', '#e39c4b', '#4bc5e3', '#c0e34b',   '#4b8fe3',  ];
                 return colors[id % 10]
             }
 
