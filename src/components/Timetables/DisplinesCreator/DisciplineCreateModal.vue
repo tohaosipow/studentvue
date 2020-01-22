@@ -40,7 +40,19 @@
                                     label="Преподаватель"
                                     no-data-text="Такого преподавателя у нас нет"
                     >
-
+                        <template v-slot:prepend-item>
+                            <v-list-item @click="() => {createTeacherModalShow = true}"
+                                         ripple
+                            >
+                                <v-list-item-action>
+                                    <v-icon color="green">mdi-plus</v-icon>
+                                </v-list-item-action>
+                                <v-list-item-content>
+                                    <v-list-item-title>Создать преподавателя</v-list-item-title>
+                                </v-list-item-content>
+                            </v-list-item>
+                            <v-divider class="mt-2"></v-divider>
+                        </template>
                     </v-autocomplete>
 
                     <v-autocomplete :clearable="true"
@@ -49,11 +61,16 @@
                                     :error-messages="errors.period_id"
                                     v-model="discipline.period_id"
                                     item-value="id"
-                                    label="v"
+                                    label="Период"
+                                    auto-select-first
                                     no-data-text="Такого преподавателя у нас нет"
                     >
 
                     </v-autocomplete>
+                    <v-dialog max-width="500" v-model="createTeacherModalShow">
+                        <CreateTeacherModal
+                                @close="() => {this.createTeacherModalShow = false;}" @create="discipline.teacher_id = $event.id"/>
+                    </v-dialog>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -66,10 +83,13 @@
 </template>
 
 <script>
+    import CreateTeacherModal from "@/components/Timetables/DisplinesCreator/CreateTeacherModal";
+
     export default {
         name: "DisciplineCreateModal",
         data() {
             return {
+                createTeacherModalShow: false,
                 dialog: false,
                 loading: false,
                 errors:{
@@ -93,6 +113,7 @@
                 default: false
             }
         },
+        components: {CreateTeacherModal},
         watch: {
             show() {
                 this.dialog = this.show;
