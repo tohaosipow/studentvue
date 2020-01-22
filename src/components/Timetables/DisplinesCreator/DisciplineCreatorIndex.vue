@@ -210,6 +210,12 @@
                     subgroups: []
                 });
                 this.tab = this.d_state.discipline.schedules.length - 1;
+                this.$store.dispatch('getDisciplines');
+                this.$store.dispatch('getPeriods');
+                this.$store.dispatch('getEmployees');
+                this.$store.dispatch('getPlaces');
+                this.$store.dispatch('getLessonNums');
+                this.$store.dispatch('getSubgroups');
             },
 
             scheduleToEvent(schedule, id) {
