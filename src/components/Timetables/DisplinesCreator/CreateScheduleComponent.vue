@@ -9,6 +9,7 @@
                             aria-autocomplete="none"
                             item-text="name"
                             item-value="id"
+                            autocomplete="off"
                             label="Аудитория"
                             no-data-text="Такой аудитории у нас нет"
                             return-object
@@ -20,6 +21,7 @@
                             aria-autocomplete="none"
                             item-text="name"
                             item-value="id"
+                            autocomplete="off"
                             label="Номер пары"
                             no-data-text="Не найдено"
                             return-object
@@ -41,8 +43,8 @@
                                 {id: 5, name: 'Раз в 5 недель'},
 
                             ]"
-                            aria-autocomplete="none"
                             item-text="name"
+                            autocomplete="off"
                             item-value="id"
                             label="Переодичность"
                             no-data-text="Не найдено"
@@ -55,6 +57,7 @@
                             item-text="name"
                             item-value="id"
                             label="Период"
+                            autocomplete="off"
                             no-data-text="Период"
                             return-object
                             v-model="period"
@@ -64,6 +67,7 @@
                             :items="$store.state.timetables.employees"
                             aria-autocomplete="none"
                             item-text="name"
+                            autocomplete="off"
                             item-value="id"
                             label="Преподаватель"
                             no-data-text="Такого преподавателя у нас нет"
@@ -78,6 +82,7 @@
                             item-text="name"
                             item-value="id"
                             v-model="subgroups"
+                            autocomplete="off"
                             label="Участники"
                             multiple
                             no-data-text="Такой подгруппы нет"

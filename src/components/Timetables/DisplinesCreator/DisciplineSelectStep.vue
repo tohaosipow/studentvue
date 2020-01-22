@@ -6,6 +6,7 @@
                 item-text="name"
                 item-value="id"
                 label="Дисциплина"
+                autocomplete="off"
                 dense
                 outlined
                 no-data-text="Не найдено"
