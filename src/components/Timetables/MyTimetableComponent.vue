@@ -43,13 +43,13 @@
                             :slot-event-overlap="false"
                             :first-day="1"
                             :header="{center: 'title', left: 'prev, next',  right: 'dayGridMonth,timeGridWeek,timeGridDay'}"
-                            :height="500"
+                            :height="1000"
                             :hidden-days="[0]"
                             :plugins="calendarPlugins"
                             :selectable="true"
                             defaultView="timeGridWeek"
                             locale="ru" max-time="21:30" min-time="08:00"
-                            ref="fullCalendar" slot-duration='0:40:00' slot-label-interval="0:30:00"/>
+                            ref="fullCalendar" slot-duration='0:20:00' slot-label-interval="0:15:00"/>
                 </template>
             </v-card-text>
         </v-card>
