@@ -86,7 +86,7 @@
                     return {
                         start: lesson.actual_start_at,
                         end: lesson.actual_end_at,
-                        title: lesson.schedule.discipline.short_name+" | "+lesson.teacher.name+" | "+lesson.place.name + "\n"+lesson.schedule.subgroups.map(el => {return el.name}).join(". "),
+                        title: lesson.schedule.discipline.short_name+" | "+lesson.teacher.name+" | "+lesson.place.name + "\n"+lesson.schedule.subgroups.map(el => {return el.name}).join(", "),
                         backgroundColor: 'green',
                         textColor: 'white',
                         borderColor: 'black',
