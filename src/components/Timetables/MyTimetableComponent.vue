@@ -92,7 +92,7 @@
                         start: lesson.actual_start_at,
                         end: lesson.actual_end_at,
                         title: lesson.schedule.discipline.short_name+" | "+lesson.teacher.name+" | "+lesson.place.name + "\n"+lesson.schedule.subgroups.map(el => {return el.name}).join(", "),
-                        backgroundColor: this.getColor(lesson.schedule.subgroups[0].id),
+                        backgroundColor: this.getColor(lesson.schedule.subgroups.map((el) => {return el.id}).reduce((a, b) => a + b, 0)),
                         textColor: 'white',
                         borderColor: 'black',
                     }
