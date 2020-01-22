@@ -2,8 +2,8 @@
     <v-card>
         <v-card-title>Создание преподавателя</v-card-title>
         <v-card-text>
-            <v-text-field v-model="teacher.first_name" label="Фамилия"/>
-            <v-text-field v-model="teacher.last_name" label="Имя"/>
+            <v-text-field v-model="teacher.last_name" label="Фамилия"/>
+            <v-text-field v-model="teacher.first_name" label="Имя"/>
             <v-text-field v-model="teacher.third_name" label="Отчество"/>
         </v-card-text>
         <v-card-actions>
