@@ -77,6 +77,11 @@
                     this.loading = false;
 
                 });
+            },
+
+            getColor(id){
+                let colors = ['#e34b4b', '#e39c4b', '#c0e34b', '#4be362', '#4be3b3', '#4bc5e3', '#4b8fe3', '#854be3', '#d64be3', '#e34b97'];
+                return colors[id % 10]
             }
 
         },
@@ -87,7 +92,7 @@
                         start: lesson.actual_start_at,
                         end: lesson.actual_end_at,
                         title: lesson.schedule.discipline.short_name+" | "+lesson.teacher.name+" | "+lesson.place.name + "\n"+lesson.schedule.subgroups.map(el => {return el.name}).join(", "),
-                        backgroundColor: 'green',
+                        backgroundColor: this.getColor(lesson.schedule.subgroups[0].id),
                         textColor: 'white',
                         borderColor: 'black',
                     }
