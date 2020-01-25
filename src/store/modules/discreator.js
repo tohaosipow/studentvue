@@ -15,6 +15,7 @@ export default {
             }
             state.discipline.schedules.push(schedule);
         },
+
         updateScheduleByIndex(state, {index, schedule}) {
             let schedules = [...state.discipline.schedules]
             // eslint-disable-next-line no-console
@@ -31,6 +32,12 @@ export default {
             return schedules.create(data).then((response) => {
                 commit('updateScheduleByIndex', {index: data.index, schedule: response.data})
             })
+        },
+        removeSchedule({commit}, data){
+            return schedules.remove(data).then((response) => {
+               commit('setCreationDiscipline', response.data);
+               return true;
+            });
         }
     },
     getters: {},

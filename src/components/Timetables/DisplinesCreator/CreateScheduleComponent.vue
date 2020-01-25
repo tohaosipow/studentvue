@@ -145,7 +145,17 @@
                 <CreateTeacherModal
                         @close="() => {this.createTeacherModalShow = false;}" @create="teacher = $event"/>
             </v-dialog>
+            <v-dialog max-width="500" v-model="removeScheduleModalShow">
+               <v-card>
+                   <v-card-title>Удаление занятия</v-card-title>
+                   <v-card-text>Вы действительно хотите удалить данное занятие?</v-card-text>
+                   <v-card-actions>
+                       <v-btn text color="red" @click.stop="$store.dispatch('removeSchedule', {id: schedule.id}).then(() => {this.removeScheduleModalShow = false})">Удалить</v-btn>
+                   </v-card-actions>
+               </v-card>
+            </v-dialog>
             <v-card-actions>
+                <v-btn v-if="schedule.id > 0"  @click="removeScheduleModalShow = true" color="red darken-2" text>Удалить занятие</v-btn>
                 <v-btn @click="storeSchedule" color="blue darken-2" text>Сохранить</v-btn>
             </v-card-actions>
         </v-card-text>
@@ -180,6 +190,7 @@
                 createSubgroupModalShow: false,
                 createPlaceModalShow: false,
                 createTeacherModalShow: false,
+                removeScheduleModalShow: false,
             }
         },
 
