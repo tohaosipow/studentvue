@@ -52,9 +52,20 @@
 
                     </v-list-item>
                     <v-subheader>Учебная часть</v-subheader>
-                    <v-list-item to="/timetable" @click="() => {}">
+                    <v-list-item to="/timetable">
                         <v-list-item-icon>
                             <v-icon>mdi-account-network</v-icon>
+                        </v-list-item-icon>
+
+                        <v-list-item-content>
+                            <v-list-item-title>Все пары</v-list-item-title>
+                        </v-list-item-content>
+
+
+                    </v-list-item>
+                    <v-list-item to="/timetable/my" v-if="$store.state.user.currentUser.id > 0">
+                        <v-list-item-icon>
+                            <v-icon>mdi-account</v-icon>
                         </v-list-item-icon>
 
                         <v-list-item-content>

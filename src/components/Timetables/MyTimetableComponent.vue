@@ -2,7 +2,7 @@
     <v-container :fluid="$store.state.user.fluid" class="mh-100">
         <v-card>
             <v-card-title>Расписание</v-card-title>
-            <v-card-subtitle>Сургутского государственного университета</v-card-subtitle>
+            <v-card-subtitle>{{$store.state.user.currentUser.name}}</v-card-subtitle>
 
             <v-card-text>
                 <v-row align-content="center" justify="space-around">
@@ -12,7 +12,7 @@
                                         label="Аудитория"/>
                     </v-col>
                     <v-col lg="3">
-                        <v-autocomplete v-model="filter.teacher_ids" multiple clearable :items="$store.state.timetables.employees"
+                        <v-autocomplete v-model="filter.user_ids" multiple clearable :items="$store.state.timetables.employees"
                                         item-text="name" item-value="id" label="Преподаватель"/>
                     </v-col>
                     <v-col lg="3">
@@ -37,16 +37,17 @@
                 <template v-else>
                     <FullCalendar
                             :all-day-slot="false"
-                            :business-hours="{daysOfWeek: [ 1, 2, 3, 4, 5, 6 ],   startTime: '08:00',   endTime: '21:30'}"
                             :button-text="{today: 'сегодня', month:    'месяц',  week:     'неделя', day:      'день', list:     'список'}"
                             :events="events"
-                            :slot-event-overlap="false"
                             :first-day="1"
                             :header="{center: 'title', left: 'prev, next',  right: 'dayGridMonth,timeGridWeek,timeGridDay'}"
                             :height="1000"
                             :hidden-days="[0]"
                             :plugins="calendarPlugins"
                             :selectable="true"
+                            :slot-event-overlap="false"
+                            @eventClick="eventDragStart"
+                            @eventDrop="eventDrop"
                             defaultView="timeGridWeek"
                             locale="ru" max-time="21:30" min-time="08:00"
                             ref="fullCalendar" slot-duration='0:20:00' slot-label-interval="0:15:00"/>
@@ -62,6 +63,7 @@
     import interaction from "@fullcalendar/interaction";
     import rrulePlugin from "@fullcalendar/rrule";
     import FullCalendar from "@fullcalendar/vue";
+    import lessons from "@/api/lessons";
 
     export default {
         name: "MyTimetableComponent",
@@ -70,44 +72,102 @@
             this.$store.dispatch('getPlaces');
             this.$store.dispatch('getSubgroups');
             this.$store.dispatch('getStudentGroups');
+            if (this.$route.params.id) this.filter.user_ids = [this.$route.params.id];
+            else this.filter.user_ids = [this.$store.state.user.currentUser.id];
+            this.search();
         },
         methods: {
-            search(){
+            search() {
                 this.$store.dispatch('getLessons', {filter: this.filter}).then(() => {
                     this.loading = false;
 
                 });
             },
 
-            getColor(id){
-                let colors = ['#4be362', '#e34b4b', '#e34b97', '#854be3', '#4be3b3',  '#d64be3', '#4be362', '#e39c4b', '#4bc5e3', '#c0e34b',   '#4b8fe3',  ];
+            getColor(id) {
+                let colors = ['#4be362', '#e34b4b', '#e34b97', '#854be3', '#4be3b3', '#d64be3', '#4be362', '#e39c4b', '#4bc5e3', '#c0e34b', '#4b8fe3',];
                 return colors[id % 10]
+            },
+
+            eventClick(e) {
+                let id = e.event.id;
+                let lesson = this.$store.getters.getLessonByID(parseInt(id));
+                if (parseInt(lesson.actual_teacher_id) === parseInt(this.$store.state.user.currentUser.id)) {
+                    this.$store.commit('setManagedLessons', lesson);
+                }
+            },
+            eventDragStart(e) {
+                let id = e.event.id;
+                let lesson = this.$store.getters.getLessonByID(parseInt(id));
+                if (lesson.actual_teacher_id === this.$store.state.user.currentUser.id || this.$store.state.user.currentUser.admin) {
+                    this.$store.commit('setManagedLessons', lesson);
+                    lessons.all({
+                        filter: {
+                            subgroup_ids: lesson.schedule.subgroups.map(el => {
+                                return el.id
+                            }),
+                            teacher_ids: [this.$store.state.user.currentUser.id],
+                            place_ids: [lesson.actual_place_id]
+                        }
+                    }).then((res) => {
+                        this.collisionLessons = res.data
+                    })
+                }
+            },
+            eventDrop() {
+                //this.collisionLessons = []
+                this.$store.commit('setManagedLessons', null);
+            },
+
+            toEventCalendar(lesson, gray = false) {
+                return {
+                    id: lesson.id,
+                    start: lesson.actual_start_at,
+                    end: lesson.actual_end_at,
+                    title: lesson.schedule.discipline.short_name + " | " + lesson.teacher.name + " | " + lesson.place.name + "\n" + lesson.schedule.subgroups.map(el => {
+                        return el.name
+                    }).join(", "),
+                    backgroundColor: !gray ? this.getColor(lesson.schedule.subgroups.map((el) => {
+                        return el.id
+                    }).reduce((a, b) => a + b, 0)) : 'gray',
+                    textColor: 'white',
+                    borderColor: lesson.actual_teacher_id === this.$store.state.user.currentUser.id ? 'yellow' : 'black',
+                    editable: this.$store.state.lessonmanager.lesson ? parseInt(this.$store.state.lessonmanager.lesson.id) === parseInt(lesson.id) : false,
+                    constraint: [
+                        {
+                            startTime: '2020-02-04T10:00:00',
+                            endTime: '2020-02-06T22:00:00'
+
+                        }
+                    ],
+                    rendering: gray?'background':'normal'
+                }
             }
 
         },
         computed: {
             events() {
-                return this.$store.state.timetables.lessons.map((lesson) => {
-                    return {
-                        start: lesson.actual_start_at,
-                        end: lesson.actual_end_at,
-                        title: lesson.schedule.discipline.short_name+" | "+lesson.teacher.name+" | "+lesson.place.name + "\n"+lesson.schedule.subgroups.map(el => {return el.name}).join(", "),
-                        backgroundColor: this.getColor(lesson.schedule.subgroups.map((el) => {return el.id}).reduce((a, b) => a + b, 0)),
-                        textColor: 'white',
-                        borderColor: 'black',
-                    }
-                });
+                return [...this.collisionLessons.filter(lesson => {
+                    return this.$store.getters.getLessonByID(parseInt(lesson.id)) === undefined
+                }).map((lesson) => {
+                    return this.toEventCalendar(lesson, true)
+                }),  ...this.$store.state.timetables.lessons.map((lesson) => {
+                    return this.toEventCalendar(lesson)
+                })]
             }
         },
         data: () => ({
-            loading: true,
+            loading: false,
             calendarPlugins: [dayGridPlugin, timeGrid, interaction, rrulePlugin],
-            filter:{
+            user: null,
+            filter: {
                 group_ids: null,
                 teacher_ids: null,
-                place_ids: null
+                place_ids: null,
+                user_ids: null
 
-            }
+            },
+            collisionLessons: []
         }),
         components: {
             FullCalendar

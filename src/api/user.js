@@ -23,6 +23,10 @@ export default {
     },
     createTeacher(data){
         return window.axios.post(endpoint+'/api/employees/fastCreate', data);
+    },
+
+    item(data){
+        return window.axios.post(endpoint+'/api/users/'+data.id);
     }
 
 

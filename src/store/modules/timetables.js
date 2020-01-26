@@ -65,6 +65,13 @@ export default {
                 })[0]
             }
         },
+        getLessonByID(state) {
+            return (id) => {
+                return state.lessons.filter((el) => {
+                    return parseInt(el.id) === parseInt(id)
+                })[0]
+            }
+        },
         getLessonNumByID(state) {
             return (id) => {
                 return state.lesson_nums.filter((el) => {

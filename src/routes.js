@@ -9,8 +9,9 @@ import EventParticipantComponent from "@/components/Events/EventParticipants/Eve
 import EventTeamsComponent from "@/components/Events/EventTeamsComponent";
 import EventRubricsComponent from "@/components/Events/EventRubricsComponent";
 import EventQRRegisterComponent from "@/components/Events/EventQRRegisterComponent";
-import MyTimetableComponent from "@/components/Timetables/MyTimetableComponent";
+import TimetableComponent from "@/components/Timetables/TimetableComponent";
 import DisciplineCreatorIndex from "@/components/Timetables/DisplinesCreator/DisciplineCreatorIndex";
+import MyTimetableComponent from "@/components/Timetables/MyTimetableComponent";
 
 
 const routes = [
@@ -29,7 +30,8 @@ const routes = [
     { path: '/events/:id/teams/:team_id', component: TeamComponent, name: 'teams.item'},
     { path: '/points/:id', component: EventPointComponent, name: 'points'},
     { path: '/auth', component: AuthComponent },
-    { path: '/timetable', component: MyTimetableComponent },
+    { path: '/timetable', component: TimetableComponent },
+    { path: '/timetable/my/:id?', component: MyTimetableComponent },
     { path: '/timetable/create/master', component: DisciplineCreatorIndex, name: 'timetable.master'},
     { path: '/authByToken/:token', component: AuthByToken},
 ]
