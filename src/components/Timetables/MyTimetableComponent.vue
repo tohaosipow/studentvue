@@ -106,7 +106,7 @@
                             subgroup_ids: lesson.schedule.subgroups.map(el => {
                                 return el.id
                             }),
-                            teacher_ids: [this.$store.state.user.currentUser.id],
+                            teacher_ids: [lesson.actual_teacher_id],
                             place_ids: [lesson.actual_place_id]
                         }
                     }).then((res) => {
