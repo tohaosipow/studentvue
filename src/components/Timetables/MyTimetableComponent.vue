@@ -158,6 +158,7 @@
             },
 
             toEventCalendar(lesson, gray = false) {
+                // eslint-disable-next-line no-unused-vars
                 let colColor = 'gray';
                 // eslint-disable-next-line no-console
                 console.log(lesson)
@@ -182,7 +183,7 @@
                     }).join(", "),
                     backgroundColor: !gray ? this.getColor(lesson.schedule.subgroups.map((el) => {
                         return el.id
-                    }).reduce((a, b) => a + b, 0)) : colColor,
+                    }).reduce((a, b) => a + b, 0)) : 'gray',
                     textColor: 'white',
                     borderColor: lesson.actual_teacher_id === this.$store.state.user.currentUser.id ? 'yellow' : 'black',
                     editable: this.$store.state.lessonmanager.lesson ? parseInt(this.$store.state.lessonmanager.lesson.id) === parseInt(lesson.id) : false,
@@ -193,7 +194,7 @@
 
                         }
                     ],
-                    /* rendering: gray ? 'background' : 'normal' */
+                    rendering: gray ? 'background' : 'normal'
                 }
             }
 
