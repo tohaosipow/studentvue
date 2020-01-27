@@ -120,6 +120,20 @@
             },
 
             toEventCalendar(lesson, gray = false) {
+                let colColor = 'gray';
+                // eslint-disable-next-line no-console
+                console.log(lesson)
+                if(this.$store.state.lessonmanager.lesson && lesson.schedule) {
+                    if (parseInt(this.$store.state.lessonmanager.lesson.actual_teacher_id) === parseInt(lesson.actual_teacher_id)) colColor = 'red';
+                    if (parseInt(this.$store.state.lessonmanager.lesson.actual_place_id) === parseInt(lesson.actual_place_id)) colColor = 'orange';
+                    if (this.$store.state.lessonmanager.lesson.schedule.subgroups.map((el) => {
+                        return el.id
+                    }).filter(function (el) {
+                        return lesson.schedule.subgroups.map((el) => {
+                            return el.id
+                        }).indexOf(el) !== -1;
+                    }).length > 0) colColor = 'blue';
+                }
                 return {
                     id: lesson.id,
                     groupId: lesson.schedule.id,
@@ -130,7 +144,7 @@
                     }).join(", "),
                     backgroundColor: !gray ? this.getColor(lesson.schedule.subgroups.map((el) => {
                         return el.id
-                    }).reduce((a, b) => a + b, 0)) : 'gray',
+                    }).reduce((a, b) => a + b, 0)) : colColor,
                     textColor: 'white',
                     borderColor: lesson.actual_teacher_id === this.$store.state.user.currentUser.id ? 'yellow' : 'black',
                     editable: this.$store.state.lessonmanager.lesson ? parseInt(this.$store.state.lessonmanager.lesson.id) === parseInt(lesson.id) : false,
