@@ -1,12 +1,17 @@
 
 export default {
     state: {
-        lesson: null
+        lesson: null,
+        moveAll: false
     },
     mutations: {
         setManagedLesson(state, lesson) {
             state.lesson = lesson;
         },
+
+        setMoveAll(state, move_all){
+            state.moveAll = move_all;
+        }
 
     },
     actions: {

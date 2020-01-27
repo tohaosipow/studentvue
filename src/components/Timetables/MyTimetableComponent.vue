@@ -35,17 +35,21 @@
                         редактировать.
                     </v-card-text>
                     <v-card-text v-else>
-                        <v-autocomplete :items="$store.state.timetables.disciplines" :value="$store.state.lessonmanager.lesson.schedule.discipline_id"
+                        <v-autocomplete :items="$store.state.timetables.disciplines"
+                                        :value="$store.state.lessonmanager.lesson.schedule.discipline_id"
                                         disabled
                                         item-text="name" item-value="id" label="Дисциплина"
                                         readonly/>
-                        <v-autocomplete :items="$store.state.timetables.places" item-text="name" item-value="id" label="Аудитория"
+                        <v-autocomplete :items="$store.state.timetables.places" item-text="name" item-value="id"
+                                        label="Аудитория"
                                         v-model="lesson_place_id"/>
-                        <v-autocomplete :items="$store.state.timetables.employees" :value="$store.state.lessonmanager.lesson.actual_teacher_id"
+                        <v-autocomplete :items="$store.state.timetables.employees"
+                                        :value="$store.state.lessonmanager.lesson.actual_teacher_id"
                                         item-text="name" item-value="id"
                                         label="Преподаватель" v-model="lesson_teacher_id"/>
-                        <v-text-field label="Дата и время начала пары" v-model="lesson_start_at"></v-text-field>
-                        <v-text-field label="Дата и время конца пары" v-model="lesson_end_at"></v-text-field>
+                        <v-text-field label="Дата и время начала пары" v-model="lesson_start_at"/>
+                        <v-text-field label="Дата и время конца пары" v-model="lesson_end_at"/>
+                        <v-checkbox label="Перенести последующие" v-model="moveAll"/>
                     </v-card-text>
                 </v-card>
             </v-col>
@@ -135,7 +139,7 @@
                 }
             },
 
-            updateCollision(){
+            updateCollision() {
                 lessons.all({
                     filter: {
                         subgroup_ids: this.$store.state.lessonmanager.lesson.schedule.subgroups.map(el => {
@@ -153,15 +157,48 @@
                 //
                 let start_at = this.$moment(e.event.start).format("YYYY-MM-DD HH:mm:ss");
                 let end_at = this.$moment(e.event.end).format("YYYY-MM-DD HH:mm:ss");
-                this.$store.commit('setManagedLesson', {...this.$store.state.lessonmanager.lesson, actual_start_at: start_at, actual_end_at: end_at});
+                // eslint-disable-next-line no-console
+                console.log(start_at, end_at);
+                this.$store.commit('setManagedLesson', {
+                    ...this.$store.state.lessonmanager.lesson,
+                    actual_start_at: start_at,
+                    actual_end_at: end_at
+                });
                 this.updateCollision()
+            },
+
+            toEventCalendarPeriod(lesson) {
+                let duration = this.$moment.duration(this.$moment(lesson.actual_end_at).diff(this.$moment(lesson.actual_start_at)))
+                // eslint-disable-next-line no-console
+                console.log(duration);
+                return {
+                    id: lesson.id,
+                    groupId: lesson.schedule.id,
+                    title: lesson.schedule.discipline.short_name + " | " + lesson.teacher.name + " | " + lesson.place.name + "\n" + lesson.schedule.subgroups.map(el => {
+                        return el.name
+                    }).join(", "),
+                    backgroundColor: this.getColor(lesson.schedule.subgroups.map((el) => {
+                        return el.id
+                    }).reduce((a, b) => a + b, 0)),
+                    textColor: 'white',
+                    borderColor: lesson.actual_teacher_id === this.$store.state.user.currentUser.id ? 'yellow' : 'black',
+                    editable: this.$store.state.lessonmanager.lesson ? parseInt(this.$store.state.lessonmanager.lesson.id) === parseInt(lesson.id) : false,
+                    rrule: {
+                        freq: 'weekly',
+                        interval: lesson.schedule.periodicity,
+                        byweekday: [this.$moment(lesson.actual_start_at).day()-1],
+                        dtstart: this.$moment(lesson.actual_start_at).toISOString(),
+                        until: this.$moment("2020-05-31 11:00:00").toISOString(),
+                    },
+                    duration: duration.hours()+":"+duration.minutes()
+
+
+                }
             },
 
             toEventCalendar(lesson, gray = false) {
                 // eslint-disable-next-line no-unused-vars
                 let colColor = 'gray';
-                // eslint-disable-next-line no-console
-                console.log(lesson)
                 if (this.$store.state.lessonmanager.lesson && lesson.schedule) {
                     if (parseInt(this.$store.state.lessonmanager.lesson.actual_teacher_id) === parseInt(lesson.actual_teacher_id)) colColor = 'red';
                     if (parseInt(this.$store.state.lessonmanager.lesson.actual_place_id) === parseInt(lesson.actual_place_id)) colColor = 'orange';
@@ -173,6 +210,8 @@
                         }).indexOf(el) !== -1;
                     }).length > 0) colColor = 'blue';
                 }
+
+
                 return {
                     id: lesson.id,
                     groupId: lesson.schedule.id,
@@ -194,16 +233,18 @@
 
                         }
                     ],
-                    rendering: gray ? 'background' : 'normal'
+                    rendering: gray ? 'background' : 'normal',
+
                 }
+
             }
 
         },
         computed: {
             events() {
                 let manage_lesson = [];
-                if(this.$store.state.lessonmanager.lesson){
-                    manage_lesson = [this.toEventCalendar(this.$store.state.lessonmanager.lesson)]
+                if (this.$store.state.lessonmanager.lesson) {
+                    manage_lesson = this.$store.state.lessonmanager.moveAll?[this.toEventCalendarPeriod(this.$store.state.lessonmanager.lesson)]:[this.toEventCalendar(this.$store.state.lessonmanager.lesson)];
                 }
                 // eslint-disable-next-line no-console
                 console.log(manage_lesson);
@@ -212,7 +253,7 @@
                 }).map((lesson) => {
                     return this.toEventCalendar(lesson, true)
                 }), ...this.$store.state.timetables.lessons.filter(lesson => {
-                    return this.$store.state.lessonmanager.lesson?lesson.id !== this.$store.state.lessonmanager.lesson.id:true
+                    return this.$store.state.lessonmanager.lesson ? this.$store.state.lessonmanager.moveAll?this.$store.state.lessonmanager.lesson.schedule.id !== lesson.schedule.id || this.$moment(lesson.actual_start_at).isSameOrBefore(this.$moment(this.$store.state.lessonmanager.lesson.actual_start_at)):lesson.id !== this.$store.state.lessonmanager.lesson.id : true
                 }).map((lesson) => {
                     return this.toEventCalendar(lesson)
                 })]
@@ -261,6 +302,14 @@
                         ...this.$store.state.lessonmanager.lesson,
                         actual_end_at: value
                     })
+                }
+            },
+            moveAll: {
+                get() {
+                    return this.$store.state.lessonmanager.moveAll;
+                },
+                set(value) {
+                    this.$store.commit('setMoveAll', value)
                 }
             }
         },
