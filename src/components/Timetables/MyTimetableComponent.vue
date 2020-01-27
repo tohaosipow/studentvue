@@ -193,7 +193,7 @@
 
                         }
                     ],
-                    rendering: gray ? 'background' : 'normal'
+                    /* rendering: gray ? 'background' : 'normal' */
                 }
             }
 
