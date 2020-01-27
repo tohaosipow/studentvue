@@ -122,6 +122,7 @@
             toEventCalendar(lesson, gray = false) {
                 return {
                     id: lesson.id,
+                    groupId: lesson.schedule.id,
                     start: lesson.actual_start_at,
                     end: lesson.actual_end_at,
                     title: lesson.schedule.discipline.short_name + " | " + lesson.teacher.name + " | " + lesson.place.name + "\n" + lesson.schedule.subgroups.map(el => {
