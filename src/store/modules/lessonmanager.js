@@ -4,7 +4,7 @@ export default {
         lesson: null
     },
     mutations: {
-        setManagedLessons(state, lesson) {
+        setManagedLesson(state, lesson) {
             state.lesson = lesson;
         },
 

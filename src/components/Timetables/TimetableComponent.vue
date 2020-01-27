@@ -71,6 +71,7 @@
             this.$store.dispatch('getSubgroups');
             this.$store.dispatch('getStudentGroups');
         },
+
         methods: {
             search(){
                 this.$store.dispatch('getLessons', {filter: this.filter}).then(() => {
@@ -97,7 +98,8 @@
                         borderColor: 'black',
                     }
                 });
-            }
+            },
+
         },
         data: () => ({
             loading: true,

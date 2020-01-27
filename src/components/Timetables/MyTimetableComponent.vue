@@ -7,53 +7,81 @@
             <v-card-text>
                 <v-row align-content="center" justify="space-around">
                     <v-col lg="3">
-                        <v-autocomplete v-model="filter.place_ids" multiple :items="$store.state.timetables.places"
-                                        clearable item-text="name" item-value="id"
-                                        label="Аудитория"/>
+                        <v-autocomplete :items="$store.state.timetables.places" clearable item-text="name"
+                                        item-value="id" label="Аудитория" multiple
+                                        v-model="filter.place_ids"/>
                     </v-col>
                     <v-col lg="3">
-                        <v-autocomplete v-model="filter.user_ids" multiple clearable :items="$store.state.timetables.employees"
-                                        item-text="name" item-value="id" label="Преподаватель"/>
+                        <v-autocomplete :items="$store.state.timetables.employees" clearable item-text="name"
+                                        item-value="id"
+                                        label="Преподаватель" multiple v-model="filter.user_ids"/>
                     </v-col>
                     <v-col lg="3">
-                        <v-autocomplete v-model="filter.group_ids" multiple clearable :items="$store.state.dictionaries.studentGroups"
-                                        item-text="name" item-value="id" label="Группа"/>
+                        <v-autocomplete :items="$store.state.dictionaries.studentGroups" clearable item-text="name"
+                                        item-value="id"
+                                        label="Группа" multiple v-model="filter.group_ids"/>
                     </v-col>
                     <v-col lg="2">
-                        <v-btn @click="search" outlined color="blue">Найти пары</v-btn>
+                        <v-btn @click="search" color="blue" outlined>Найти пары</v-btn>
                     </v-col>
                 </v-row>
             </v-card-text>
         </v-card>
-        <v-card class="mt-2">
-            <v-card-text>
-                <v-skeleton-loader :boilerplate="false"
-                                   :tile="false"
-                                   class="mx-auto"
-                                   ref="skeleton"
-                                   type="table"
-                                   v-if="loading"
-                />
-                <template v-else>
-                    <FullCalendar
-                            :all-day-slot="false"
-                            :button-text="{today: 'сегодня', month:    'месяц',  week:     'неделя', day:      'день', list:     'список'}"
-                            :events="events"
-                            :first-day="1"
-                            :header="{center: 'title', left: 'prev, next',  right: 'dayGridMonth,timeGridWeek,timeGridDay'}"
-                            :height="1000"
-                            :hidden-days="[0]"
-                            :plugins="calendarPlugins"
-                            :selectable="true"
-                            :slot-event-overlap="false"
-                            @eventClick="eventDragStart"
-                            @eventDrop="eventDrop"
-                            defaultView="timeGridWeek"
-                            locale="ru" max-time="21:30" min-time="08:00"
-                            ref="fullCalendar" slot-duration='0:20:00' slot-label-interval="0:15:00"/>
-                </template>
-            </v-card-text>
-        </v-card>
+        <v-row>
+            <v-col lg="3">
+                <v-card>
+                    <v-card-title>Редактирование занятия</v-card-title>
+                    <v-card-text v-if="$store.state.lessonmanager.lesson === null">Нажмите на пару, которую хотите
+                        редактировать.
+                    </v-card-text>
+                    <v-card-text v-else>
+                        <v-autocomplete :items="$store.state.timetables.disciplines" :value="$store.state.lessonmanager.lesson.schedule.discipline_id"
+                                        disabled
+                                        item-text="name" item-value="id" label="Дисциплина"
+                                        readonly/>
+                        <v-autocomplete :items="$store.state.timetables.places" item-text="name" item-value="id" label="Аудитория"
+                                        v-model="lesson_place_id"/>
+                        <v-autocomplete :items="$store.state.timetables.employees" :value="$store.state.lessonmanager.lesson.actual_teacher_id"
+                                        item-text="name" item-value="id"
+                                        label="Преподаватель" v-model="lesson_teacher_id"/>
+                        <v-text-field label="Дата и время начала пары" v-model="lesson_start_at"></v-text-field>
+                        <v-text-field label="Дата и время конца пары" v-model="lesson_end_at"></v-text-field>
+                    </v-card-text>
+                </v-card>
+            </v-col>
+            <v-col lg="9">
+                <v-card class="mt-2">
+                    <v-card-text>
+                        <v-skeleton-loader :boilerplate="false"
+                                           :tile="false"
+                                           class="mx-auto"
+                                           ref="skeleton"
+                                           type="table"
+                                           v-if="loading"
+                        />
+                        <template v-else>
+                            <FullCalendar
+                                    :all-day-slot="false"
+                                    :button-text="{today: 'сегодня', month:    'месяц',  week:     'неделя', day:      'день', list:     'список'}"
+                                    :events="events"
+                                    :first-day="1"
+                                    :header="{center: 'title', left: 'prev, next',  right: 'dayGridMonth,timeGridWeek,timeGridDay'}"
+                                    :height="1000"
+                                    :hidden-days="[0]"
+                                    :plugins="calendarPlugins"
+                                    :selectable="true"
+                                    :slot-event-overlap="false"
+                                    @eventClick="eventDragStart"
+                                    @eventDrop="eventDrop"
+                                    defaultView="timeGridWeek"
+                                    locale="ru" max-time="21:30" min-time="08:00"
+                                    ref="fullCalendar" slot-duration='0:20:00' slot-label-interval="0:15:00"/>
+                        </template>
+                    </v-card-text>
+                </v-card>
+            </v-col>
+        </v-row>
+
     </v-container>
 </template>
 
@@ -69,6 +97,7 @@
         name: "MyTimetableComponent",
         mounted() {
             this.$store.dispatch('getEmployees');
+            this.$store.dispatch('getDisciplines');
             this.$store.dispatch('getPlaces');
             this.$store.dispatch('getSubgroups');
             this.$store.dispatch('getStudentGroups');
@@ -93,37 +122,46 @@
                 let id = e.event.id;
                 let lesson = this.$store.getters.getLessonByID(parseInt(id));
                 if (parseInt(lesson.actual_teacher_id) === parseInt(this.$store.state.user.currentUser.id)) {
-                    this.$store.commit('setManagedLessons', lesson);
+                    this.$store.commit('setManagedLesson', lesson);
                 }
             },
             eventDragStart(e) {
+                this.collisionLessons = [];
                 let id = e.event.id;
                 let lesson = this.$store.getters.getLessonByID(parseInt(id));
                 if (lesson.actual_teacher_id === this.$store.state.user.currentUser.id || this.$store.state.user.currentUser.admin) {
-                    this.$store.commit('setManagedLessons', lesson);
-                    lessons.all({
-                        filter: {
-                            subgroup_ids: lesson.schedule.subgroups.map(el => {
-                                return el.id
-                            }),
-                            teacher_ids: [lesson.actual_teacher_id],
-                            place_ids: [lesson.actual_place_id]
-                        }
-                    }).then((res) => {
-                        this.collisionLessons = res.data
-                    })
+                    this.$store.commit('setManagedLesson', lesson);
+                    this.updateCollision()
                 }
             },
-            eventDrop() {
+
+            updateCollision(){
+                lessons.all({
+                    filter: {
+                        subgroup_ids: this.$store.state.lessonmanager.lesson.schedule.subgroups.map(el => {
+                            return el.id
+                        }),
+                        teacher_ids: [this.$store.state.lessonmanager.lesson.actual_teacher_id],
+                        place_ids: [this.$store.state.lessonmanager.lesson.actual_place_id]
+                    }
+                }).then((res) => {
+                    this.collisionLessons = res.data
+                })
+            },
+            eventDrop(e) {
                 //this.collisionLessons = []
-                this.$store.commit('setManagedLessons', null);
+                //
+                let start_at = this.$moment(e.event.start).format("YYYY-MM-DD HH:mm:ss");
+                let end_at = this.$moment(e.event.end).format("YYYY-MM-DD HH:mm:ss");
+                this.$store.commit('setManagedLesson', {...this.$store.state.lessonmanager.lesson, actual_start_at: start_at, actual_end_at: end_at});
+                this.updateCollision()
             },
 
             toEventCalendar(lesson, gray = false) {
                 let colColor = 'gray';
                 // eslint-disable-next-line no-console
                 console.log(lesson)
-                if(this.$store.state.lessonmanager.lesson && lesson.schedule) {
+                if (this.$store.state.lessonmanager.lesson && lesson.schedule) {
                     if (parseInt(this.$store.state.lessonmanager.lesson.actual_teacher_id) === parseInt(lesson.actual_teacher_id)) colColor = 'red';
                     if (parseInt(this.$store.state.lessonmanager.lesson.actual_place_id) === parseInt(lesson.actual_place_id)) colColor = 'orange';
                     if (this.$store.state.lessonmanager.lesson.schedule.subgroups.map((el) => {
@@ -155,20 +193,74 @@
 
                         }
                     ],
-                    rendering: gray?'background':'normal'
+                    rendering: gray ? 'background' : 'normal'
                 }
             }
 
         },
         computed: {
             events() {
-                return [...this.collisionLessons.filter(lesson => {
+                let manage_lesson = [];
+                if(this.$store.state.lessonmanager.lesson){
+                    manage_lesson = [this.toEventCalendar(this.$store.state.lessonmanager.lesson)]
+                }
+                // eslint-disable-next-line no-console
+                console.log(manage_lesson);
+                return [...manage_lesson, ...this.collisionLessons.filter(lesson => {
                     return this.$store.getters.getLessonByID(parseInt(lesson.id)) === undefined
                 }).map((lesson) => {
                     return this.toEventCalendar(lesson, true)
-                }),  ...this.$store.state.timetables.lessons.map((lesson) => {
+                }), ...this.$store.state.timetables.lessons.filter(lesson => {
+                    return this.$store.state.lessonmanager.lesson?lesson.id !== this.$store.state.lessonmanager.lesson.id:true
+                }).map((lesson) => {
                     return this.toEventCalendar(lesson)
                 })]
+            },
+            lesson_place_id: {
+                get() {
+                    return this.$store.state.lessonmanager.lesson.actual_place_id;
+                },
+                set(value) {
+                    this.$store.commit('setManagedLesson', {
+                        ...this.$store.state.lessonmanager.lesson,
+                        actual_place_id: value
+                    });
+                    this.updateCollision();
+                }
+            },
+            lesson_teacher_id: {
+                get() {
+                    return this.$store.state.lessonmanager.lesson.actual_teacher_id;
+                },
+                set(value) {
+                    this.$store.commit('setManagedLesson', {
+                        ...this.$store.state.lessonmanager.lesson,
+                        actual_teacher_id: value
+                    })
+                    this.updateCollision();
+                }
+            },
+            lesson_start_at: {
+                get() {
+                    return this.$store.state.lessonmanager.lesson.actual_start_at;
+                },
+                set(value) {
+                    this.$store.commit('setManagedLesson', {
+                        ...this.$store.state.lessonmanager.lesson,
+                        actual_start_at: value
+                    })
+                }
+            },
+            lesson_end_at: {
+                get() {
+                    return this.$store.state.lessonmanager.lesson.actual_end_at;
+                },
+                set(value) {
+                    this.$store.commit('setManagedLesson', {
+                        ...this.$store.state.lessonmanager.lesson,
+                        actual_end_at: value
+                    })
+                }
             }
         },
         data: () => ({
