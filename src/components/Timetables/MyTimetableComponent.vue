@@ -49,7 +49,11 @@
                                         label="Преподаватель" v-model="lesson_teacher_id"/>
                         <v-text-field label="Дата и время начала пары" v-model="lesson_start_at"/>
                         <v-text-field label="Дата и время конца пары" v-model="lesson_end_at"/>
-                        <v-checkbox label="Перенести последующие" v-model="moveAll"/>
+                        <v-checkbox label="Изменить последующие" v-model="moveAll"/>
+                        <v-btn @click="$store.commit('setManagedLesson', null), collisionLessons = []" color="red darken-2"
+                               text>Отмена
+                        </v-btn>
+                        <v-btn @click="save" color="blue darken-2" text>Сохранить</v-btn>
                     </v-card-text>
                 </v-card>
             </v-col>
@@ -167,6 +171,21 @@
                 this.updateCollision()
             },
 
+            save() {
+                let lesson = this.$store.state.lessonmanager.lesson;
+                this.$store.dispatch('moveLesson', {
+                    id: lesson.id,
+                    new_teacher_id: lesson.actual_teacher_id,
+                    new_place_id: lesson.actual_place_id,
+                    new_start_at: lesson.actual_start_at,
+                    new_end_at: lesson.actual_end_at,
+                    move_all: this.$store.state.lessonmanager.moveAll
+                }).then(() => {
+                    this.search();
+                    this.$store.commit('setManagedLesson', null)
+                    this.$store.commit('setMoveAll', false)
+                })
+            },
             toEventCalendarPeriod(lesson) {
                 let duration = this.$moment.duration(this.$moment(lesson.actual_end_at).diff(this.$moment(lesson.actual_start_at)))
                 // eslint-disable-next-line no-console
@@ -177,20 +196,18 @@
                     title: lesson.schedule.discipline.short_name + " | " + lesson.teacher.name + " | " + lesson.place.name + "\n" + lesson.schedule.subgroups.map(el => {
                         return el.name
                     }).join(", "),
-                    backgroundColor: this.getColor(lesson.schedule.subgroups.map((el) => {
-                        return el.id
-                    }).reduce((a, b) => a + b, 0)),
+                    backgroundColor: 'gray',
                     textColor: 'white',
                     borderColor: lesson.actual_teacher_id === this.$store.state.user.currentUser.id ? 'yellow' : 'black',
                     editable: this.$store.state.lessonmanager.lesson ? parseInt(this.$store.state.lessonmanager.lesson.id) === parseInt(lesson.id) : false,
                     rrule: {
                         freq: 'weekly',
                         interval: lesson.schedule.periodicity,
-                        byweekday: [this.$moment(lesson.actual_start_at).day()-1],
+                        byweekday: [this.$moment(lesson.actual_start_at).day() - 1],
                         dtstart: this.$moment(lesson.actual_start_at).toISOString(),
                         until: this.$moment("2020-05-31 11:00:00").toISOString(),
                     },
-                    duration: duration.hours()+":"+duration.minutes()
+                    duration: duration.hours() + ":" + duration.minutes()
 
 
                 }
@@ -244,7 +261,7 @@
             events() {
                 let manage_lesson = [];
                 if (this.$store.state.lessonmanager.lesson) {
-                    manage_lesson = this.$store.state.lessonmanager.moveAll?[this.toEventCalendarPeriod(this.$store.state.lessonmanager.lesson)]:[this.toEventCalendar(this.$store.state.lessonmanager.lesson)];
+                    manage_lesson = this.$store.state.lessonmanager.moveAll ? [this.toEventCalendarPeriod(this.$store.state.lessonmanager.lesson)] : [this.toEventCalendar(this.$store.state.lessonmanager.lesson)];
                 }
                 // eslint-disable-next-line no-console
                 console.log(manage_lesson);
@@ -253,7 +270,7 @@
                 }).map((lesson) => {
                     return this.toEventCalendar(lesson, true)
                 }), ...this.$store.state.timetables.lessons.filter(lesson => {
-                    return this.$store.state.lessonmanager.lesson ? this.$store.state.lessonmanager.moveAll?this.$store.state.lessonmanager.lesson.schedule.id !== lesson.schedule.id || this.$moment(lesson.actual_start_at).isSameOrBefore(this.$moment(this.$store.state.lessonmanager.lesson.actual_start_at)):lesson.id !== this.$store.state.lessonmanager.lesson.id : true
+                    return this.$store.state.lessonmanager.lesson ? this.$store.state.lessonmanager.moveAll ? this.$store.state.lessonmanager.lesson.id !== lesson.id && (this.$store.state.lessonmanager.lesson.schedule.id !== lesson.schedule.id || this.$moment(lesson.actual_start_at).isSameOrBefore(this.$moment(this.$store.state.lessonmanager.lesson.actual_start_at))) : lesson.id !== this.$store.state.lessonmanager.lesson.id : true
                 }).map((lesson) => {
                     return this.toEventCalendar(lesson)
                 })]

@@ -1,3 +1,4 @@
+import lessons from "@/api/lessons";
 
 export default {
     state: {
@@ -15,12 +16,16 @@ export default {
 
     },
     actions: {
-        /*removeUserFromSubgroup({commit}, data) {
-            subgroups.leftUser({id: data.subgroup.id, user_id: data.user.id}).then(() => {
-                commit('removeUserFromSubgroup', data)
-            })
+        moveLesson(_, data) {
+            return new Promise((resolve => {
+                lessons.move(data).then(() => {
+                    resolve()
+                })
+            }))
 
-        }, */
+
+        },
+
     },
     getters: {}
 
