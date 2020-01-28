@@ -70,6 +70,7 @@
             this.$store.dispatch('getPlaces');
             this.$store.dispatch('getSubgroups');
             this.$store.dispatch('getStudentGroups');
+            this.$store.dispatch('getCollisions');
         },
 
         methods: {

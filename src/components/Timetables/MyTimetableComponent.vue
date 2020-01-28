@@ -56,6 +56,7 @@
                         <v-btn @click="save" color="blue darken-2" text>Сохранить</v-btn>
                     </v-card-text>
                 </v-card>
+                <CollisionsComponent @scrollCalendar="$refs.fullCalendar.getApi().gotoDate($event)" v-if="$store.state.timetables.collisions.length > 0" class="mt-2"/>
             </v-col>
             <v-col lg="9">
                 <v-card class="mt-2">
@@ -100,6 +101,7 @@
     import rrulePlugin from "@fullcalendar/rrule";
     import FullCalendar from "@fullcalendar/vue";
     import lessons from "@/api/lessons";
+    import CollisionsComponent from "@/components/Timetables/CollisionsComponent";
 
     export default {
         name: "MyTimetableComponent",
@@ -109,6 +111,7 @@
             this.$store.dispatch('getPlaces');
             this.$store.dispatch('getSubgroups');
             this.$store.dispatch('getStudentGroups');
+            this.$store.dispatch('getCollisions');
             if (this.$route.params.id) this.filter.user_ids = [this.$route.params.id];
             else this.filter.user_ids = [this.$store.state.user.currentUser.id];
             this.search();
@@ -344,7 +347,7 @@
             collisionLessons: []
         }),
         components: {
-            FullCalendar
+            FullCalendar, CollisionsComponent
         },
     }
 </script>

@@ -5,6 +5,7 @@ import user from "@/api/user";
 import places from "@/api/places";
 import lesson_nums from "@/api/lesson_nums";
 import subgroups from "@/api/subgroups";
+import collisions from "@/api/collisions";
 
 
 export default {
@@ -15,9 +16,13 @@ export default {
         employees: [],
         places: [],
         lesson_nums: [],
-        subgroups: []
+        subgroups: [],
+        collisions: []
     },
     mutations: {
+        setCollisions(state, collisions) {
+            state.collisions = collisions;
+        },
         setLessons(state, lessons) {
             state.lessons = lessons;
         },
@@ -82,6 +87,16 @@ export default {
     },
     actions: {
 
+        getCollisions({commit}){
+            return new Promise(((resolve, reject) => {
+                collisions.all().then((response) => {
+                    resolve(response.data);
+                    commit('setCollisions', response.data)
+                }).catch((error) => {
+                    reject(error)
+                })
+            }))
+        },
         createPlace({commit}, data){
             return new Promise(((resolve, reject) => {
                 places.create(data).then((response) => {
