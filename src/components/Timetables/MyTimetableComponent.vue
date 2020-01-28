@@ -56,7 +56,7 @@
                         <v-btn @click="save" color="blue darken-2" text>Сохранить</v-btn>
                     </v-card-text>
                 </v-card>
-                <CollisionsComponent @scrollCalendar="$refs.fullCalendar.getApi().gotoDate($event)" v-if="$store.state.timetables.collisions.length > 0" class="mt-2"/>
+                <CollisionsComponent @scrollCalendar="$refs.fullCalendar.getApi().gotoDate($event)" class="mt-2"/>
             </v-col>
             <v-col lg="9">
                 <v-card class="mt-2">
