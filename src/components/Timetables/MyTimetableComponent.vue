@@ -267,10 +267,10 @@
                     manage_lesson = this.$store.state.lessonmanager.moveAll ? [this.toEventCalendarPeriod(this.$store.state.lessonmanager.lesson)] : [this.toEventCalendar(this.$store.state.lessonmanager.lesson)];
                 }
                 // eslint-disable-next-line no-console
-                console.log(manage_lesson);
-                return [...manage_lesson, ...this.collisionLessons.filter(lesson => {
+                //console.log(manage_lesson);
+                return [...manage_lesson, ...this.collisionLessons/*.filter(lesson => {
                     return this.$store.getters.getLessonByID(parseInt(lesson.id)) === undefined
-                }).map((lesson) => {
+                })*/.map((lesson) => {
                     return this.toEventCalendar(lesson, true)
                 }), ...this.$store.state.timetables.lessons.filter(lesson => {
                     return this.$store.state.lessonmanager.lesson ? this.$store.state.lessonmanager.moveAll ? this.$store.state.lessonmanager.lesson.id !== lesson.id && (this.$store.state.lessonmanager.lesson.schedule.id !== lesson.schedule.id || this.$moment(lesson.actual_start_at).isSameOrBefore(this.$moment(this.$store.state.lessonmanager.lesson.actual_start_at))) : lesson.id !== this.$store.state.lessonmanager.lesson.id : true

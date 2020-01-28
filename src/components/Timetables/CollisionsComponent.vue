@@ -11,9 +11,6 @@
                     type="list-item-two-line"
             >
                 <v-expansion-panels
-                        :disabled="disabled"
-                        multiple
-                        v-model="panel"
                 >
 
                     <v-expansion-panel
