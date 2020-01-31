@@ -134,13 +134,13 @@
                                     <v-text-field :error-messages="errors.last_name"
                                                   :rules="[ v => !!v || 'Обязательно для заполнения']"
                                                   label="Фамилия" outlined
-                                                  v-model="user.first_name"></v-text-field>
+                                                  v-model="user.last_name"></v-text-field>
                                 </v-col>
                                 <v-col lg="4">
                                     <v-text-field :error-messages="errors.first_name"
                                                   :rules="[ v => !!v || 'Обязательно для заполнения']"
                                                   label="Имя" outlined
-                                                  v-model="user.last_name"></v-text-field>
+                                                  v-model="user.first_name"></v-text-field>
                                 </v-col>
                                 <v-col lg="4">
                                     <v-text-field :error-messages="errors.third_name"

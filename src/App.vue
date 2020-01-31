@@ -7,7 +7,7 @@
                                  dark
             >
 
-                <v-list-item  v-if="$store.state.user.currentUser.id > 0">
+                <v-list-item @click="$router.push('/profile/'+$store.state.user.currentUser.id+'/edit')"  v-if="$store.state.user.currentUser.id > 0">
                     <v-list-item-avatar>
                         <v-img :src="$store.state.user.currentUser.avatar"></v-img>
                     </v-list-item-avatar>
@@ -112,7 +112,7 @@
                     </v-icon>
                 </v-app-bar-nav-icon>
                 <v-toolbar-title>
-                    <span class="title">АИС "Студент СурГУ"</span>
+                    <span class="title">{{title}}</span>
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-toolbar-items>
@@ -124,7 +124,7 @@
 
             </v-app-bar>
             <div style="margin-top: 64px;">
-                <router-view></router-view>
+                <router-view @changeTitle="title = $event"></router-view>
             </div>
         </v-app>
 
@@ -160,7 +160,8 @@
             drawer: false,
             items: [],
             items2: [],
-            loaded: false
+            loaded: false,
+            title: 'АИС "Студент СурГУ"'
         }),
 
         watch:{

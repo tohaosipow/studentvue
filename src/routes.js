@@ -12,6 +12,7 @@ import EventQRRegisterComponent from "@/components/Events/EventQRRegisterCompone
 import TimetableComponent from "@/components/Timetables/TimetableComponent";
 import DisciplineCreatorIndex from "@/components/Timetables/DisplinesCreator/DisciplineCreatorIndex";
 import MyTimetableComponent from "@/components/Timetables/MyTimetableComponent";
+import EditProfileComponent from "@/components/Profile/EditProfileComponent";
 
 
 const routes = [
@@ -34,6 +35,7 @@ const routes = [
     { path: '/timetable/my/:id?', component: MyTimetableComponent },
     { path: '/timetable/create/master', component: DisciplineCreatorIndex, name: 'timetable.master'},
     { path: '/authByToken/:token', component: AuthByToken},
+    { path: '/profile/:id/edit', component: EditProfileComponent},
 ]
 
 // 3. Создаём экземпляр маршрутизатора и передаём маршруты в опции `routes`

@@ -26,7 +26,11 @@ export default {
     },
 
     item(data){
-        return window.axios.post(endpoint+'/api/users/'+data.id);
+        return window.axios.get(endpoint+'/api/users/'+data.id);
+    },
+
+    store(data){
+        return window.axios.post(endpoint+'/api/users/'+data.id + '/store', data);
     }
 
 
