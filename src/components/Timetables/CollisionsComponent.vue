@@ -72,7 +72,7 @@
                         return el.id
                     });
                 } else if (col.teacher_collision) {
-                    filter.user_ids = [col.first_lesson.teacher_id]
+                    filter.user_ids = [col.teacher_id]
                 } else if (col.place_collision) {
                     filter.place_ids = [col.first_lesson.actual_place_id]
                 }
