@@ -5,12 +5,12 @@
         <v-card-title>Проблемы с занятиями</v-card-title>
         <v-card-text style="overflow-y: scroll; height: 600px;">
             <v-skeleton-loader
-                    :loading="$store.state.timetables.collisions === null"
+                    :loading="$store.state.timetables.collisions == null"
                     height="94"
                     transition="fade-transition"
                     type="list-item-two-line"
             >
-                <v-expansion-panels v-if="$store.state.timetables.collisions != null && $store.state.timetables.collisions.length > 0"
+                <v-expansion-panels v-if="$store.state.timetables.collisions != null"
                 >
 
                     <v-expansion-panel
