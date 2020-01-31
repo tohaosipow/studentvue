@@ -114,6 +114,8 @@
             this.$store.dispatch('getSubgroups');
             this.$store.dispatch('getStudentGroups');
             this.$store.dispatch('getCollisions');
+            this.$store.dispatch('getTransferredLessons', {filter: {teacher_ids: [this.$store.state.user.currentUser.id]}});
+
             if (this.$route.params.id) this.filter.user_ids = [this.$route.params.id];
             else this.filter.user_ids = [this.$store.state.user.currentUser.id];
             this.search();
@@ -189,6 +191,8 @@
                     this.search();
                     this.$store.commit('setManagedLesson', null)
                     this.$store.commit('setMoveAll', false)
+                    this.$store.dispatch('getCollisions');
+                    this.$store.dispatch('getTransferredLessons', {filter: {teacher_ids: [this.$store.state.user.currentUser.id]}});
                 })
             },
             toEventCalendarPeriod(lesson) {
