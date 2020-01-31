@@ -17,7 +17,8 @@ export default {
         places: [],
         lesson_nums: [],
         subgroups: [],
-        collisions: []
+        collisions: null,
+        transferredLessons: null
     },
     mutations: {
         setCollisions(state, collisions) {
@@ -25,6 +26,9 @@ export default {
         },
         setLessons(state, lessons) {
             state.lessons = lessons;
+        },
+        setTransferredLessons(state, transferredLessons) {
+            state.transferredLessons = transferredLessons;
         },
         setDisciplines(state, disciplines) {
             state.disciplines = disciplines;
@@ -133,6 +137,13 @@ export default {
         getLessons({commit}, data) {
             return lessons.all(data).then((response) => {
                 commit('setLessons', response.data);
+            })
+        },
+
+        getTransferredLessons({commit}, data) {
+            data.filter.transferred = true;
+            return lessons.all(data).then((response) => {
+                commit('setTransferredLessons', response.data);
             })
         },
 

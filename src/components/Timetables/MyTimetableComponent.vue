@@ -56,6 +56,7 @@
                         <v-btn @click="save" color="blue darken-2" text>Сохранить</v-btn>
                     </v-card-text>
                 </v-card>
+                <TransferredLessonsComponent @scrollCalendar="$refs.fullCalendar.getApi().gotoDate($event)" class="mt-2"/>
                 <CollisionsComponent @scrollCalendar="$refs.fullCalendar.getApi().gotoDate($event)" class="mt-2"/>
             </v-col>
             <v-col cols="12" :lg="$store.state.user.currentUser.admin || $store.state.user.currentUser.role === 'employee'?9:12">
@@ -102,6 +103,7 @@
     import FullCalendar from "@fullcalendar/vue";
     import lessons from "@/api/lessons";
     import CollisionsComponent from "@/components/Timetables/CollisionsComponent";
+    import TransferredLessonsComponent from "@/components/Timetables/TransferredLessonsComponent";
 
     export default {
         name: "MyTimetableComponent",
@@ -347,6 +349,7 @@
             collisionLessons: []
         }),
         components: {
+            TransferredLessonsComponent,
             FullCalendar, CollisionsComponent
         },
     }
