@@ -28,7 +28,7 @@
             </v-card-text>
         </v-card>
         <v-row>
-            <v-col lg="3">
+            <v-col cols="12" lg="3" v-if="$store.state.user.currentUser.admin || $store.state.user.currentUser.role === 'employee'">
                 <v-card>
                     <v-card-title>Редактирование занятия</v-card-title>
                     <v-card-text v-if="$store.state.lessonmanager.lesson === null">Нажмите на пару, которую хотите
@@ -58,7 +58,7 @@
                 </v-card>
                 <CollisionsComponent @scrollCalendar="$refs.fullCalendar.getApi().gotoDate($event)" class="mt-2"/>
             </v-col>
-            <v-col lg="9">
+            <v-col cols="12" :lg="$store.state.user.currentUser.admin || $store.state.user.currentUser.role === 'employee'?9:12">
                 <v-card class="mt-2">
                     <v-card-text>
                         <v-skeleton-loader :boilerplate="false"
