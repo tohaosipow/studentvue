@@ -1,11 +1,14 @@
 <template>
     <v-container :fluid="$store.state.user.fluid" class="mh-100">
+        <v-overlay :value="overlay">
+            <v-progress-circular indeterminate size="64"></v-progress-circular>
+        </v-overlay>
         <v-card>
             <v-card-title>Расписание</v-card-title>
             <v-card-subtitle>{{$store.state.user.currentUser.name}}</v-card-subtitle>
 
             <v-card-text>
-                <v-row align-content="center" justify="space-around">
+                <v-row  align-content="center" justify="space-around">
                     <v-col lg="3">
                         <v-autocomplete :items="$store.state.timetables.places" clearable item-text="name"
                                         item-value="id" label="Аудитория" multiple
@@ -144,12 +147,14 @@
             },
 
             eventClick(e) {
+                this.overlay = true;
                 this.collisionLessons = [];
                 let id = e.event.id;
                 let lesson = this.$store.getters.getLessonByID(parseInt(id));
                 if (lesson.actual_teacher_id === this.$store.state.user.currentUser.id || this.$store.state.user.currentUser.admin) {
                     this.$store.commit('setManagedLesson', lesson);
                     this.updateCollision();
+
 
                 }
             },
@@ -165,13 +170,17 @@
                     }
                 }).then((res) => {
                     this.collisionLessons = res.data
+                    this.overlay = true
                     this.updateLessons()
                 })
             },
             updateLessons() {
-                this.events = this.getLessons();
+                this.overlay = true
+                this.events = this.getLessons()
+                this.overlay = false
             },
             getLessons() {
+
                 let manage_lesson = [];
                 if (this.$store.state.lessonmanager.lesson) {
                     manage_lesson = this.$store.state.lessonmanager.moveAll ? [this.toEventCalendarPeriod(this.$store.state.lessonmanager.lesson)] : [this.toEventCalendar(this.$store.state.lessonmanager.lesson)];
@@ -343,6 +352,7 @@
         },
         data: () => ({
             loading: false,
+            overlay: false,
             calendarPlugins: [dayGridPlugin, timeGrid, interaction, rrulePlugin],
             user: null,
             filter: {
