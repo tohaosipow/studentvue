@@ -51,6 +51,7 @@
                                         :value="$store.state.lessonmanager.lesson.actual_teacher_id"
                                         item-text="name" item-value="id"
                                         label="Преподаватель" v-model="lesson_teacher_id"/>
+
                         <v-text-field label="Дата и время начала пары" v-model="lesson_start_at"/>
                         <v-text-field label="Дата и время конца пары" v-model="lesson_end_at"/>
                         <v-checkbox label="Изменить последующие" v-model="moveAll"/>
@@ -225,7 +226,7 @@
                     this.search();
                     this.$store.commit('setManagedLesson', null)
                     this.$store.commit('setMoveAll', false)
-                    //this.$store.dispatch('getCollisions');
+                    this.$store.dispatch('getCollisions');
                     this.collisionLessons = [];
                     this.$store.dispatch('getTransferredLessons', {filter: {teacher_ids: [this.$store.state.user.currentUser.id]}});
                     this.updateLessons();
@@ -306,6 +307,7 @@
                         actual_place_id: value
                     });
                     this.updateCollision();
+                    this.updateLessons();
                 }
             },
             lesson_teacher_id: {
@@ -318,6 +320,7 @@
                         actual_teacher_id: value
                     })
                     this.updateCollision();
+                    this.updateLessons();
                 }
             },
             lesson_start_at: {
@@ -325,10 +328,14 @@
                     return this.$store.state.lessonmanager.lesson.actual_start_at;
                 },
                 set(value) {
+                    let duration = this.$moment.duration(this.$moment(value).diff(this.$moment(value)))
                     this.$store.commit('setManagedLesson', {
                         ...this.$store.state.lessonmanager.lesson,
-                        actual_start_at: value
-                    })
+                        actual_start_at: value,
+                        actual_end_at: this.$moment(this.$store.state.lessonmanager.lesson.actual_end_at).add(duration).toISOString()
+                    });
+
+                    this.updateLessons();
                 }
             },
             lesson_end_at: {
@@ -340,6 +347,7 @@
                         ...this.$store.state.lessonmanager.lesson,
                         actual_end_at: value
                     })
+                    this.updateLessons();
                 }
             },
             moveAll: {
@@ -348,12 +356,13 @@
                 },
                 set(value) {
                     this.$store.commit('setMoveAll', value)
+                    this.updateLessons();
                 }
             }
         },
         data: () => ({
             loading: false,
-            overlay: false,
+            overlay: true,
             calendarPlugins: [dayGridPlugin, timeGrid, interaction, rrulePlugin],
             user: null,
             filter: {

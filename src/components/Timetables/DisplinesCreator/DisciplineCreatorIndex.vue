@@ -139,7 +139,7 @@
                                 title: this.d_state.discipline.name,
                                 backgroundColor: 'green',
                                 textColor: 'white',
-                                editable: true,
+                                editable: false,
                                 borderColor: 'black',
                             })
                         })

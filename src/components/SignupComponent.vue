@@ -16,7 +16,7 @@
                             <v-row>
                                 <v-col
                                         cols="12"
-                                        md="3"
+                                        md="4"
                                 >
                                     <v-item value="visitor" v-slot:default="{ active, toggle }">
                                         <v-card
@@ -42,7 +42,7 @@
                                 </v-col>
                                 <v-col
                                         cols="12"
-                                        md="3"
+                                        md="4"
                                 >
                                     <v-item value="pupil" v-slot:default="{ active, toggle }">
                                         <v-card
@@ -69,7 +69,7 @@
 
                                 <v-col
                                         cols="12"
-                                        md="3"
+                                        md="4"
                                 >
                                     <v-item value="student" v-slot:default="{ active, toggle }">
                                         <v-card
@@ -96,11 +96,11 @@
                                         </v-card>
                                     </v-item>
                                 </v-col>
-                                <v-col
+                                <!--  <v-col
                                     cols="12"
                                     md="3"
                             >
-                                <v-item value="employee" v-slot:default="{ active, toggle }">
+                              <v-item value="employee" v-slot:default="{ active, toggle }">
                                     <v-card
                                             :color="active ? 'orange darken-2' : ''"
                                             @click="toggle"
@@ -121,7 +121,7 @@
                                         </v-scroll-y-transition>
                                     </v-card>
                                 </v-item>
-                            </v-col>
+                            </v-col>!-->
 
                             </v-row>
                         </v-container>
@@ -130,19 +130,19 @@
                         <v-subheader>Основные данные</v-subheader>
                         <v-container>
                             <v-row>
-                                <v-col lg="4">
+                                <v-col lg="4" cols="12">
                                     <v-text-field :error-messages="errors.last_name"
                                                   :rules="[ v => !!v || 'Обязательно для заполнения']"
                                                   label="Фамилия" outlined
                                                   v-model="user.last_name"></v-text-field>
                                 </v-col>
-                                <v-col lg="4">
+                                <v-col lg="4" cols="12">
                                     <v-text-field :error-messages="errors.first_name"
                                                   :rules="[ v => !!v || 'Обязательно для заполнения']"
                                                   label="Имя" outlined
                                                   v-model="user.first_name"></v-text-field>
                                 </v-col>
-                                <v-col lg="4">
+                                <v-col lg="4" cols="12">
                                     <v-text-field :error-messages="errors.third_name"
                                                   :rules="[ v => !!v || 'Обязательно для заполнения']"
                                                   label="Отчество" outlined
