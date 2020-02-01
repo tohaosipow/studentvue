@@ -212,6 +212,7 @@
             },
 
             save() {
+                this.overlay = true
                 let lesson = this.$store.state.lessonmanager.lesson;
                 this.$store.dispatch('moveLesson', {
                     id: lesson.id,
