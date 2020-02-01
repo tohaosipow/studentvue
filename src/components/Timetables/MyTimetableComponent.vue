@@ -28,7 +28,8 @@
             </v-card-text>
         </v-card>
         <v-row>
-            <v-col cols="12" lg="3" v-if="$store.state.user.currentUser.admin || $store.state.user.currentUser.role === 'employee'">
+            <v-col cols="12" lg="3"
+                   v-if="$store.state.user.currentUser.admin || $store.state.user.currentUser.role === 'employee'">
                 <v-card>
                     <v-card-title>Редактирование занятия</v-card-title>
                     <v-card-text v-if="$store.state.lessonmanager.lesson === null">Нажмите на пару, которую хотите
@@ -50,16 +51,19 @@
                         <v-text-field label="Дата и время начала пары" v-model="lesson_start_at"/>
                         <v-text-field label="Дата и время конца пары" v-model="lesson_end_at"/>
                         <v-checkbox label="Изменить последующие" v-model="moveAll"/>
-                        <v-btn @click="$store.commit('setManagedLesson', null), collisionLessons = []" color="red darken-2"
+                        <v-btn @click="$store.commit('setManagedLesson', null), collisionLessons = []"
+                               color="red darken-2"
                                text>Отмена
                         </v-btn>
                         <v-btn @click="save" color="blue darken-2" text>Сохранить</v-btn>
                     </v-card-text>
                 </v-card>
-                <TransferredLessonsComponent @scrollCalendar="$refs.fullCalendar.getApi().gotoDate($event)" class="mt-2"/>
+                <TransferredLessonsComponent @scrollCalendar="$refs.fullCalendar.getApi().gotoDate($event)"
+                                             class="mt-2"/>
                 <CollisionsComponent @scrollCalendar="$refs.fullCalendar.getApi().gotoDate($event)" class="mt-2"/>
             </v-col>
-            <v-col cols="12" :lg="$store.state.user.currentUser.admin || $store.state.user.currentUser.role === 'employee'?9:12">
+            <v-col :lg="$store.state.user.currentUser.admin || $store.state.user.currentUser.role === 'employee'?9:12"
+                   cols="12">
                 <v-card class="mt-2">
                     <v-card-text>
                         <v-skeleton-loader :boilerplate="false"
@@ -81,8 +85,9 @@
                                     :plugins="calendarPlugins"
                                     :selectable="true"
                                     :slot-event-overlap="false"
-                                    @eventClick="eventDragStart"
+                                    @eventClick="eventClick"
                                     @eventDrop="eventDrop"
+                                    @eventResize="eventDrop"
                                     defaultView="timeGridWeek"
                                     locale="ru" max-time="21:30" min-time="08:00"
                                     ref="fullCalendar" slot-duration='0:20:00' slot-label-interval="0:15:00"/>
@@ -120,6 +125,11 @@
             else this.filter.user_ids = [this.$store.state.user.currentUser.id];
             this.search();
         },
+        watch: {
+            '$store.state.timetables.lessons': function(){
+                this.updateLessons()
+            }
+        },
         methods: {
             search() {
                 this.$store.dispatch('getLessons', {filter: this.filter}).then(() => {
@@ -134,19 +144,13 @@
             },
 
             eventClick(e) {
-                let id = e.event.id;
-                let lesson = this.$store.getters.getLessonByID(parseInt(id));
-                if (parseInt(lesson.actual_teacher_id) === parseInt(this.$store.state.user.currentUser.id)) {
-                    this.$store.commit('setManagedLesson', lesson);
-                }
-            },
-            eventDragStart(e) {
                 this.collisionLessons = [];
                 let id = e.event.id;
                 let lesson = this.$store.getters.getLessonByID(parseInt(id));
                 if (lesson.actual_teacher_id === this.$store.state.user.currentUser.id || this.$store.state.user.currentUser.admin) {
                     this.$store.commit('setManagedLesson', lesson);
-                    this.updateCollision()
+                    this.updateCollision();
+
                 }
             },
 
@@ -161,11 +165,31 @@
                     }
                 }).then((res) => {
                     this.collisionLessons = res.data
+                    this.updateLessons()
                 })
             },
+            updateLessons() {
+                this.events = this.getLessons();
+            },
+            getLessons() {
+                let manage_lesson = [];
+                if (this.$store.state.lessonmanager.lesson) {
+                    manage_lesson = this.$store.state.lessonmanager.moveAll ? [this.toEventCalendarPeriod(this.$store.state.lessonmanager.lesson)] : [this.toEventCalendar(this.$store.state.lessonmanager.lesson)];
+                }
+                // eslint-disable-next-line no-console
+                //console.log(manage_lesson);
+                return [...manage_lesson, ...this.collisionLessons/*.filter(lesson => {
+                    return this.$store.getters.getLessonByID(parseInt(lesson.id)) === undefined
+                })*/.map((lesson) => {
+                    return this.toEventCalendar(lesson, true)
+                }), ...this.$store.state.timetables.lessons.filter(lesson => {
+                    return this.$store.state.lessonmanager.lesson ? this.$store.state.lessonmanager.moveAll ? this.$store.state.lessonmanager.lesson.id !== lesson.id && (this.$store.state.lessonmanager.lesson.schedule.id !== lesson.schedule.id || this.$moment(lesson.actual_start_at).isSameOrBefore(this.$moment(this.$store.state.lessonmanager.lesson.actual_start_at))) : lesson.id !== this.$store.state.lessonmanager.lesson.id : true
+                }).map((lesson) => {
+                    return this.toEventCalendar(lesson)
+                })]
+            },
             eventDrop(e) {
-                //this.collisionLessons = []
-                //
+                this.collisionLessons = []
                 let start_at = this.$moment(e.event.start).format("YYYY-MM-DD HH:mm:ss");
                 let end_at = this.$moment(e.event.end).format("YYYY-MM-DD HH:mm:ss");
                 // eslint-disable-next-line no-console
@@ -175,7 +199,7 @@
                     actual_start_at: start_at,
                     actual_end_at: end_at
                 });
-                this.updateCollision()
+                //this.updateCollision()
             },
 
             save() {
@@ -191,8 +215,10 @@
                     this.search();
                     this.$store.commit('setManagedLesson', null)
                     this.$store.commit('setMoveAll', false)
-                    this.$store.dispatch('getCollisions');
+                    //this.$store.dispatch('getCollisions');
+                    this.collisionLessons = [];
                     this.$store.dispatch('getTransferredLessons', {filter: {teacher_ids: [this.$store.state.user.currentUser.id]}});
+                    this.updateLessons();
                 })
             },
             toEventCalendarPeriod(lesson) {
@@ -200,8 +226,8 @@
                 // eslint-disable-next-line no-console
                 console.log(duration);
                 return {
-                    id: lesson.id,
-                    groupId: lesson.schedule.id,
+                    id: parseInt(lesson.id),
+                    groupId: parseInt(lesson.schedule.id),
                     title: lesson.schedule.discipline.short_name + " | " + lesson.teacher.name + " | " + lesson.place.name + "\n" + lesson.schedule.subgroups.map(el => {
                         return el.name
                     }).join(", "),
@@ -239,8 +265,8 @@
 
 
                 return {
-                    id: lesson.id,
-                    groupId: lesson.schedule.id,
+                    id: parseInt(lesson.id),
+                    /*groupId: lesson.schedule.id, */
                     start: lesson.actual_start_at,
                     end: lesson.actual_end_at,
                     title: lesson.schedule.discipline.short_name + " | " + lesson.teacher.name + " | " + lesson.place.name + "\n" + lesson.schedule.subgroups.map(el => {
@@ -252,13 +278,6 @@
                     textColor: 'white',
                     borderColor: lesson.actual_teacher_id === this.$store.state.user.currentUser.id ? 'yellow' : 'black',
                     editable: this.$store.state.lessonmanager.lesson ? parseInt(this.$store.state.lessonmanager.lesson.id) === parseInt(lesson.id) : false,
-                    constraint: [
-                        {
-                            startTime: '2020-02-04T10:00:00',
-                            endTime: '2020-02-06T22:00:00'
-
-                        }
-                    ],
                     rendering: gray ? 'background' : 'normal',
 
                 }
@@ -267,23 +286,6 @@
 
         },
         computed: {
-            events() {
-                let manage_lesson = [];
-                if (this.$store.state.lessonmanager.lesson) {
-                    manage_lesson = this.$store.state.lessonmanager.moveAll ? [this.toEventCalendarPeriod(this.$store.state.lessonmanager.lesson)] : [this.toEventCalendar(this.$store.state.lessonmanager.lesson)];
-                }
-                // eslint-disable-next-line no-console
-                //console.log(manage_lesson);
-                return [...manage_lesson, ...this.collisionLessons/*.filter(lesson => {
-                    return this.$store.getters.getLessonByID(parseInt(lesson.id)) === undefined
-                })*/.map((lesson) => {
-                    return this.toEventCalendar(lesson, true)
-                }), ...this.$store.state.timetables.lessons.filter(lesson => {
-                    return this.$store.state.lessonmanager.lesson ? this.$store.state.lessonmanager.moveAll ? this.$store.state.lessonmanager.lesson.id !== lesson.id && (this.$store.state.lessonmanager.lesson.schedule.id !== lesson.schedule.id || this.$moment(lesson.actual_start_at).isSameOrBefore(this.$moment(this.$store.state.lessonmanager.lesson.actual_start_at))) : lesson.id !== this.$store.state.lessonmanager.lesson.id : true
-                }).map((lesson) => {
-                    return this.toEventCalendar(lesson)
-                })]
-            },
             lesson_place_id: {
                 get() {
                     return this.$store.state.lessonmanager.lesson.actual_place_id;
@@ -350,6 +352,7 @@
                 user_ids: null
 
             },
+            events: [],
             collisionLessons: []
         }),
         components: {
