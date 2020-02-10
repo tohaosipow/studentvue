@@ -1,25 +1,53 @@
 <template>
     <v-container :fluid="$store.state.user.fluid">
+        <v-card elevation="0">
+            <v-card-title>Поиск мероприятий</v-card-title>
+            <v-card-subtitle>Выберите интересующие Вас фильтры</v-card-subtitle>
+            <v-card-text>
+                <v-row align-content="center" justify="center">
+                    <v-col lg="3">
+                        <InputDatePicker label="Дата начала"/>
+
+                    </v-col>
+                    <v-col lg="3">
+                        <InputDatePicker  label="Дата конца"/>
+                    </v-col>
+                    <v-col lg="3">
+                        <v-autocomplete   autocomplete="off" label="Место проведения"></v-autocomplete>
+                    </v-col>
+                    <v-col lg="3">
+                        <v-autocomplete   autocomplete="off" item-value="id" item-text="name"  :items="$store.state.timetables.employees" label="Организатор"></v-autocomplete>
+                    </v-col>
+                    <v-col lg="3">
+                        <v-checkbox label="Показать прошедшие"></v-checkbox>
+                    </v-col>
+                    <v-col lg="3">
+                        <v-autocomplete label="Теги" multiple chips autocomplete="off"/>
+                    </v-col>
+                    <v-col lg="3">
+                        <v-btn color="blue darken-2" dark>Найти мероприятия</v-btn>
+                    </v-col>
+                </v-row>
+
+            </v-card-text>
+        </v-card>
         <v-row>
-            <v-col :key="event.id" lg="4" v-for="event in events">
+            <v-col :key="event.id" lg="3" v-for="event in events">
                 <v-card
                         class="mx-auto"
-                        max-width="344"
                 >
                     <v-img
                             :src="event.header_url"
                             height="200px"
                     ></v-img>
 
-                    <v-card-title>
-                        {{event.name}}
-                    </v-card-title>
+                    <v-card-title class="title">{{event.name.slice(0, 28)}}</v-card-title>
 
                     <v-card-subtitle>
                         {{event.start_at}}
                     </v-card-subtitle>
                     <v-card-text>
-                        {{event.description}}
+                        {{event.description.slice(0, 200)}} ...
                     </v-card-text>
                     <v-card-actions>
 
@@ -41,11 +69,18 @@
 </template>
 
 <script>
+    import InputDatePicker from "@/components/Utility/InputDatePicker";
+
     export default {
         name: "EventsComponent",
+        components: {
+            InputDatePicker
+        },
         mounted() {
             this.$store.dispatch('getEvents');
             this.$store.dispatch('getUserEvents');
+            this.$store.dispatch('getEmployees');
+            this.$emit('changeTitle', 'Мероприятия')
         },
         computed:{
             events(){

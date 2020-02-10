@@ -13,6 +13,8 @@ import TimetableComponent from "@/components/Timetables/TimetableComponent";
 import DisciplineCreatorIndex from "@/components/Timetables/DisplinesCreator/DisciplineCreatorIndex";
 import MyTimetableComponent from "@/components/Timetables/MyTimetableComponent";
 import EditProfileComponent from "@/components/Profile/EditProfileComponent";
+import ProjectsListComponent from "@/components/Projects/ProjectsListComponent";
+import ProjectsCreateComponent from "@/components/Projects/ProjectsCreateComponent";
 
 
 const routes = [
@@ -36,6 +38,8 @@ const routes = [
     { path: '/timetable/create/master', component: DisciplineCreatorIndex, name: 'timetable.master'},
     { path: '/authByToken/:token', component: AuthByToken},
     { path: '/profile/:id/edit', component: EditProfileComponent},
+    { path: '/projects', component: ProjectsListComponent},
+    { path: '/projects/create', component: ProjectsCreateComponent},
 ]
 
 // 3. Создаём экземпляр маршрутизатора и передаём маршруты в опции `routes`

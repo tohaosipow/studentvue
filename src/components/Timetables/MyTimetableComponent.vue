@@ -117,6 +117,7 @@
     export default {
         name: "MyTimetableComponent",
         mounted() {
+            this.$emit('changeTitle', 'Мое расписание');
             this.$store.dispatch('getEmployees');
             this.$store.dispatch('getDisciplines');
             this.$store.dispatch('getPlaces');

@@ -131,19 +131,19 @@
                         <v-container>
                             <v-row>
                                 <v-col lg="4" cols="12">
-                                    <v-text-field :error-messages="errors.last_name"
+                                    <v-text-field name="given-name" :error-messages="errors.last_name"
                                                   :rules="[ v => !!v || 'Обязательно для заполнения']"
                                                   label="Фамилия" outlined
                                                   v-model="user.last_name"></v-text-field>
                                 </v-col>
                                 <v-col lg="4" cols="12">
-                                    <v-text-field :error-messages="errors.first_name"
+                                    <v-text-field name="family-name" :error-messages="errors.first_name"
                                                   :rules="[ v => !!v || 'Обязательно для заполнения']"
                                                   label="Имя" outlined
                                                   v-model="user.first_name"></v-text-field>
                                 </v-col>
                                 <v-col lg="4" cols="12">
-                                    <v-text-field :error-messages="errors.third_name"
+                                    <v-text-field name="additional-name" :error-messages="errors.third_name"
                                                   :rules="[ v => !!v || 'Обязательно для заполнения']"
                                                   label="Отчество" outlined
                                                   v-model="user.third_name"></v-text-field>
@@ -151,7 +151,7 @@
                             </v-row>
                             <v-row>
                                 <v-col lg="12">
-                                    <v-text-field :error-messages="errors.email"
+                                    <v-text-field name="email" :error-messages="errors.email"
                                                   :rules="[ v => !!v || 'E-mail обязателен', v => /.+@.+\..+/.test(v) || 'E-mail должен быть корретным']"
                                                   label="Email"
                                                   outlined type="email" v-model="user.email"></v-text-field>
@@ -161,12 +161,13 @@
                                                   v-mask="'\+7 (###) ###-##-##'"
                                                   :rules="[ v => !!v || 'Телефон обязателен']"
                                                   label="Телефон"
+                                                  name="phone"
                                                   outlined type="phone" v-model="user.phone"></v-text-field>
-                                    <v-text-field :error-messages="errors.password"
+                                    <v-text-field name="password" :error-messages="errors.password"
                                                   :rules="[ v => !!v || 'Обязательно для заполнения']"
                                                   label="Пароль" outlined type="password"
                                                   v-model="user.password"></v-text-field>
-                                    <v-text-field
+                                    <v-text-field name="password_confirm"
                                             :rules="[ v => v === user.password    || 'Должен совпадать с паролем']"
                                             label="Подтверждение пароля"
                                             outlined type="password" v-model="user.password_confirm"></v-text-field>

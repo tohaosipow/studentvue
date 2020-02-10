@@ -66,6 +66,7 @@
     export default {
         name: "TimetableComponent",
         mounted() {
+            this.$emit('changeTitle', 'Расписание');
             this.$store.dispatch('getEmployees');
             this.$store.dispatch('getPlaces');
             this.$store.dispatch('getSubgroups');

@@ -74,6 +74,18 @@
 
 
                     </v-list-item>
+                    <v-subheader>Проектная деятельность</v-subheader>
+                    <v-list-item to="/projects">
+                        <v-list-item-icon>
+                            <v-icon>mdi-account-network</v-icon>
+                        </v-list-item-icon>
+
+                        <v-list-item-content>
+                            <v-list-item-title>Проекты</v-list-item-title>
+                        </v-list-item-content>
+
+
+                    </v-list-item>
                     <template v-if="$store.state.user.currentUser.admin === 1">
                         <v-subheader>Администратор</v-subheader>
                         <v-list-item @click="() => {}">
@@ -124,7 +136,7 @@
 
             </v-app-bar>
             <div style="margin-top: 64px;">
-                <router-view @changeTitle="title = $event"></router-view>
+                <router-view @changeTitle="title = $event, drawer = false"></router-view>
             </div>
         </v-app>
 
