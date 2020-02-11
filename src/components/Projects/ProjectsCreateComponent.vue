@@ -1,7 +1,6 @@
 <template>
     <v-container :fluid="$store.state.user.fluid">
         <v-row>
-            {{this.$store.state.user.currentUser}}
             <v-col cols="12" lg="6" offset-lg="3">
                 <v-card outlined>
                     <v-card-title class="subtitle-1">Информация о заказчике</v-card-title>
