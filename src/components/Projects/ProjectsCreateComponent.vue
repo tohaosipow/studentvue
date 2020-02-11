@@ -1,6 +1,7 @@
 <template>
     <v-container :fluid="$store.state.user.fluid">
         <v-row>
+            {{this.$store.state.user.currentUser}}
             <v-col cols="12" lg="6" offset-lg="3">
                 <v-card outlined>
                     <v-card-title class="subtitle-1">Информация о заказчике</v-card-title>
@@ -143,6 +144,7 @@
             }
         },
         mounted() {
+            if(!this.$store.state.user.currentUser.id) return this.$router.push('/auth')
             this.$store.dispatch('getEmployees');
             this.$store.dispatch('getProjectTypes');
             this.project.responsible_user_id = this.$store.state.user.currentUser.id;
