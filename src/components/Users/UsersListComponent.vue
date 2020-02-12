@@ -23,7 +23,7 @@
 
                 <template v-slot:item.email="props">
                     <v-edit-dialog
-                            :return-value.sync="props.item.name"
+                            :return-value.sync="props.item.email"
                             @cancel="cancel"
                             @save="save(props.item)"
                     > {{ props.item.email }}
@@ -119,7 +119,7 @@
 
                         >
 
-                            <span>{{$store.getters.getDepartmentByID(props.item.department_id).name}}</span>
+                            <span v-if="props.item.department_id > 0">{{$store.getters.getDepartmentByID(props.item.department_id).name}}</span>
                             <template v-slot:input>
                                 <v-autocomplete :items="$store.state.dictionaries.departments"
                                                 color="pink"
