@@ -16,11 +16,13 @@ import EditProfileComponent from "@/components/Profile/EditProfileComponent";
 import ProjectsListComponent from "@/components/Projects/ProjectsListComponent";
 import ProjectsCreateComponent from "@/components/Projects/ProjectsCreateComponent";
 import UsersListComponent from "@/components/Users/UsersListComponent";
+import EventsCreateComponent from "@/components/Events/EventsCreateComponent";
 
 
 const routes = [
     { path: '/', component: EventsComponent, name: 'events'},
     { path: '/events/my', component: EventsComponent, name: 'user.events', props: { my: true}},
+    { path: '/events/create', component: EventsCreateComponent, name: 'user.events'},
     { path: '/events/:id', component: EventItemComponent, name: 'events.item',
         children:
             [

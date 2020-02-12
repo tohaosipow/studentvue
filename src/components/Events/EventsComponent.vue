@@ -1,5 +1,32 @@
 <template>
     <v-container :fluid="$store.state.user.fluid">
+        <v-tooltip left :value="true">
+            <template v-slot:activator="{ on }">
+                <v-btn
+                        color="blue darken-2"
+                        dark
+                        to="events/create"
+                        v-on="on"
+                        fab
+                        fixed
+                        right
+                        bottom
+                >
+                    <v-icon>mdi-plus</v-icon>
+                </v-btn>
+            </template>
+            <span>Создайте мероприятие</span>
+        </v-tooltip>
+        <v-tabs
+                v-model="actual"
+                background-color="white"
+                color="blue darken-2 accent-4"
+                right
+        >
+            <v-tab>Прошедшие</v-tab>
+            <v-tab>Актуальные</v-tab>
+        </v-tabs>
+
         <!--
         <v-card disabled elevation="0">
             <v-card-title>Поиск мероприятий</v-card-title>
@@ -84,10 +111,15 @@
             this.$store.dispatch('getEmployees');
             this.$emit('changeTitle', 'Мероприятия')
         },
+        data(){
+          return{
+              actual: 1
+          }
+        },
         computed:{
             events(){
-                if(this.my) return this.$store.state.user.currentUserEvents;
-                else return this.$store.state.events.events;
+                if(this.my) return this.$store.state.user.currentUserEvents.filter((el) => {return this.actual === 0 && this.$moment(el.check_end_at).isBefore(this.$moment())})
+                else return this.$store.state.events.events.filter((el) => {return this.actual === 0 && this.$moment(el.check_end_at).isBefore(this.$moment()) ||  this.actual == 1  && this.$moment(el.check_end_at).isAfter(this.$moment()) })
             }
         },
         props: {

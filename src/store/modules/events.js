@@ -3,6 +3,7 @@ import rubrics from "@/api/rubrics";
 import event_checks from "@/api/event_checks";
 import teams from "@/api/teams";
 import team_projects from "@/api/team_projects";
+import user_roles from "@/api/user_roles";
 
 export default {
     state: {
@@ -16,7 +17,9 @@ export default {
         teams: [],
         userTeam: [],
         teamProjects: [],
-        currentTeam: null
+        currentTeam: null,
+        event_types: [],
+        user_roles: [],
     },
     mutations: {
         setCurrentTeam(state, team){
@@ -26,6 +29,17 @@ export default {
             state.events = events
         },
 
+        addEvent(state, event) {
+            state.events.push(event)
+        },
+
+        setUserRoles(state, user_roles) {
+            state.user_roles = user_roles
+        },
+
+        setEventTypes(state, event_types) {
+            state.event_types = event_types
+        },
         setCurrentEvent(state, event) {
             state.currentEvent = event;
         },
@@ -170,9 +184,23 @@ export default {
         }
     },
     actions: {
+
+        storeEvent({commit}, data) {
+            return events.store(data).then((r) => {
+                commit('addEvent', r.data);
+                return true;
+            })
+        },
+
         getEvents({commit}) {
             return events.getEvents().then((r) => {
                 commit('setEvents', r.data);
+            })
+        },
+
+        getUserRoles({commit}) {
+            return user_roles.all().then((r) => {
+                commit('setUserRoles', r.data);
             })
         },
 
@@ -287,6 +315,12 @@ export default {
         getCurrentTeam({commit}, {team_id}){
             return teams.item(team_id).then(response => {
                 commit('setCurrentTeam', response.data);
+            })
+        },
+
+        getEventTypes({commit}){
+            return events.getEventTypes().then(response => {
+                commit('setEventTypes', response.data);
             })
         }
     }

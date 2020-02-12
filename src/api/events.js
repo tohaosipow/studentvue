@@ -39,6 +39,13 @@ export default {
 
     getUserStatus(event_id){
         return window.axios.get(endpoint+'/api/event/'+event_id+'/status');
-    }
+    },
 
+    getEventTypes(){
+        return window.axios.get(endpoint+'/api/event_types');
+    },
+
+    store(data){
+        return window.axios.post(endpoint+'/api/events/store', data);
+    }
 }
