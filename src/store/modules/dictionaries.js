@@ -23,6 +23,14 @@ export default {
             return state.departments.filter(department => {
                 return department.for_students === 1;
             })
+        },
+
+        getDepartmentByID(state) {
+            return (id) => {
+                return state.departments.filter(department => {
+                    return parseInt(department.id) === parseInt(id);
+                })[0];
+            }
         }
     },
     actions: {

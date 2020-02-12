@@ -76,6 +76,7 @@
 
         methods: {
             search(){
+                this.loading = true;
                 this.$store.dispatch('getLessons', {filter: this.filter}).then(() => {
                     this.loading = false;
 
@@ -104,7 +105,7 @@
 
         },
         data: () => ({
-            loading: true,
+            loading: false,
             calendarPlugins: [dayGridPlugin, timeGrid, interaction, rrulePlugin],
             filter:{
                 group_ids: null,

@@ -15,6 +15,7 @@ import MyTimetableComponent from "@/components/Timetables/MyTimetableComponent";
 import EditProfileComponent from "@/components/Profile/EditProfileComponent";
 import ProjectsListComponent from "@/components/Projects/ProjectsListComponent";
 import ProjectsCreateComponent from "@/components/Projects/ProjectsCreateComponent";
+import UsersListComponent from "@/components/Users/UsersListComponent";
 
 
 const routes = [
@@ -40,6 +41,7 @@ const routes = [
     { path: '/profile/:id/edit', component: EditProfileComponent},
     { path: '/projects', component: ProjectsListComponent},
     { path: '/projects/create', component: ProjectsCreateComponent},
+    { path: '/admin/users', component: UsersListComponent},
 ]
 
 // 3. Создаём экземпляр маршрутизатора и передаём маршруты в опции `routes`

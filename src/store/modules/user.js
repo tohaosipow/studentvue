@@ -76,7 +76,9 @@ export default {
             return user.events().then((response) => {
                commit('setCurrentUserEvents', response.data);
             });
-        }
+        },
+
+
 
     }
 }

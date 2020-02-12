@@ -1,6 +1,7 @@
 <template>
     <v-container :fluid="$store.state.user.fluid">
-        <v-card elevation="0">
+        <!--
+        <v-card disabled elevation="0">
             <v-card-title>Поиск мероприятий</v-card-title>
             <v-card-subtitle>Выберите интересующие Вас фильтры</v-card-subtitle>
             <v-card-text>
@@ -30,7 +31,8 @@
                 </v-row>
 
             </v-card-text>
-        </v-card>
+        </v-card> !-->
+
         <v-row>
             <v-col :key="event.id" lg="3" v-for="event in events">
                 <v-card
@@ -69,12 +71,12 @@
 </template>
 
 <script>
-    import InputDatePicker from "@/components/Utility/InputDatePicker";
+   // import InputDatePicker from "@/components/Utility/InputDatePicker";
 
     export default {
         name: "EventsComponent",
         components: {
-            InputDatePicker
+           // InputDatePicker
         },
         mounted() {
             this.$store.dispatch('getEvents');

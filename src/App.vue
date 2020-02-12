@@ -88,7 +88,7 @@
                     </v-list-item>
                     <template v-if="$store.state.user.currentUser.admin === 1">
                         <v-subheader>Администратор</v-subheader>
-                        <v-list-item @click="() => {}">
+                        <v-list-item to="/admin/users">
                             <v-list-item-icon>
                                 <v-icon>mdi-account-group</v-icon>
                             </v-list-item-icon>
