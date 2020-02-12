@@ -5,7 +5,7 @@
                 <v-btn
                         color="blue darken-2"
                         dark
-                        to="events/create"
+                        to="/events/create"
                         v-on="on"
                         fab
                         fixed
@@ -70,13 +70,13 @@
                             height="200px"
                     ></v-img>
 
-                    <v-card-title class="title">{{event.name.slice(0, 28)}}</v-card-title>
+                    <v-card-title class="title">{{event.name}}</v-card-title>
 
                     <v-card-subtitle>
                         {{event.start_at}}
                     </v-card-subtitle>
                     <v-card-text>
-                        {{event.description.slice(0, 200)}} ...
+                        {{event.description}}
                     </v-card-text>
                     <v-card-actions>
 

@@ -1,5 +1,5 @@
 <template>
-    <v-card>
+    <v-card elevation="0">
         <v-card-text>
             <v-row align="center">
                 <v-col>
