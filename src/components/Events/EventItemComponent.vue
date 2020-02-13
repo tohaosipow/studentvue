@@ -55,7 +55,7 @@
                     </v-list-item>
                     <v-divider/>
                     <v-subheader>Начисление баллов</v-subheader>
-                    <v-list-item :key="role.id" v-for="role in event.roles">
+                    <v-list-item :key="role.id" v-for="role in event.roles.filter((el) => {return el.hidden == 0})">
                         <v-list-item-title>{{role.role.name}}</v-list-item-title>
                         <v-list-item-subtitle class="text-right">{{role.points_max}} балл
                         </v-list-item-subtitle>
