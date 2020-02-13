@@ -4,7 +4,7 @@
             <v-form>
                 <v-text-field
                         label="Email"
-                        name="Email"
+                        name="email"
                         outlined
                         type="text"
                         v-model="credentials.username"
@@ -22,10 +22,12 @@
             </v-form>
         </v-card-text>
         <v-card-actions>
-            <v-btn depressed @click="singIn" color="blue darken-2" icon class="ma-2" tile dark>
+            <div>
+            <v-btn  @click="singIn" color="blue darken-2" icon class="ma-2"  dark >
                 <v-icon left>mdi-login</v-icon>  Войти в систему</v-btn>
-            <v-spacer></v-spacer>
+
             <div class="signin-button ml-4" data-color="black" data-type="sign in" id="appleid-signin"></div>
+            </div>
 
         </v-card-actions>
     </div>
@@ -50,7 +52,6 @@
                 this.$store.dispatch('authUser', this.credentials).then(() => {
                     this.$router.push('/');
                 }, () => {
-                    alert();
                     this.errors.login = 'Неверный логин или пароль';
                 })
             }
