@@ -7,7 +7,6 @@
                             :src="event.header_url"
                             height="200px"
                     ></v-img>
-                    <v-card-title class="title">{{event.name}}</v-card-title>
 
                     <v-list-item>
                         <v-list-item-title>Подача заявок</v-list-item-title>
@@ -68,6 +67,7 @@
             <v-col lg="9">
                 <v-card>
                     <EventCheckComponent/>
+                    <v-card-title class="title">{{event.name}}</v-card-title>
                     <v-card-text>
                         {{event.description}}
                     </v-card-text>
