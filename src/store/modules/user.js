@@ -68,7 +68,7 @@ export default {
         },
 
         logout({commit}){
-            localStorage.removeItem('token');
+            localStorage.removeItem('access_token');
             commit('setUser', {});
         },
 
