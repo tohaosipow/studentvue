@@ -165,6 +165,23 @@ export default {
             })
         },
 
+        isEventAdmin: function (state) {
+            return (user_id) => {
+                let can = false;
+                state.participants.forEach((user) => {
+                    if (user.id === user_id) {
+                        if (parseInt(user.admin) === 1) can = true;
+                        else {
+                            user.roles.forEach((role) => {
+                                if (role.event_role.admin === 1) can = true;
+                            });
+                        }
+                    }
+                });
+                return can;
+            }
+        },
+
         checkCanSetPoints: function (state) {
             return (user_id) => {
                 let can = false;
