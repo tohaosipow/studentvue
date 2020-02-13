@@ -8,7 +8,6 @@
                             height="200px"
                     ></v-img>
                     <v-card-title class="title">{{event.name}}</v-card-title>
-                    <v-card-text>{{event.description}}</v-card-text>
 
                     <v-list-item>
                         <v-list-item-title>Подача заявок</v-list-item-title>
@@ -69,6 +68,9 @@
             <v-col lg="9">
                 <v-card>
                     <EventCheckComponent/>
+                    <v-card-text>
+                        {{event.description}}
+                    </v-card-text>
                     <v-tabs background-color="transparent"
                             color="blue"
                             grow
@@ -98,15 +100,6 @@
                     </v-tabs>
                     <router-view></router-view>
                     <v-tabs-items v-model="part">
-                        <v-tab-item>
-                            <v-card flat>
-                                <v-textarea :value="event.description"
-                                            label="Описание" name="input-7-4"
-                                            readonly
-                                            solo
-                                ></v-textarea>
-                            </v-card>
-                        </v-tab-item>
                         <v-tab-item v-if="$store.state.events.currentEvent.teams_allowed">
                             <v-card color="basil" flat>
                                 <EventTeamsComponent></EventTeamsComponent>
