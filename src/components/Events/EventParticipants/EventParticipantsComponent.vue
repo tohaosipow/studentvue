@@ -1,8 +1,10 @@
 <template>
-    <v-data-table :headers="headers" :items="this.$store.state.events.participants" :items-per-page="10"
-                  :loading="loading"
-                  loading-text="Загружаем ... "
-                  show-select
+    <v-data-table
+            :headers="headers"
+            :items="this.$store.state.events.participants" :items-per-page="10" :loading="loading"
+            loading-text="Загружаем ... "
+            show-select
+            v-if="$store.state.user.currentUser.admin === 1 || $store.getters.isEventAdmin($store.state.user.currentUser.id)"
     >
 
         <template v-slot:item.role="props">
@@ -17,7 +19,8 @@
                     {{role}}
                 </v-chip>
                 <template v-slot:input>
-                    <v-autocomplete :items="$store.state.events.currentEvent.roles" :value="props.item.roles.map((el) => {return el.event_role.id})"
+                    <v-autocomplete :items="$store.state.events.currentEvent.roles"
+                                    :value="props.item.roles.map((el) => {return el.event_role.id})"
                                     color="pink"
                                     item-text="role.name"
                                     item-value="id"
