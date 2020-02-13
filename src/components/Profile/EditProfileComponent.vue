@@ -51,6 +51,7 @@
                     {id: 'student', name: 'Студент'},
                     {id: 'pupil', name: 'Ученик школы'},
                     {id: 'visitor', name: 'Посетитель'},
+                    {id: 'company', name: 'Организация'},
                     ]" item-text="name" item-value="id" label="Роль" v-model="user.role"/>
                         <transition name="fade">
                             <v-row transition="scroll-y-transition" v-if="user.role === 'student'">

@@ -147,6 +147,9 @@
             this.$store.dispatch('getEmployees');
             this.$store.dispatch('getProjectTypes');
             this.project.responsible_user_id = this.$store.state.user.currentUser.id;
+            if(this.$store.state.user.currentUser.role === 'company'){
+                this.project.customer = this.$store.state.user.currentUser.company_name;
+            }
             this.$emit('changeTitle', 'Создание проекта')
         }
     }

@@ -16,7 +16,7 @@
                             <v-row>
                                 <v-col
                                         cols="12"
-                                        md="4"
+                                        md="3"
                                 >
                                     <v-item value="visitor" v-slot:default="{ active, toggle }">
                                         <v-card
@@ -42,7 +42,7 @@
                                 </v-col>
                                 <v-col
                                         cols="12"
-                                        md="4"
+                                        md="3"
                                 >
                                     <v-item value="pupil" v-slot:default="{ active, toggle }">
                                         <v-card
@@ -69,7 +69,7 @@
 
                                 <v-col
                                         cols="12"
-                                        md="4"
+                                        md="3"
                                 >
                                     <v-item value="student" v-slot:default="{ active, toggle }">
                                         <v-card
@@ -91,6 +91,32 @@
                                                         v-else
                                                 >
                                                     Студент
+                                                </div>
+                                            </v-scroll-y-transition>
+                                        </v-card>
+                                    </v-item>
+                                </v-col>
+                                <v-col
+                                        cols="12"
+                                        md="3"
+                                >
+                                    <v-item value="company" v-slot:default="{ active, toggle }">
+                                        <v-card
+                                                :color="active ? 'pink lighten-2' : ''"
+                                                @click="toggle"
+                                                class="d-flex align-center"
+                                                dark
+                                                height="200"
+                                        >
+                                            <v-scroll-y-transition>
+                                                <div
+                                                        class="display-1 flex-grow-1 text-center"
+                                                        v-if="active"
+                                                >
+                                                    Я - организация
+                                                </div>
+                                                <div class="display-1 flex-grow-1 text-center" v-else>
+                                                    Организация
                                                 </div>
                                             </v-scroll-y-transition>
                                         </v-card>
@@ -151,6 +177,10 @@
                             </v-row>
                             <v-row>
                                 <v-col lg="12">
+                                    <v-text-field name="given-name" :error-messages="errors.company_name"
+                                                  :rules="[ v => !!v || 'Обязательно для заполнения']"
+                                                  label="Название организации" outlined
+                                                  v-model="user.company_name"></v-text-field>
                                     <v-text-field name="email" :error-messages="errors.email"
                                                   :rules="[ v => !!v || 'E-mail обязателен', v => /.+@.+\..+/.test(v) || 'E-mail должен быть корретным']"
                                                   label="Email"
@@ -295,7 +325,8 @@
                     department: '',
                     employee_post: '',
                     pupil_school: '',
-                    pupil_class: ''
+                    pupil_class: '',
+                    company_name: '',
                 },
                 errors: {}
             }

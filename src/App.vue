@@ -21,6 +21,7 @@
                             <span v-if="$store.state.user.currentUser.role === 'student'">Студент</span>
                             <span v-if="$store.state.user.currentUser.role === 'pupil'">Учащийся</span>
                             <span v-if="$store.state.user.currentUser.role === 'employee'">Сотрудник</span>
+                            <span v-if="$store.state.user.currentUser.role === 'company'">Партнер</span>
                         </v-list-item-subtitle>
                     </v-list-item-content>
 
