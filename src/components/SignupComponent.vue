@@ -274,6 +274,10 @@
             mask,
         },
         name: "SignupComponent",
+        mounted(){
+          this.$store.dispatch('getStudentGroups')
+          this.$store.dispatch('getDepartments')
+        },
         data() {
             return {
                 student_groups: ['609-71', '609-72'],
