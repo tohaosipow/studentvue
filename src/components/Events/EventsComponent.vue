@@ -118,7 +118,7 @@
         },
         computed:{
             events(){
-                if(this.my) return this.$store.state.user.currentUserEvents.filter((el) => {return this.actual === 0 && this.$moment(el.check_end_at).isBefore(this.$moment())})
+                if(this.my)  return this.$store.state.events.events.filter((el) => {return this.actual === 0 && this.$moment(el.check_end_at).isBefore(this.$moment()) ||  this.actual == 1  && this.$moment(el.check_end_at).isAfter(this.$moment()) })
                 else return this.$store.state.events.events.filter((el) => {return this.actual === 0 && this.$moment(el.check_end_at).isBefore(this.$moment()) ||  this.actual == 1  && this.$moment(el.check_end_at).isAfter(this.$moment()) })
             }
         },
