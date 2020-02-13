@@ -38,6 +38,27 @@
             <EventUserIsVisitSwitch :event="$store.state.events.currentEvent" :user="item"></EventUserIsVisitSwitch>
         </template>
 
+        <template v-slot:item.type="{ item }">
+            <div v-if="item.role === 'student'">
+                Студент
+                {{item.student_group.name}}
+                <span v-if="item.department">{{item.department.name}}</span>
+            </div>
+            <div v-if="item.role === 'employee'">
+                {{item.employee_post}}
+                <span v-if="item.department">{{item.department.name}}</span>
+
+            </div>
+            <div v-if="item.role === 'pupil'">
+                {{item.pupil_school}}
+                {{item.pupil_class}}
+            </div>
+            <div v-if="item.role === 'visitor'">
+                Посетитель
+            </div>
+
+        </template>
+
     </v-data-table>
 </template>
 
@@ -60,6 +81,7 @@
                     },
                     {text: 'Фамилия Имя', value: 'name'},
                     {text: 'Email', value: 'email'},
+                    {text: 'Тип', value: 'type'},
                     {text: 'Роль', value: 'role'},
                     {text: 'Баллы', value: 'points'},
                     {text: 'Одобрение заявки', value: 'approve'},
