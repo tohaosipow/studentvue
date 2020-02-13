@@ -41,8 +41,8 @@
         <template v-slot:item.type="{ item }">
             <div v-if="item.role === 'student'">
                 Студент
-                <span v-if="item.student_group">{{item.student_group.name}}</span>
-                <span v-if="item.department">{{item.department.name}}</span>
+                <span v-if="item.student_group">{{item.student_group.name}}</span> -
+                <span v-if="item.student_group && item.student_group.department">{{item.student_group.department.name}}</span>
             </div>
             <div v-if="item.role === 'employee'">
                 {{item.employee_post}}
