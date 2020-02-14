@@ -177,7 +177,7 @@
                             </v-row>
                             <v-row>
                                 <v-col lg="12">
-                                    <v-text-field name="given-name" :error-messages="errors.company_name"
+                                    <v-text-field v-if="user.role === 'company'" name="given-name" :error-messages="errors.company_name"
                                                   :rules="[ v => !!v || 'Обязательно для заполнения']"
                                                   label="Название организации" outlined
                                                   v-model="user.company_name"></v-text-field>
