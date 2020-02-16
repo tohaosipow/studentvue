@@ -2,7 +2,7 @@
     <div>
         <template v-if="$store.state.user.currentUser.admin == 1 || $store.getters.canEditProject">
             <v-alert type="info">
-                Используйте кнопки Одобрить и Выгнать для модерации заявки.
+                Используйте кнопки Одобрить и Исключить для модерации заявки.
             </v-alert>
             <v-data-table
                     :headers="headers"
