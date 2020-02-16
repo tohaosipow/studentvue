@@ -46,7 +46,8 @@
             </v-data-table>
         </template>
         <v-sheet v-else>
-            <v-list-item :disabled="participant.pivot.approved == 0" :key="participant.id" v-for="participant in participants"
+            <v-list-item :disabled="participant.pivot.approved == 0" :key="participant.id"
+                         v-for="participant in participants"
             >
                 <v-list-item-avatar>
                     <v-avatar color="blue" size="36">
@@ -58,19 +59,23 @@
                         {{participant.last_name}} {{participant.first_name}}
                     </v-list-item-title>
                     <v-list-item-subtitle>
+                        <span v-if="participant.student_group">
                         {{participant.student_group.name}} <span
-                            v-if="participant.student_group.department && participant.student_group.department.institute"> {{participant.student_group.department.institute.name}}</span>
+                                v-if="participant.student_group.department && participant.student_group.department.institute"> {{participant.student_group.department.institute.name}}</span>
+                    </span>
                     </v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-actions>
-                    <v-chip v-if="participant.pivot.approved == 1" color="green" dark>
+                    <v-chip color="green" dark v-if="participant.pivot.approved == 1">
                         {{participant.project_role.name}}
                     </v-chip>
-                    <v-chip v-else color="red" dark>
+                    <v-chip color="red" dark v-else>
                         Подал заявку
                     </v-chip>
-                    <v-icon class="ml-2" v-if="participant.pivot.admin == 0 && participant.pivot.approved == 1">mdi-account</v-icon>
-                    <v-icon  class="ml-2" color="orange" v-else-if="participant.pivot.approved == 1">mdi-crown</v-icon>
+                    <v-icon class="ml-2" v-if="participant.pivot.admin == 0 && participant.pivot.approved == 1">
+                        mdi-account
+                    </v-icon>
+                    <v-icon class="ml-2" color="orange" v-else-if="participant.pivot.approved == 1">mdi-crown</v-icon>
                 </v-list-item-actions>
 
 
