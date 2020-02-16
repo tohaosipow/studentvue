@@ -177,14 +177,15 @@
                             </v-row>
                             <v-row>
                                 <v-col lg="12">
-                                    <v-text-field v-if="user.role === 'company'" name="given-name" :error-messages="errors.company_name"
+                                    <v-text-field v-if="user.role === 'company'" name="given-name"
+                                                  :error-messages="errors.company_name"
                                                   :rules="[ v => !!v || 'Обязательно для заполнения']"
                                                   label="Название организации" outlined
-                                                  v-model="user.company_name"></v-text-field>
+                                                  v-model="user.company_name"/>
                                     <v-text-field name="email" :error-messages="errors.email"
                                                   :rules="[ v => !!v || 'E-mail обязателен', v => /.+@.+\..+/.test(v) || 'E-mail должен быть корретным']"
                                                   label="Email"
-                                                  outlined type="email" v-model="user.email"></v-text-field>
+                                                  outlined type="email" v-model="user.email"/>
 
                                     <v-text-field :error-messages="errors.phone"
                                                   validate-on-blur
@@ -192,15 +193,15 @@
                                                   :rules="[ v => !!v || 'Телефон обязателен']"
                                                   label="Телефон"
                                                   name="phone"
-                                                  outlined type="phone" v-model="user.phone"></v-text-field>
+                                                  outlined type="phone" v-model="user.phone"/>
                                     <v-text-field name="password" :error-messages="errors.password"
                                                   :rules="[ v => !!v || 'Обязательно для заполнения']"
                                                   label="Пароль" outlined type="password"
-                                                  v-model="user.password"></v-text-field>
+                                                  v-model="user.password"/>
                                     <v-text-field name="password_confirm"
-                                            :rules="[ v => v === user.password    || 'Должен совпадать с паролем']"
-                                            label="Подтверждение пароля"
-                                            outlined type="password" v-model="user.password_confirm"></v-text-field>
+                                                  :rules="[ v => v === user.password    || 'Должен совпадать с паролем']"
+                                                  label="Подтверждение пароля"
+                                                  outlined type="password" v-model="user.password_confirm"/>
 
                                 </v-col>
                             </v-row>
@@ -216,7 +217,7 @@
                                                 outlined
                                                 v-model="user.department"
                                                 hint="Выберите существующее или укажите свое, если его нет в списке"
-                                        ></v-combobox>
+                                        />
 
                                         <v-combobox
                                                 :items="$store.state.dictionaries.studentGroups"
@@ -226,7 +227,7 @@
                                                 outlined
                                                 v-model="user.student_group"
                                                 hint="Выберите существующую или укажите свою, если ее нет в списке"
-                                        ></v-combobox>
+                                        />
 
 
                                     </v-col>
@@ -244,13 +245,13 @@
                                                 outlined
                                                 v-model="user.department"
                                                 hint="Выберите существующее или укажите свое, если его нет в списке"
-                                        ></v-combobox>
+                                        />
 
                                         <v-text-field
                                                 label="Должность"
                                                 outlined
                                                 v-model="user.employee_post"
-                                        ></v-text-field>
+                                        />
 
 
                                     </v-col>
@@ -265,13 +266,13 @@
                                                 label="Учебное заведение"
                                                 outlined
                                                 v-model="user.pupil_school"
-                                        ></v-text-field>
+                                        />
 
                                         <v-text-field
                                                 label="Класс"
                                                 outlined
                                                 v-model="user.pupil_class"
-                                        ></v-text-field>
+                                        />
 
 
                                     </v-col>

@@ -1,15 +1,22 @@
 <template>
     <v-container :fluid="$store.state.user.fluid">
-        <v-btn
-                color="blue darken-2"
-                dark
-                fab
-                fixed
-                right
-                to="/projects/create"
-        >
-            <v-icon>mdi-plus</v-icon>
-        </v-btn>
+        <v-tooltip left :value="true">
+            <template v-slot:activator="{ on }">
+                <v-btn
+                        color="blue darken-2"
+                        dark
+                        to="/projects/create"
+                        v-on="on"
+                        fab
+                        fixed
+                        right
+                        bottom
+                >
+                    <v-icon>mdi-plus</v-icon>
+                </v-btn>
+            </template>
+            <span>Создайте проект</span>
+        </v-tooltip>
         <v-row v-if="loading">
             <v-col :key="i" lg="3" v-for="i in 8">
                 <v-skeleton-loader
@@ -21,12 +28,13 @@
         </v-row>
         <v-row v-else>
             <v-col :key="project.id" cols="12" lg="3" v-for="project in $store.state.projects.projects">
-                <v-card>
+                <v-card :to="'/projects/'+project.id">
                     <v-card-actions>
                         <v-spacer/>
                         <v-btn @click="remove(project)"
                                color="red"
-                               icon v-if="$store.state.user.currentUser.admin == 1 || project.responsible_user_id == $store.state.user.currentUser.id">
+                               icon
+                               v-if="$store.state.user.currentUser.admin == 1 || project.responsible_user_id == $store.state.user.currentUser.id">
                             <v-icon>mdi-delete</v-icon>
                         </v-btn>
                         <v-btn @click="approve(project)" color="green" icon
@@ -95,22 +103,24 @@
                 loading: true
             }
         },
-        methods:{
-            approve(project){
-                if(confirm('Вы действительно хотите одобрить?')){
+        methods: {
+            approve(project) {
+                if (confirm('Вы действительно хотите одобрить?')) {
                     this.$store.dispatch('approveProject', {id: project.id})
                 }
             },
-            remove(project){
-                if(confirm('Вы действительно хотите удалить проект?')){
+            remove(project) {
+                if (confirm('Вы действительно хотите удалить проект?')) {
                     this.$store.dispatch('removeProject', {id: project.id})
                 }
             }
         },
         mounted() {
             this.$emit('changeTitle', 'Проекты')
-            this.$store.dispatch('getProjects').then(() => {
-                this.loading = false;
+            Promise.all([
+                this.$store.dispatch('getEmployees'),
+                this.$store.dispatch('getProjects')]).then(() => {
+                    this.loading = false;
             })
         }
     }

@@ -25,9 +25,9 @@
                         <v-checkbox label="Выбрать лучшие кадры из числа молодых специалистов для трудоустройства"
                                     v-model="purposes"
                                     value="Выбрать лучшие кадры из числа молодых специалистов для трудоустройства"/>
-                        <v-autocomplete :items="$store.state.timetables.employees" autocomplete="off" item-text="name"
+                        <!--<v-autocomplete :items="$store.state.timetables.employees" autocomplete="off" item-text="name"
                                         item-value="id" label="Ответственный сотрудник" outlined
-                                        v-model="project.responsible_user_id"/>
+                                        v-model="project.responsible_user_id"/> !-->
                     </v-card-text>
                 </v-card>
                 <v-card class="mt-2" outlined>

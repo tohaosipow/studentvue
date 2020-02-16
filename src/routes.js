@@ -17,13 +17,18 @@ import ProjectsListComponent from "@/components/Projects/ProjectsListComponent";
 import ProjectsCreateComponent from "@/components/Projects/ProjectsCreateComponent";
 import UsersListComponent from "@/components/Users/UsersListComponent";
 import EventsCreateComponent from "@/components/Events/EventsCreateComponent";
+import ProjectsItemComponent from "@/components/Projects/ProjectsItemComponent";
+import ProjectsItemInfoComponent from "@/components/Projects/ProjectsItem/ProjectsItemInfoComponent";
+import ProjectsItemParticipantsComponent from "@/components/Projects/ProjectsItem/ProjectsItemParticipantsComponent";
+import ProjectsItemRolesComponent from "@/components/Projects/ProjectsItem/ProjectsItemRolesComponent";
 
 
 const routes = [
-    { path: '/', component: EventsComponent, name: 'events'},
-    { path: '/events/my', component: EventsComponent, name: 'user.events', props: { my: true}},
-    { path: '/events/create', component: EventsCreateComponent, name: 'user.events'},
-    { path: '/events/:id', component: EventItemComponent, name: 'events.item',
+    {path: '/', component: EventsComponent, name: 'events'},
+    {path: '/events/my', component: EventsComponent, name: 'user.events', props: {my: true}},
+    {path: '/events/create', component: EventsCreateComponent, name: 'user.events'},
+    {
+        path: '/events/:id', component: EventItemComponent, name: 'events.item',
         children:
             [
                 {path: 'participants', component: EventParticipantComponent, name: 'event.participants'},
@@ -33,17 +38,25 @@ const routes = [
                 {path: 'qr_enter', component: EventQRRegisterComponent, name: 'event.qr_enter'},
             ]
     },
-    { path: '/events/:id/teams/:team_id', component: TeamComponent, name: 'teams.item'},
-    { path: '/points/:id', component: EventPointComponent, name: 'points'},
-    { path: '/auth', component: AuthComponent },
-    { path: '/timetable', component: TimetableComponent },
-    { path: '/timetable/my/:id?', component: MyTimetableComponent },
-    { path: '/timetable/create/master', component: DisciplineCreatorIndex, name: 'timetable.master'},
-    { path: '/authByToken/:token', component: AuthByToken},
-    { path: '/profile/:id/edit', component: EditProfileComponent},
-    { path: '/projects', component: ProjectsListComponent},
-    { path: '/projects/create', component: ProjectsCreateComponent},
-    { path: '/admin/users', component: UsersListComponent},
+    {path: '/events/:id/teams/:team_id', component: TeamComponent, name: 'teams.item'},
+    {path: '/points/:id', component: EventPointComponent, name: 'points'},
+    {path: '/auth', component: AuthComponent},
+    {path: '/timetable', component: TimetableComponent},
+    {path: '/timetable/my/:id?', component: MyTimetableComponent},
+    {path: '/timetable/create/master', component: DisciplineCreatorIndex, name: 'timetable.master'},
+    {path: '/authByToken/:token', component: AuthByToken},
+    {path: '/profile/:id/edit', component: EditProfileComponent},
+    {path: '/projects', component: ProjectsListComponent},
+    {path: '/projects/create', component: ProjectsCreateComponent},
+    {
+        path: '/projects/:project_id', component: ProjectsItemComponent, children: [
+            {path: '/', redirect: 'info'},
+            {path: 'info', component: ProjectsItemInfoComponent, name: 'project.info'},
+            {path: 'roles', component: ProjectsItemRolesComponent, name: 'project.roles'},
+            {path: 'participants', component: ProjectsItemParticipantsComponent, name: 'project.participants'},
+        ]
+    },
+    {path: '/admin/users', component: UsersListComponent},
 ]
 
 // 3. Создаём экземпляр маршрутизатора и передаём маршруты в опции `routes`
