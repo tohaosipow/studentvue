@@ -12,10 +12,6 @@
             <label>Цель проекта</label>
 
             <v-textarea outlined :readonly="readOnly" v-model="project.participation_purpose"/>
-            <v-autocomplete readonly :items="$store.state.timetables.employees" autocomplete="off" item-text="name"
-                            item-value="id" label="Создатель проекта" outlined
-                            v-model="project.responsible_user_id"/>
-
             <v-text-field :readonly="readOnly" label="Название проекта" outlined v-model="project.title"/>
             <v-textarea :readonly="readOnly" label="Задача" outlined  v-model="project.task"/>
             <v-textarea :readonly="readOnly" label="Проблема, которую решает проект"
