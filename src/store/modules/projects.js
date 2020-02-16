@@ -1,6 +1,7 @@
 import project_types from "@/api/project_types";
 import projects from "@/api/projects";
 
+
 export default {
     state: {
         project_types: [],
@@ -10,7 +11,7 @@ export default {
         currentUserStatusInProject: null
     },
     mutations: {
-        setCurrentUserStatusInProject(state, status){
+        setCurrentUserStatusInProject(state, status) {
             state.currentUserStatusInProject = status;
         },
         setProjectTypes(state, project_types) {
@@ -60,10 +61,16 @@ export default {
         },
 
     },
-    getters:{
-      canEditProject(state){
-          return state.currentUserStatusInProject && state.currentUserStatusInProject.admin == 1 && state.currentUserStatusInProject.approved == 1
-      }
+    getters: {
+        canEditProject(state) {
+            return state.currentUserStatusInProject && state.currentUserStatusInProject.admin == 1 && state.currentUserStatusInProject.approved == 1
+        },
+
+        getParticipantsByProjectRole: (state) => (project_role_id) => {
+            return state.currentProjectParticipants.filter((p) => {
+                return parseInt(p.pivot.project_role_id) === parseInt(project_role_id)
+            })
+        }
     },
     actions: {
         getProjectTypes({commit}) {
@@ -128,13 +135,13 @@ export default {
             });
         },
 
-        getCurrentUserStatusInProject({commit}, data){
+        getCurrentUserStatusInProject({commit}, data) {
             return projects.status(data).then((r) => {
                 commit('setCurrentUserStatusInProject', r.data.pivot);
             })
         },
 
-        enterToProject({commit, dispatch}, data){
+        enterToProject({commit, dispatch}, data) {
             return projects.enterToProject(data).then((r) => {
                 commit('setCurrentUserStatusInProject', r.data.pivot);
                 dispatch('getProjectParticipants', data)

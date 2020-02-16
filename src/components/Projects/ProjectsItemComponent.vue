@@ -18,7 +18,7 @@
                             <v-card>
                                 <v-card-title class="headline">Кем бы вы хотели стать в проекте?</v-card-title>
                                 <v-card-text>
-                                    <v-autocomplete no-data-text="Такие нам не нужны" autocomplete="off" v-model="application.project_role_id" auto-select-first label="Роль в проекте" :items="project.roles" item-text="name" item-value="id"/>
+                                    <v-autocomplete :item-disabled="isFullRole" no-data-text="Такие нам не нужны" autocomplete="off" v-model="application.project_role_id" auto-select-first label="Роль в проекте" :items="project.roles" item-text="name" item-value="id"/>
                                     <v-switch v-model="application.admin" auto-select-first label="Хочу возглавить проект" color="green"/>
                                 </v-card-text>
                                 <v-card-actions>
@@ -51,8 +51,26 @@
                             <v-list-item-title v-text="project.responsible_user.name+' '"></v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
-                    <v-card-actions>
-                    </v-card-actions>
+                    <v-list class="transparent">
+                        <v-subheader>Вакансии</v-subheader>
+                        <v-list-item :key="role.id" v-for="role in project.roles">
+                            <v-list-item-title>
+                                {{role.name}}
+                            </v-list-item-title>
+
+                            <v-list-item-icon>
+                                <v-icon></v-icon>
+                            </v-list-item-icon>
+
+                            <v-list-item-subtitle class="text-right">
+                                {{$store.getters.getParticipantsByProjectRole(role.id).length}} /
+                                {{role.quota}} чел
+                            </v-list-item-subtitle>
+                            <v-list-item-action>
+                                <v-progress-linear :value="$store.getters.getParticipantsByProjectRole(role.id).length/role.quota*100"></v-progress-linear>
+                            </v-list-item-action>
+                        </v-list-item>
+                    </v-list>
                 </v-card>
             </v-col>
             <v-col lg="9">
@@ -99,6 +117,10 @@
                     this.application.loading = false
                     this.applicationDialog = false
                 })
+            },
+
+            isFullRole(role){
+                return this.$store.getters.getParticipantsByProjectRole(role.id).length > role.quota
             }
         },
         mounted() {
