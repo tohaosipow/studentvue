@@ -40,7 +40,7 @@
                     </v-btn>
                     <v-btn @click="decline(item)" class="ma-2" color="error" outlined tile x-small>
                         <v-icon left x-small>mdi-account-minus</v-icon>
-                        Выгнать
+                        Исключить
                     </v-btn>
                 </template>
             </v-data-table>

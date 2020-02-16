@@ -19,7 +19,7 @@
                                 <v-card-title class="headline">Кем бы вы хотели стать в проекте?</v-card-title>
                                 <v-card-text>
                                     <v-autocomplete :item-disabled="isFullRole" no-data-text="Такие нам не нужны" autocomplete="off" v-model="application.project_role_id" auto-select-first label="Роль в проекте" :items="project.roles" item-text="name" item-value="id"/>
-                                    <v-switch v-model="application.admin" auto-select-first label="Хочу возглавить проект" color="green"/>
+                                    <v-switch v-model="application.admin" auto-select-first label="Хочу стать администратором" color="green"/>
                                 </v-card-text>
                                 <v-card-actions>
                                     <v-spacer></v-spacer>
@@ -120,7 +120,7 @@
             },
 
             isFullRole(role){
-                return this.$store.getters.getParticipantsByProjectRole(role.id).length > role.quota
+                return this.$store.getters.getParticipantsByProjectRole(role.id).length >= parseInt(role.quota)
             }
         },
         mounted() {
