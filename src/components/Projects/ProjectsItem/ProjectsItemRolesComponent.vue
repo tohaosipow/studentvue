@@ -1,7 +1,7 @@
 <template>
     <v-card elevation="0">
         <v-alert type="warning">
-            Функционал по редактированию ролей будет доступен с 20 января 2020 г.
+            Функционал по редактированию ролей будет доступен с 20 февраля 2020 г.
         </v-alert>
         <v-card-title>Роли в проекте</v-card-title>
         <v-sheet elevation="1" :key="role.id" v-for="role in project.roles" color="gray" class="pa-4 mt-4">
