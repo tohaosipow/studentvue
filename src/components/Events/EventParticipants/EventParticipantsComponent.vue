@@ -9,7 +9,6 @@
 
         <template v-slot:item.role="props">
             <v-edit-dialog
-                    :return-value.sync="props.item.roles"
             >
                 <v-chip :key="index"
                         class="ma-2"
@@ -23,9 +22,10 @@
                                     :value="props.item.roles.map((el) => {return el.event_role.id})"
                                     color="pink"
                                     item-text="role.name"
+                                    @input="changeParticipantRole(props.item.id, $event)"
                                     item-value="id"
-                                    label="Редактирование"
                                     multiple
+                                    label="Редактирование"
                     />
                 </template>
             </v-edit-dialog>
@@ -87,6 +87,13 @@
                     {text: 'Одобрение заявки', value: 'approve'},
                     {text: 'Присутствие', value: 'is_visit'},
                 ],
+            }
+        },
+        methods:{
+            changeParticipantRole(user_id, roles){
+                // eslint-disable-next-line no-console
+                console.log(user_id, roles)
+                this.$store.dispatch('changeParticipantRole', {event_id: this.$store.state.events.currentEvent.id, user_id, roles})
             }
         },
         mounted() {

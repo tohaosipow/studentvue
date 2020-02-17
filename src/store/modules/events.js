@@ -202,6 +202,12 @@ export default {
     },
     actions: {
 
+        changeParticipantRole({commit}, data){
+            return events.changeParticipantRole(data).then((r) => {
+                commit('setEventParticipants', r.data);
+                return true;
+            })
+        },
         storeEvent({commit}, data) {
             return events.store(data).then((r) => {
                 commit('addEvent', r.data);

@@ -37,6 +37,10 @@ export default {
         return window.axios.get(endpoint+'/api/event/'+event_id+'/participants/'+user_id+'/check');
     },
 
+    changeParticipantRole(data){
+        return window.axios.post(endpoint+'/api/event/'+data.event_id+'/participants/'+data.user_id+'/changeParticipantRole', data);
+    },
+
     getUserStatus(event_id){
         return window.axios.get(endpoint+'/api/event/'+event_id+'/status');
     },
