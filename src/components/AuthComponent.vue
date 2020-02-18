@@ -61,6 +61,12 @@
                 scope: 'name email',
                 redirectURI: 'https://api.student.surgu.ru/apple_redirect'
             });
+
+
+        },
+        beforeRouteEnter: (_, from, next) => {
+            localStorage.setItem('return_path', from.path);
+            next()
         },
         methods: {
             byApple() {
@@ -71,7 +77,7 @@
 </script>
 
 <style>
-    .signin-button, .signin-button div{
+    .signin-button, .signin-button div {
         width: 210px;
         height: 40px;
     }

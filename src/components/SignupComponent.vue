@@ -3,20 +3,22 @@
         <v-row>
             <v-col lg="12">
 
-
             </v-col>
         </v-row>
         <v-row>
             <v-col lg="12">
-                <v-card>
+                <v-card elevation="0">
                     <v-card-title class="headline">Кто Вы?</v-card-title>
                     <v-card-subtitle>Выберите Вашу роль</v-card-subtitle>
-                    <v-item-group mandatory v-model="user.role">
+
+
+                    <!-- <v-item-group mandatory v-model="user.role">
                         <v-container>
                             <v-row>
                                 <v-col
                                         cols="12"
-                                        md="3"
+                                        md="2"
+                                        lg="2"
                                 >
                                     <v-item value="visitor" v-slot:default="{ active, toggle }">
                                         <v-card
@@ -42,7 +44,8 @@
                                 </v-col>
                                 <v-col
                                         cols="12"
-                                        md="3"
+                                        md="2"
+                                        lg="2"
                                 >
                                     <v-item value="pupil" v-slot:default="{ active, toggle }">
                                         <v-card
@@ -66,10 +69,10 @@
                                         </v-card>
                                     </v-item>
                                 </v-col>
-
                                 <v-col
                                         cols="12"
-                                        md="3"
+                                        md="2"
+                                        lg="2"
                                 >
                                     <v-item value="student" v-slot:default="{ active, toggle }">
                                         <v-card
@@ -98,7 +101,8 @@
                                 </v-col>
                                 <v-col
                                         cols="12"
-                                        md="3"
+                                        md="2"
+                                        lg="2"
                                 >
                                     <v-item value="company" v-slot:default="{ active, toggle }">
                                         <v-card
@@ -122,9 +126,10 @@
                                         </v-card>
                                     </v-item>
                                 </v-col>
-                                <!--  <v-col
+                                 <v-col
                                     cols="12"
-                                    md="3"
+                                    md="2"
+                                    lg="2"
                             >
                               <v-item value="employee" v-slot:default="{ active, toggle }">
                                     <v-card
@@ -147,148 +152,163 @@
                                         </v-scroll-y-transition>
                                     </v-card>
                                 </v-item>
-                            </v-col>!-->
+                            </v-col>
 
                             </v-row>
                         </v-container>
-                    </v-item-group>
+                    </v-item-group> !-->
                     <v-card-text>
-                        <v-subheader>Основные данные</v-subheader>
-                        <v-container>
-                            <v-row>
-                                <v-col lg="4" cols="12">
-                                    <v-text-field name="given-name" :error-messages="errors.last_name"
-                                                  :rules="[ v => !!v || 'Обязательно для заполнения']"
-                                                  label="Фамилия" outlined
-                                                  v-model="user.last_name"></v-text-field>
-                                </v-col>
-                                <v-col lg="4" cols="12">
-                                    <v-text-field name="family-name" :error-messages="errors.first_name"
-                                                  :rules="[ v => !!v || 'Обязательно для заполнения']"
-                                                  label="Имя" outlined
-                                                  v-model="user.first_name"></v-text-field>
-                                </v-col>
-                                <v-col lg="4" cols="12">
-                                    <v-text-field name="additional-name" :error-messages="errors.third_name"
-                                                  :rules="[ v => !!v || 'Обязательно для заполнения']"
-                                                  label="Отчество" outlined
-                                                  v-model="user.third_name"></v-text-field>
-                                </v-col>
-                            </v-row>
-                            <v-row>
-                                <v-col lg="12">
-                                    <v-text-field v-if="user.role === 'company'" name="given-name"
-                                                  :error-messages="errors.company_name"
-                                                  :rules="[ v => !!v || 'Обязательно для заполнения']"
-                                                  label="Название организации" outlined
-                                                  v-model="user.company_name"/>
-                                    <v-text-field name="email" :error-messages="errors.email"
-                                                  :rules="[ v => !!v || 'E-mail обязателен', v => /.+@.+\..+/.test(v) || 'E-mail должен быть корретным']"
-                                                  label="Email"
-                                                  outlined type="email" v-model="user.email"/>
+                        <v-form @submit="signUp" ref="form" v-model="form_valid">
 
-                                    <v-text-field :error-messages="errors.phone"
-                                                  validate-on-blur
-                                                  v-mask="'\+7 (###) ###-##-##'"
-                                                  :rules="[ v => !!v || 'Телефон обязателен']"
-                                                  label="Телефон"
-                                                  name="phone"
-                                                  outlined type="phone" v-model="user.phone"/>
-                                    <v-text-field name="password" :error-messages="errors.password"
-                                                  :rules="[ v => !!v || 'Обязательно для заполнения']"
-                                                  label="Пароль" outlined type="password"
-                                                  v-model="user.password"/>
-                                    <v-text-field name="password_confirm"
-                                                  :rules="[ v => v === user.password    || 'Должен совпадать с паролем']"
-                                                  label="Подтверждение пароля"
-                                                  outlined type="password" v-model="user.password_confirm"/>
-
-                                </v-col>
-                            </v-row>
-                            <transition name="fade">
-                                <v-row transition="scroll-y-transition" v-if="user.role === 'student'">
-                                    <v-subheader>Информация о студенте</v-subheader>
+                            <v-subheader>Основные данные</v-subheader>
+                            <v-container>
+                                <v-row>
+                                    <v-col cols="12">
+                                        <v-autocomplete :items="
+                        [
+                            {value: 'employee', name: 'Сотрудник'},
+                            {value: 'student', name: 'Студент'},
+                            {value: 'pupil', name: 'Школьник'},
+                            {value: 'visitor', name: 'Пользователь'},
+                            {value: 'company', name: 'Партнер'},
+                        ]" auto-select-first item-text="name" item-value="value"
+                                                        label="Выберите роль" outlined v-model="user.role"/>
+                                    </v-col>
+                                    <v-col cols="12" lg="4">
+                                        <v-text-field :error-messages="errors.last_name"
+                                                      :rules="[ v => !!v || 'Обязательно для заполнения']"
+                                                      label="Фамилия"
+                                                      name="given-name" outlined
+                                                      v-model="user.last_name"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" lg="4">
+                                        <v-text-field :error-messages="errors.first_name"
+                                                      :rules="[ v => !!v || 'Обязательно для заполнения']"
+                                                      label="Имя"
+                                                      name="family-name" outlined
+                                                      v-model="user.first_name"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" lg="4">
+                                        <v-text-field :error-messages="errors.third_name"
+                                                      :rules="[ v => !!v || 'Обязательно для заполнения']"
+                                                      label="Отчество"
+                                                      name="additional-name" outlined
+                                                      v-model="user.third_name"></v-text-field>
+                                    </v-col>
+                                </v-row>
+                                <v-row>
                                     <v-col lg="12">
-                                        <v-combobox
-                                                :items="$store.getters.getStudentsDepartments"
-                                                item-text="name"
-                                                item-value="id"
-                                                label="Структурное подразделение"
-                                                outlined
-                                                v-model="user.department"
-                                                hint="Выберите существующее или укажите свое, если его нет в списке"
-                                        />
+                                        <v-text-field :error-messages="errors.company_name"
+                                                      :rules="[ v => !!v || 'Обязательно для заполнения']"
+                                                      label="Название организации"
+                                                      name="given-name"
+                                                      outlined v-if="user.role === 'company'"
+                                                      v-model="user.company_name"/>
+                                        <v-text-field :error-messages="errors.email"
+                                                      :rules="[ v => !!v || 'E-mail обязателен', v => /.+@.+\..+/.test(v) || 'E-mail должен быть корретным']"
+                                                      label="Email"
+                                                      name="email"
+                                                      outlined type="email" v-model="user.email"/>
 
-                                        <v-combobox
-                                                :items="$store.state.dictionaries.studentGroups"
-                                                item-text="name"
-                                                item-value="id"
-                                                label="Учебная группа"
-                                                outlined
-                                                v-model="user.student_group"
-                                                hint="Выберите существующую или укажите свою, если ее нет в списке"
-                                        />
-
+                                        <v-text-field :error-messages="errors.phone"
+                                                      :rules="[ v => !!v || 'Телефон обязателен']"
+                                                      label="Телефон"
+                                                      name="phone"
+                                                      outlined
+                                                      type="phone"
+                                                      v-mask="'\+7 (###) ###-##-##'" v-model="user.phone"
+                                                      validate-on-blur/>
+                                        <v-text-field :error-messages="errors.password"
+                                                      :rules="[ v => !!v || 'Обязательно для заполнения']"
+                                                      label="Пароль"
+                                                      name="password" outlined type="password"
+                                                      v-model="user.password"/>
+                                        <v-text-field
+                                                :rules="[ v => v === user.password    || 'Должен совпадать с паролем']"
+                                                label="Подтверждение пароля"
+                                                name="password_confirm"
+                                                outlined type="password" v-model="user.password_confirm"/>
 
                                     </v-col>
                                 </v-row>
-                            </transition>
-                            <transition name="fade">
-                                <v-row transition="scroll-y-transition" v-if="user.role === 'employee'">
-                                    <v-subheader>Информация о сотруднике</v-subheader>
+                                <transition name="fade">
+                                    <v-row transition="scroll-y-transition" v-if="user.role === 'student'">
+                                        <v-subheader>Информация о студенте</v-subheader>
+                                        <v-col lg="12">
+                                            <v-autocomplete
+                                                    :items="$store.state.dictionaries.studentGroups"
+                                                    hint="Выберите существующую"
+                                                    :rules="[ v => !!v || 'Обязательно для заполнения']"
+                                                    item-text="name"
+                                                    item-value="id"
+                                                    label="Учебная группа"
+                                                    outlined
+                                                    v-model="user.student_group"
+                                            />
+
+
+                                        </v-col>
+                                    </v-row>
+                                </transition>
+                                <transition name="fade">
+                                    <v-row transition="scroll-y-transition" v-if="user.role === 'employee'">
+                                        <v-subheader>Информация о сотруднике</v-subheader>
+                                        <v-col lg="12">
+                                            <v-combobox
+                                                    :items="$store.state.dictionaries.departments"
+                                                    :rules="[v => !!v || 'Item is required']"
+                                                    hint="Выберите существующее или укажите свое, если его нет в списке"
+                                                    item-text="name"
+                                                    item-value="id"
+                                                    label="Структурное подразделение"
+                                                    outlined
+                                                    v-model="user.department"
+                                            />
+
+                                            <v-text-field
+                                                    label="Должность"
+                                                    outlined
+                                                    v-model="user.employee_post"
+                                            />
+
+
+                                        </v-col>
+                                    </v-row>
+                                </transition>
+
+                                <transition name="fade">
+                                    <v-row transition="scroll-y-transition" v-if="user.role === 'pupil'">
+                                        <v-subheader>Информация об ученике</v-subheader>
+                                        <v-col lg="12">
+                                            <v-text-field
+                                                    label="Учебное заведение"
+                                                    outlined
+                                                    v-model="user.pupil_school"
+                                            />
+
+                                            <v-text-field
+                                                    label="Класс"
+                                                    outlined
+                                                    v-model="user.pupil_class"
+                                            />
+
+
+                                        </v-col>
+                                    </v-row>
+                                </transition>
+
+                                <v-row>
                                     <v-col lg="12">
-                                        <v-combobox
-                                                :items="$store.state.dictionaries.departments"
-                                                item-text="name"
-                                                item-value="id"
-                                                label="Структурное подразделение"
-                                                outlined
-                                                v-model="user.department"
-                                                hint="Выберите существующее или укажите свое, если его нет в списке"
-                                        />
-
-                                        <v-text-field
-                                                label="Должность"
-                                                outlined
-                                                v-model="user.employee_post"
-                                        />
-
-
+                                        <v-btn :disabled="!form_valid" @click="signUp" color="blue" outlined>
+                                            Зарегистрироваться
+                                        </v-btn>
                                     </v-col>
                                 </v-row>
-                            </transition>
-
-                            <transition name="fade">
-                                <v-row transition="scroll-y-transition" v-if="user.role === 'pupil'">
-                                    <v-subheader>Информация об ученике</v-subheader>
-                                    <v-col lg="12">
-                                        <v-text-field
-                                                label="Учебное заведение"
-                                                outlined
-                                                v-model="user.pupil_school"
-                                        />
-
-                                        <v-text-field
-                                                label="Класс"
-                                                outlined
-                                                v-model="user.pupil_class"
-                                        />
 
 
-                                    </v-col>
-                                </v-row>
-                            </transition>
+                            </v-container>
 
-                            <v-row>
-                                <v-col lg="12">
-                                    <v-btn @click="signUp" color="blue" outlined>Зарегистрироваться</v-btn>
-                                </v-col>
-                            </v-row>
-
-
-                        </v-container>
-
-
+                        </v-form>
                     </v-card-text>
 
                 </v-card>
@@ -298,21 +318,23 @@
 </template>
 
 <script>
-    import { mask } from 'vue-the-mask'
+    import {mask} from 'vue-the-mask'
 
     export default {
         directives: {
             mask,
         },
         name: "SignupComponent",
-        mounted(){
-          this.$store.dispatch('getStudentGroups')
-          this.$store.dispatch('getDepartments')
+        mounted() {
+            this.$store.dispatch('getStudentGroups')
+            this.$store.dispatch('getDepartments')
         },
         data() {
             return {
                 student_groups: ['609-71', '609-72'],
                 institutes: ['Политехнический институт'],
+                form_valid: true,
+                snackbar: false,
                 user: {
                     first_name: '',
                     last_name: '',
@@ -334,16 +356,24 @@
         },
         methods: {
             signUp() {
-                this.$store.dispatch('signUp', this.user).then(() => {
-                    this.$store.dispatch('authUser', {
-                        username: this.user.email,
-                        password: this.user.password
-                    }).then(() => {
-                        this.$router.push('/');
-                    })
-                }).catch((error) => {
-                    this.errors = error.response.data.errors;
-                });
+
+                if (this.$refs.form.validate()) {
+                    this.snackbar = true
+                    this.$store.dispatch('signUp', this.user).then(() => {
+                        this.$store.dispatch('authUser', {
+                            username: this.user.email,
+                            password: this.user.password
+                        }).then(() => {
+                            if(localStorage.getItem('return_path')){
+                                this.$router.push(localStorage.getItem('return_path'))
+                                localStorage.removeItem('return_path')
+                            }
+                            else this.$router.push('/');
+                        })
+                    }).catch((error) => {
+                        this.errors = error.response.data.errors;
+                    });
+                }
             }
         }
     }

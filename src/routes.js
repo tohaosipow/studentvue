@@ -21,6 +21,7 @@ import ProjectsItemComponent from "@/components/Projects/ProjectsItemComponent";
 import ProjectsItemInfoComponent from "@/components/Projects/ProjectsItem/ProjectsItemInfoComponent";
 import ProjectsItemParticipantsComponent from "@/components/Projects/ProjectsItem/ProjectsItemParticipantsComponent";
 import ProjectsItemRolesComponent from "@/components/Projects/ProjectsItem/ProjectsItemRolesComponent";
+import EventRateComponent from "@/components/Events/EventRateComponent";
 
 
 const routes = [
@@ -36,6 +37,7 @@ const routes = [
                 {path: 'criteria', component: EventRubricsComponent, name: 'event.criteria'},
                 {path: 'points', component: EventPointComponent, name: 'event.points'},
                 {path: 'qr_enter', component: EventQRRegisterComponent, name: 'event.qr_enter'},
+                {path: 'rating', component: EventRateComponent, name: 'event.rating'},
             ]
     },
     {path: '/events/:id/teams/:team_id', component: TeamComponent, name: 'teams.item'},

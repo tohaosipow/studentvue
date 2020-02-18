@@ -40,8 +40,9 @@ export default {
                 user.authUser(username, password).then((response) => {
                     localStorage.setItem('access_token', response.data.access_token);
                     window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.access_token;
-                    dispatch('getUser');
-                    resolve()
+                    dispatch('getUser').then(() => {
+                        resolve()
+                    });
 
                 }).catch((error) => {
                     reject(error);

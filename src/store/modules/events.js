@@ -345,6 +345,12 @@ export default {
             return events.getEventTypes().then(response => {
                 commit('setEventTypes', response.data);
             })
+        },
+
+        rateEvent({commit}, data){
+            return events.rateEvent(data).then((response) => {
+                commit('setUserStatus', response.data);
+            })
         }
     }
 }

@@ -1,10 +1,12 @@
 <template>
     <div>
-        <v-card-text>
-            <v-form>
+        <v-form @submit.prevent.stop="singIn">
+            <v-card-text>
+
                 <v-text-field
                         label="Email"
                         name="email"
+                        :loading="loading"
                         outlined
                         type="text"
                         v-model="credentials.username"
@@ -14,22 +16,44 @@
                               id="password"
                               label="Пароль"
                               name="password"
+                              :loading="loading"
                               outlined
                               type="password"
 
                               v-model="credentials.password"
                 />
-            </v-form>
-        </v-card-text>
-        <v-card-actions>
-            <div>
-            <v-btn  @click="singIn" color="blue darken-2" icon class="ma-2"  dark >
-                <v-icon left>mdi-login</v-icon>  Войти в систему</v-btn>
 
-            <div class="signin-button ml-4" data-color="black" data-type="sign in" id="appleid-signin"></div>
-            </div>
+            </v-card-text>
+            <v-card-actions>
+                <v-row align="center">
+                    <v-col cols="12" lg="4">
+                        <v-btn   :loading="loading" type="submit"  class="ma-2" color="blue darken-2" dark  outlined>
+                            <v-icon small left>mdi-login</v-icon>
+                            Войти c логином и паролем
+                        </v-btn>
+                    </v-col>
+                    <v-col cols="12" lg="3">
+                        <div class="signin-button ml-4" data-color="black" data-type="sign in" id="appleid-signin"></div>
+                    </v-col>
 
-        </v-card-actions>
+
+
+                </v-row>
+
+            </v-card-actions>
+
+        </v-form>
+        <v-snackbar color="success"
+                v-model="snackbar"
+        >
+            Успешно! Входим в систему ...
+            <v-btn
+                    text
+                    @click="snackbar= false"
+            >
+                Закрыть
+            </v-btn>
+        </v-snackbar>
     </div>
 </template>
 
@@ -42,6 +66,8 @@
                     username: '',
                     password: ''
                 },
+                loading: false,
+                snackbar: false,
                 errors: {
                     login: []
                 }
@@ -49,10 +75,19 @@
         },
         methods: {
             singIn() {
+                this.loading = true
                 this.$store.dispatch('authUser', this.credentials).then(() => {
-                    this.$router.push('/');
+                    this.loading = false
+                    this.snackbar = true
+                    if(localStorage.getItem('return_path')){
+                        this.$router.push(localStorage.getItem('return_path'))
+                        localStorage.removeItem('return_path')
+                    }
+                    else this.$router.push('/');
+
                 }, () => {
                     this.errors.login = 'Неверный логин или пароль';
+                    this.loading = false
                 })
             }
         },
