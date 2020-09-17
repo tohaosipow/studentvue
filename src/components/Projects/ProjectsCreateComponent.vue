@@ -6,12 +6,13 @@
                     <v-card-title class="subtitle-1">Информация о заказчике</v-card-title>
                     <v-card-text>
                         <v-text-field autocomplete="off" label="Заказчик" outlined
-                                      placeholder="Сургутский государственный университет"
-                                      v-model="project.customer"/>
+                                      placeholder="Например Сургутский государственный университет"
+                                      v-model="project.customer"  :error-messages="errors.customer"/>
+
                         <v-autocomplete :items="$store.state.projects.project_types" auto-select-first
                                         autocomplete="off"
                                         item-text="name" item-value="id" label="Тип проекта" outlined
-                                        v-model="project.project_type_id"/>
+                                        v-model="project.project_type_id"  :error-messages="errors.project_type_id"/>
                         <label>Цель проекта</label>
                         <v-checkbox label="Получить прототип (продукт, услугу) для внедрения" v-model="purposes"
                                     value="Получить прототип (продукт, услугу) для внедрения"/>
@@ -33,31 +34,38 @@
                 <v-card class="mt-2" outlined>
                     <v-card-title class="subtitle-1">Информация о проекте</v-card-title>
                     <v-card-text>
-                        <v-text-field counter="150" dense filled label="Название проекта" outlined
+                        <v-text-field :error-messages="errors.title"  counter="150" dense filled label="Название проекта" outlined
                                       shaped v-model="project.title"/>
-                        <v-textarea counter="500" dense filled label="Задача" outlined shaped v-model="project.task"/>
-                        <v-textarea counter="500" dense filled label="Проблема, которую решает проект"
+                        <v-textarea :error-messages="errors.task" counter="500" dense filled label="Задача" outlined shaped v-model="project.task"/>
+                        <v-textarea :error-messages="errors.problem" counter="500" dense filled label="Проблема, которую решает проект"
                                     outlined shaped
                                     v-model="project.problem"/>
-                        <v-textarea counter="500" dense filled label="Планируемый результат" outlined
+                        <v-textarea :error-messages="errors.result" counter="500" dense filled label="Планируемый результат" outlined
                                     shaped v-model="project.result"/>
-                        <v-textarea counter="500" dense filled label="Требуемые материальные ресурсы ресурсы"
+                        <v-textarea :error-messages="errors.resources"  counter="500" dense filled label="Требуемые материальные ресурсы ресурсы"
                                     outlined shaped
                                     v-model="project.resources"/>
-                        <v-file-input v-model="logotype" label="Логотип проекта" outlined  filled shaped dense/>
+                        <v-file-input :error-messages="errors.logotype"  v-model="logotype" label="Логотип проекта" outlined  filled shaped dense/>
+
+                        <v-checkbox
+                                label="Я знаю, кто именно мне нужен и хочу указать необходимые роли"
+                                v-model="need_team"
+                                :value="1"/>
+
                     </v-card-text>
+
                 </v-card>
-                <v-card class="mt-2" outlined>
+                <v-card v-if="need_team" class="mt-2" outlined>
                     <v-card-title class="subtitle-1">Необходимые участники</v-card-title>
                     <v-card-text>
                         <transition-group name="list" tag="p">
                             <v-row align="center" :key="index" v-for="(role, index) in roles">
                                 <v-col cols="8">
                                     <v-text-field dense filled label="Название роли"
-                                                  outlined placeholder="Программист"
+                                                  outlined placeholder="Например программист"
                                                   v-model="role.name"/>
                                     <v-text-field dense  label="Задачи роли"
-                                                  outlined placeholder="Писать код"
+                                                  outlined placeholder="Например писать код"
                                                   v-model="role.tasks"/>
                                 </v-col>
                                 <v-col cols="3">
@@ -83,7 +91,7 @@
                 </v-card>
                 <v-card class="mt-2">
                     <v-card-text>
-                        <v-btn @click="save" outlined color="blue darken-2">Добавить проект</v-btn>
+                        <v-btn :loading="loading" @click="save" outlined color="blue darken-2">Добавить проект</v-btn>
                     </v-card-text>
                 </v-card>
             </v-col>
@@ -102,6 +110,8 @@
         },
         data() {
             return {
+                need_team: false,
+                loading: false,
                 project: {
                     responsible_user_id: null,
                     project_type_id: null,
@@ -116,6 +126,7 @@
                 purposes: [],
                 logotype: null,
                 roles: [],
+                errors: []
             }
         },
         methods: {
@@ -128,15 +139,20 @@
             },
 
             save(){
+                this.loading = true;
                 let bodyFormData = new FormData();
                 Object.keys(this.project).forEach((key) => {
                     bodyFormData.set(key, this.project[key])
                 });
                 bodyFormData.set('roles', JSON.stringify(this.roles));
 
-                bodyFormData.append('logotype', this.logotype)
+                if(this.logotype === "null") bodyFormData.append('logotype', this.logotype)
                 this.$store.dispatch('storeProject', bodyFormData).then(() => {
                     this.$router.push('/projects');
+                    this.loading = false;
+                }).catch((e) => {
+                    this.errors = e.response.data.errors;
+                    this.loading = false;
                 })
 
 

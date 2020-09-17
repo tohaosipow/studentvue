@@ -4,7 +4,7 @@
             <v-alert type="info">
                 Используйте кнопки Одобрить и Исключить для модерации заявки.
             </v-alert>
-            <v-data-table
+            <v-data-table :loading="loading"
                     :headers="headers"
                     :items="participants"
                     :items-per-page="5"
@@ -102,14 +102,18 @@
         methods: {
             approve(user) {
                 user.loading = true
+                this.loading = true
                 this.$store.dispatch('approveUserOnProject', {id: this.project.id, user_id: user.id}).then(() => {
                     user.loading = false
+                    this.loading = false
                 })
             },
             decline(user) {
-                user.loading = true
+                user.loading = true;
+                this.loading = true;
                 this.$store.dispatch('declineUserOnProject', {id: this.project.id, user_id: user.id}).then(() => {
                     user.loading = false
+                    this.loading = false
                 })
             },
             changePermission(user, admin_mode) {
@@ -122,6 +126,7 @@
         },
         data() {
             return {
+                loading: false,
                 headers: [
                     {
                         text: '#',

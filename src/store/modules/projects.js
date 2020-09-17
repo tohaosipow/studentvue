@@ -1,5 +1,6 @@
 import project_types from "@/api/project_types";
 import projects from "@/api/projects";
+import project_roles from "@/api/project_roles";
 
 
 export default {
@@ -122,6 +123,13 @@ export default {
         storeProject({commit}, data) {
             return projects.store(data).then((r) => {
                 commit('addProject', r.data)
+            });
+
+        },
+
+        updateProjectRole({dispatch, state}, data) {
+            return project_roles.update(data).then(() => {
+                return dispatch('getCurrentProject', {id: state.currentProject.id})
             });
 
         },
