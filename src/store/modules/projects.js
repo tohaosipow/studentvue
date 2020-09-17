@@ -6,9 +6,11 @@ export default {
     state: {
         project_types: [],
         projects: [],
+        userProjects: [],
         currentProject: null,
         currentProjectParticipants: [],
         currentUserStatusInProject: null
+
     },
     mutations: {
         setCurrentUserStatusInProject(state, status) {
@@ -39,6 +41,10 @@ export default {
 
         setProjects(state, projects) {
             state.projects = projects;
+        },
+
+        setUserProjects(state, projects) {
+            state.userProjects = projects;
         },
 
         removeProject(state, project) {
@@ -82,6 +88,12 @@ export default {
         getProjects({commit}) {
             return projects.all().then((response) => {
                 commit('setProjects', response.data);
+                return true;
+            })
+        },
+        getProjectsByUser({commit}, data) {
+            return projects.byUserID(data.user_id).then((response) => {
+                commit('setUserProjects', response.data);
                 return true;
             })
         },

@@ -5,6 +5,10 @@ export default {
         return window.axios.get(endpoint+'/api/projects');
     },
 
+    byUserID(user_id){
+        return window.axios.get(endpoint+'/api/user/'+user_id+'/projects');
+    },
+
     store(data){
         return window.axios.post(endpoint+'/api/projects/store', data);
     },

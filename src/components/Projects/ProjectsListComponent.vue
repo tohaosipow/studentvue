@@ -17,6 +17,15 @@
             </template>
             <span>Создайте проект</span>
         </v-tooltip>
+        <v-tabs
+                v-model="my"
+                background-color="white"
+                color="blue darken-2 accent-4"
+                right
+        >
+            <v-tab>Все проекты</v-tab>
+            <v-tab>Мои проекты</v-tab>
+        </v-tabs>
         <v-row v-if="loading">
             <v-col :key="i" lg="3" v-for="i in 8">
                 <v-skeleton-loader
@@ -27,17 +36,17 @@
             </v-col>
         </v-row>
         <v-row v-else>
-            <v-col :key="project.id" cols="12" lg="3" v-for="project in $store.state.projects.projects">
+            <v-col :key="project.id" cols="12" lg="3" v-for="project in projects">
                 <v-card :to="'/projects/'+project.id">
                     <v-card-actions>
                         <v-spacer/>
-                        <v-btn @click="remove(project)"
+                        <v-btn @click.prevent.stop="remove(project)"
                                color="red"
                                icon
                                v-if="$store.state.user.currentUser.admin == 1 || project.responsible_user_id == $store.state.user.currentUser.id">
                             <v-icon>mdi-delete</v-icon>
                         </v-btn>
-                        <v-btn @click="approve(project)" color="green" icon
+                        <v-btn @click.prevent.stop="approve(project)" color="green" icon
                                v-if="$store.state.user.currentUser.admin == 1 && project.approved == 0">
                             <v-icon>mdi-check</v-icon>
                         </v-btn>
@@ -100,25 +109,42 @@
         name: "ProjectsListComponent",
         data() {
             return {
-                loading: true
+                loading: true,
+                my: 1,
+                userProject: []
+            }
+        },
+        computed: {
+            projects() {
+                return this.my === 1?this.$store.state.projects.userProjects:this.$store.state.projects.projects.filter((project) => {return parseInt(project.approved) === 0 && parseInt(this.$store.state.user.currentUser.admin) === 1 || parseInt(project.approved) === 1});
             }
         },
         methods: {
             approve(project) {
                 if (confirm('Вы действительно хотите одобрить?')) {
-                    this.$store.dispatch('approveProject', {id: project.id})
+                    this.$store.dispatch('approveProject', {id: project.id}).then(() => {
+                        this.$store.dispatch('getProjects');
+                        this.$store.dispatch('getProjectsByUser', {user_id: this.$store.state.user.currentUser.id})
+                    })
                 }
             },
             remove(project) {
                 if (confirm('Вы действительно хотите удалить проект?')) {
-                    this.$store.dispatch('removeProject', {id: project.id})
+                    this.$store.dispatch('removeProject', {id: project.id}).then(() => {
+                        this.$store.dispatch('getProjects');
+                        this.$store.dispatch('getProjectsByUser', {user_id: this.$store.state.user.currentUser.id})
+                    })
+
                 }
             }
         },
         mounted() {
             this.$emit('changeTitle', 'Проекты')
+            // eslint-disable-next-line no-console
+            console.log(this.$store.state.user.currentUser.id);
             Promise.all([
                 this.$store.dispatch('getEmployees'),
+                this.$store.dispatch('getProjectsByUser', {user_id: this.$store.state.user.currentUser.id}),
                 this.$store.dispatch('getProjects')]).then(() => {
                     this.loading = false;
             })
