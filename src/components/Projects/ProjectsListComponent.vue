@@ -24,7 +24,7 @@
                 right
         >
             <v-tab>Все проекты</v-tab>
-            <v-tab>Мои проекты</v-tab>
+            <v-tab v-if="$store.state.user.currentUser.id > 0">Мои проекты</v-tab>
         </v-tabs>
         <v-row v-if="loading">
             <v-col :key="i" lg="3" v-for="i in 8">
@@ -101,6 +101,27 @@
                 </v-card>
             </v-col>
         </v-row>
+        <v-row align-content="center" v-if="projects.length === 0">
+            <v-col>
+                <v-card>
+                    <v-alert v-if="my === 1"
+                            prominent
+                             text
+                            type="info"
+                    >
+                        <v-row align="center">
+                            <v-col class="grow">Проектов нет. Самое время их создать или вступить в чужой.</v-col>
+                            <v-col class="shrink">
+                                <v-btn  to="/projects/create"  color="green">Создать свой</v-btn>
+                            </v-col>
+                            <v-col class="shrink">
+                                <v-btn @click="my = 0" color="blue">Смотреть все</v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-alert>
+                </v-card>
+            </v-col>
+        </v-row>
     </v-container>
 </template>
 
@@ -146,12 +167,22 @@
             this.$emit('changeTitle', 'Проекты')
             // eslint-disable-next-line no-console
             console.log(this.$store.state.user.currentUser.id);
-            Promise.all([
-                this.$store.dispatch('getEmployees'),
-                this.$store.dispatch('getProjectsByUser', {user_id: this.$store.state.user.currentUser.id}),
-                this.$store.dispatch('getProjects')]).then(() => {
+            if(this.$store.state.user.currentUser.id > 0) {
+                Promise.all([
+                    this.$store.dispatch('getEmployees'),
+                    this.$store.dispatch('getProjectsByUser', {user_id: this.$store.state.user.currentUser.id}),
+                    this.$store.dispatch('getProjects')]).then(() => {
                     this.loading = false;
-            })
+                })
+            }
+            else{
+                this.my = 0;
+                Promise.all([
+                    this.$store.dispatch('getEmployees'),
+                    this.$store.dispatch('getProjects')]).then(() => {
+                    this.loading = false;
+                })
+            }
         }
     }
 </script>
