@@ -57,7 +57,7 @@
         },
         mounted() {
             window.AppleID.auth.init({
-                clientId: 'osipov.surgu.auth',
+                clientId: 'osipov.surgu',
                 scope: 'name email',
                 redirectURI: 'https://api.student.surgu.ru/apple_redirect'
             });
