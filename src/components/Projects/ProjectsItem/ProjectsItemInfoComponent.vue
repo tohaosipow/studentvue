@@ -21,7 +21,7 @@
             <v-textarea :readonly="readOnly"  label="Требуемые материальные ресурсы ресурсы" outlined
                         v-model="project.resources"/>
 
-            <v-btn v-if="!readOnly" color="blue darken-2" dark>Сохранить</v-btn>
+            <v-btn :loading="saveLoading" @click="save" v-if="!readOnly" color="blue darken-2" dark>Сохранить</v-btn>
         </v-card-text>
     </v-card>
 </template>
@@ -35,9 +35,22 @@
             },
 
             readOnly(){
-                return true
+                return !(this.$store.state.user.currentUser.admin === 1 || this.$store.getters.canEditProject)
             }
         },
+        data(){
+            return {
+                saveLoading: false
+            }
+        },
+        methods:{
+
+            save(){
+                this.saveLoading = true;
+                this.$store.dispatch('updateProject', this.$store.state.projects.currentProject).then(() => {this.saveLoading  = false});
+            }
+        }
+
     }
 </script>
 

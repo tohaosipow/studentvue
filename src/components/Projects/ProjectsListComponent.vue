@@ -37,7 +37,7 @@
         </v-row>
         <v-row v-else>
             <v-col :key="project.id" cols="12" lg="3" v-for="project in projects">
-                <v-card :to="'/projects/'+project.id">
+                <v-card :loading="loading" :to="'/projects/'+project.id">
                     <v-card-actions>
                         <v-spacer/>
                         <v-btn @click.prevent.stop="remove(project)"
@@ -121,16 +121,20 @@
         },
         methods: {
             approve(project) {
+                this.loading = true;
                 if (confirm('Вы действительно хотите одобрить?')) {
                     this.$store.dispatch('approveProject', {id: project.id}).then(() => {
                         this.$store.dispatch('getProjects');
+                        this.loading = false;
                         this.$store.dispatch('getProjectsByUser', {user_id: this.$store.state.user.currentUser.id})
                     })
                 }
             },
             remove(project) {
                 if (confirm('Вы действительно хотите удалить проект?')) {
+                    this.loading = true;
                     this.$store.dispatch('removeProject', {id: project.id}).then(() => {
+                        this.loading = false;
                         this.$store.dispatch('getProjects');
                         this.$store.dispatch('getProjectsByUser', {user_id: this.$store.state.user.currentUser.id})
                     })

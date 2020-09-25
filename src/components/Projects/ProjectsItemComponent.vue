@@ -1,8 +1,30 @@
 <template>
     <v-container fluid>
-        <v-row>
+        <v-row v-if="project">
             <v-col lg="3">
-                <v-card>
+                <v-row justify="center">
+                <v-dialog v-model="applicationDialog" persistent max-width="500">
+                    <template v-slot:activator="{ on }">
+                        <v-btn :loading="application.loading" v-if="$store.state.projects.currentUserStatusInProject === undefined"  class="ma-2" color="green" dark  v-on="on">Вступить в проект</v-btn>
+                    </template>
+                    <v-card>
+                        <v-card-title class="headline">Кем бы вы хотели стать в проекте?</v-card-title>
+                        <v-card-text>
+                            <v-autocomplete :item-disabled="isFullRole" no-data-text="Такие нам не нужны" autocomplete="off" v-model="application.project_role_id" auto-select-first label="Роль в проекте" :items="project.roles" item-text="name" item-value="id"/>
+                            <v-switch v-model="application.admin" auto-select-first label="Хочу стать администратором" color="green"/>
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="blue" text @click="applicationDialog = false">Отменить</v-btn>
+                            <v-btn  color="blue darken-2" text @click="enterToProject">Подать заявку</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
+                    <v-btn v-if="$store.state.projects.currentUserStatusInProject && $store.state.projects.currentUserStatusInProject.approved == 0"  class="ma-2" color="orange"  @click="$store.dispatch('declineUserOnProject', {id: project.id, user_id: $store.state.user.currentUser.id})">Отменить заявку</v-btn>
+                    <v-btn color="red" dark v-if="$store.state.projects.currentUserStatusInProject && $store.state.projects.currentUserStatusInProject.approved == 1" class="ma-2"  @click="$store.dispatch('declineUserOnProject', {id: project.id, user_id: $store.state.user.currentUser.id})">Выйти из проекта</v-btn>
+
+                </v-row>
+                <v-card >
                     <v-img
                             :src="project.logotype_url"
                             class="white--text align-end"
@@ -11,27 +33,11 @@
                         <v-card-title style="z-index: 2; position:relative;">{{project.title}}</v-card-title>
                         <v-overlay :value="true" absolute z-index="1">
                         </v-overlay>
-                        <v-dialog v-model="applicationDialog" persistent max-width="500">
-                            <template v-slot:activator="{ on }">
-                                <v-btn :loading="application.loading" v-if="$store.state.projects.currentUserStatusInProject === undefined" style="z-index: 2; position:relative;" class="ma-2"  x-small v-on="on" outlined color="white">Вступить в проект</v-btn>
-                            </template>
-                            <v-card>
-                                <v-card-title class="headline">Кем бы вы хотели стать в проекте?</v-card-title>
-                                <v-card-text>
-                                    <v-autocomplete :item-disabled="isFullRole" no-data-text="Такие нам не нужны" autocomplete="off" v-model="application.project_role_id" auto-select-first label="Роль в проекте" :items="project.roles" item-text="name" item-value="id"/>
-                                    <v-switch v-model="application.admin" auto-select-first label="Хочу стать администратором" color="green"/>
-                                </v-card-text>
-                                <v-card-actions>
-                                    <v-spacer></v-spacer>
-                                    <v-btn color="blue" text @click="applicationDialog = false">Отменить</v-btn>
-                                    <v-btn  color="blue darken-2" text @click="enterToProject">Подать заявку</v-btn>
-                                </v-card-actions>
-                            </v-card>
-                        </v-dialog>
-                        <v-btn v-if="$store.state.projects.currentUserStatusInProject && $store.state.projects.currentUserStatusInProject.approved == 0" style="z-index: 2; position:relative;" class="ma-2"  x-small @click="$store.dispatch('declineUserOnProject', {id: project.id, user_id: $store.state.user.currentUser.id})" outlined color="white">Отменить заявку</v-btn>
-                        <v-btn v-if="$store.state.projects.currentUserStatusInProject && $store.state.projects.currentUserStatusInProject.approved == 1" style="z-index: 2; position:relative;" class="ma-2"  x-small @click="$store.dispatch('declineUserOnProject', {id: project.id, user_id: $store.state.user.currentUser.id})"  outlined color="white">Выйти из проекта</v-btn>
+
+                        <LogotypeUpdateComponent :project="project"/>
 
                     </v-img>
+
                     <v-card-subtitle>{{project.type.name}} проект</v-card-subtitle>
                     <v-card-text>
                         <div> {{project.task}}</div>
@@ -71,9 +77,10 @@
                             </v-list-item-action>
                         </v-list-item>
                     </v-list>
+
                 </v-card>
             </v-col>
-            <v-col lg="9">
+            <v-col v-if="project" lg="9">
                 <v-card class="mb-2" elevation="0">
                     <v-tabs
                             background-color="white"
@@ -93,12 +100,18 @@
 </template>
 
 <script>
+
+    import LogotypeUpdateComponent from "@/components/Projects/ProjectsItem/LogotypeUpdateComponent";
+
     export default {
         name: "ProjectsItemComponent",
         computed: {
             project() {
                 return this.$store.state.projects.currentProject;
             }
+        },
+        components:{
+            LogotypeUpdateComponent
         },
         data(){
             return{

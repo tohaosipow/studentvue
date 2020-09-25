@@ -55,9 +55,12 @@ export default {
         },
 
         updateProject(state, project) {
+            // eslint-disable-next-line no-console
+            console.log(project);
             state.projects = [...state.projects.map((el) => {
                 return parseInt(el.id) === parseInt(project.id) ? project : el
-            })]
+            })];
+            if(parseInt(state.currentProject.id) === parseInt(project.id)) state.currentProject = project;
         },
 
         setCurrentProject(state, project) {
@@ -123,6 +126,13 @@ export default {
         storeProject({commit}, data) {
             return projects.store(data).then((r) => {
                 commit('addProject', r.data)
+            });
+
+        },
+
+        updateProject({commit}, data) {
+            return projects.update(data).then((r) => {
+                return commit('updateProject', r.data)
             });
 
         },

@@ -145,8 +145,7 @@
                     bodyFormData.set(key, this.project[key])
                 });
                 bodyFormData.set('roles', JSON.stringify(this.roles));
-
-                if(this.logotype === "null") bodyFormData.append('logotype', this.logotype)
+                if(this.logotype !== null) bodyFormData.append('logotype', this.logotype)
                 this.$store.dispatch('storeProject', bodyFormData).then(() => {
                     this.$router.push('/projects');
                     this.loading = false;

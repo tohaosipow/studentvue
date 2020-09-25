@@ -13,6 +13,11 @@ export default {
         return window.axios.post(endpoint+'/api/projects/store', data);
     },
 
+    update(data){
+        if(data.hasOwnProperty('form_data')) return  window.axios.post(endpoint+'/api/projects/'+data.id+'/update', data.form_data);
+        else return  window.axios.post(endpoint+'/api/projects/'+data.id+'/update', data);
+    },
+
     remove(data){
         return window.axios.post(endpoint+'/api/projects/'+data.id+'/remove');
     },
