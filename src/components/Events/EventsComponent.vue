@@ -61,7 +61,7 @@
         </v-card> !-->
 
         <v-row>
-            <v-col :key="event.id" lg="3" v-for="event in events">
+            <v-col :key="event.id" lg="6" v-for="event in events">
                 <v-card
                         class="mx-auto"
                 >
@@ -76,7 +76,10 @@
                         {{event.start_at}}
                     </v-card-subtitle>
                     <v-card-text>
-                        {{event.description}}
+                        <div style="height: 150px; display: inline-block; overflow:hidden;  text-overflow: ellipsis;">
+                            {{event.description}}
+                        </div>
+
                     </v-card-text>
                     <v-card-actions>
 

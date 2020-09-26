@@ -1,30 +1,33 @@
 <template>
     <v-container fluid>
-        <v-row v-if="project">
-            <v-col lg="3">
-                <v-row justify="center">
-                <v-dialog v-model="applicationDialog" persistent max-width="500">
-                    <template v-slot:activator="{ on }">
-                        <v-btn :loading="application.loading" v-if="$store.state.projects.currentUserStatusInProject === undefined"  class="ma-2" color="green" dark  v-on="on">Вступить в проект</v-btn>
-                    </template>
-                    <v-card>
-                        <v-card-title class="headline">Кем бы вы хотели стать в проекте?</v-card-title>
-                        <v-card-text>
-                            <v-autocomplete :item-disabled="isFullRole" no-data-text="Такие нам не нужны" autocomplete="off" v-model="application.project_role_id" auto-select-first label="Роль в проекте" :items="project.roles" item-text="name" item-value="id"/>
-                            <v-switch v-model="application.admin" auto-select-first label="Хочу стать администратором" color="green"/>
-                        </v-card-text>
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn color="blue" text @click="applicationDialog = false">Отменить</v-btn>
-                            <v-btn  color="blue darken-2" text @click="enterToProject">Подать заявку</v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
-                    <v-btn v-if="$store.state.projects.currentUserStatusInProject && $store.state.projects.currentUserStatusInProject.approved == 0"  class="ma-2" color="orange"  @click="$store.dispatch('declineUserOnProject', {id: project.id, user_id: $store.state.user.currentUser.id})">Отменить заявку</v-btn>
-                    <v-btn color="red" dark v-if="$store.state.projects.currentUserStatusInProject && $store.state.projects.currentUserStatusInProject.approved == 1" class="ma-2"  @click="$store.dispatch('declineUserOnProject', {id: project.id, user_id: $store.state.user.currentUser.id})">Выйти из проекта</v-btn>
+        <div v-if="project">
+                <v-breadcrumbs :items="[{
+          text: 'Главная',
+          disabled: true,
+          href: 'breadcrumbs_dashboard',
+        },
+        {
+          text: 'Проекты',
+          disabled: false,
+          href: '/#/projects',
+        },
+        {
+          text: this.project.title,
+          disabled: true,
+          href: 'breadcrumbs_link_2',
+        }]"></v-breadcrumbs>
 
-                </v-row>
-                <v-card >
+            <div>
+
+
+                <h1 class="heading">{{project.title}}</h1>
+                <p>{{project.task}}</p>
+
+            </div>
+        </div>
+        <v-row v-if="project">
+            <v-col lg="4">
+                <v-card>
                     <v-img
                             :src="project.logotype_url"
                             class="white--text align-end"
@@ -73,27 +76,135 @@
                                 {{role.quota}} чел
                             </v-list-item-subtitle>
                             <v-list-item-action>
-                                <v-progress-linear :value="$store.getters.getParticipantsByProjectRole(role.id).length/role.quota*100"></v-progress-linear>
+                                <v-progress-linear
+                                        :value="$store.getters.getParticipantsByProjectRole(role.id).length/role.quota*100"></v-progress-linear>
                             </v-list-item-action>
                         </v-list-item>
                     </v-list>
 
                 </v-card>
+                <v-card>
+
+                       <v-list>
+                           <v-subheader>Действия с проектом</v-subheader>
+                           <v-list-item-group color="primary">
+                               <v-list-item  v-if="$store.state.projects.currentUserStatusInProject && $store.state.projects.currentUserStatusInProject.approved == 1"  @click="$store.dispatch('declineUserOnProject', {id: project.id, user_id: $store.state.user.currentUser.id})">
+                                   <v-list-item-content>
+                                       <v-list-item-title>Выйти из проекта</v-list-item-title>
+                                   </v-list-item-content>
+                                   <v-list-item-icon>
+                                       <v-icon color="red">mdi-exit-to-app</v-icon>
+                                   </v-list-item-icon>
+                               </v-list-item>
+
+                               <v-subheader>Администрирование</v-subheader>
+
+                               <v-list-item @click="approve(project)" v-if="$store.state.user.currentUser.admin == 1 && $store.state.projects.currentProject.approved == 0">
+                                   <v-list-item-content>
+                                       <v-list-item-title>Одобрить проект</v-list-item-title>
+                                   </v-list-item-content>
+                                   <v-list-item-icon>
+                                       <v-icon color="green">mdi-exit-to-app</v-icon>
+                                   </v-list-item-icon>
+                               </v-list-item>
+
+                               <v-list-item  v-if="$store.state.projects.currentUserStatusInProject && $store.state.projects.currentUserStatusInProject.approved == 0"  @click="$store.dispatch('declineUserOnProject', {id: project.id, user_id: $store.state.user.currentUser.id})" >
+                                   <v-list-item-content>
+                                       <v-list-item-title>Отменить заявку</v-list-item-title>
+                                   </v-list-item-content>
+                                   <v-list-item-icon>
+                                       <v-icon>mdi-exit-to-app</v-icon>
+                                   </v-list-item-icon>
+                               </v-list-item>
+
+                               <v-dialog max-width="500" persistent v-model="applicationDialog">
+                                   <template v-slot:activator="{ on }">
+                                       <v-list-item v-if="$store.state.projects.currentUserStatusInProject === undefined" v-on="on">
+                                           <v-list-item-content>
+                                               <v-list-item-title>Вступить в проект</v-list-item-title>
+                                           </v-list-item-content>
+                                           <v-list-item-icon>
+                                               <v-icon color="green">mdi-login-variant</v-icon>
+                                           </v-list-item-icon>
+                                       </v-list-item>
+                                   </template>
+                                   <v-card>
+                                       <v-card-title class="headline">Кем бы вы хотели стать в проекте?</v-card-title>
+                                       <v-card-text>
+                                           <v-autocomplete :item-disabled="isFullRole" :items="project.roles"
+                                                           auto-select-first autocomplete="off"
+                                                           item-text="name" item-value="id" label="Роль в проекте"
+                                                           no-data-text="Такие нам не нужны" v-model="application.project_role_id"/>
+                                           <v-switch auto-select-first color="green"
+                                                     label="Хочу стать администратором" v-model="application.admin"/>
+                                       </v-card-text>
+                                       <v-card-actions>
+                                           <v-spacer></v-spacer>
+                                           <v-btn @click="applicationDialog = false" color="blue" text>Отменить</v-btn>
+                                           <v-btn @click="enterToProject" color="blue darken-2" text>Подать заявку</v-btn>
+                                       </v-card-actions>
+                                   </v-card>
+                               </v-dialog>
+                               <v-list-item>
+                                   <v-list-item-content>
+                                       <v-list-item-title>Удалить</v-list-item-title>
+                                   </v-list-item-content>
+                                   <v-list-item-icon>
+                                       <v-icon color="red">mdi-delete</v-icon>
+                                   </v-list-item-icon>
+                               </v-list-item>
+                           </v-list-item-group>
+
+                       </v-list>
+
+
+
+                </v-card>
+
             </v-col>
-            <v-col v-if="project" lg="9">
+            <v-col lg="8" v-if="project">
                 <v-card class="mb-2" elevation="0">
                     <v-tabs
                             background-color="white"
                             color="blue"
-                            right
                     >
                         <v-tab :to="{name: 'project.info'}">Информация</v-tab>
-                        <v-tab v-if="$store.state.user.currentUser.admin == 1 || $store.getters.canEditProject" :to="{name: 'project.roles'}">Роли в проекте</v-tab>
+                        <v-tab :to="{name: 'project.roles'}"
+                               v-if="$store.state.user.currentUser.admin == 1 || $store.getters.canEditProject">Роли в проекте
+                        </v-tab>
                         <v-tab :to="{name: 'project.participants'}">Участники</v-tab>
+                        <v-tab @click="remove(project)" style="color: red;">Удалить проект</v-tab>
                     </v-tabs>
                 </v-card>
                 <router-view/>
             </v-col>
+        </v-row>
+        <v-row v-else>
+            <v-col lg="12">
+                <v-skeleton-loader
+                        class="mx-auto mt-2"
+                        type="heading"
+                ></v-skeleton-loader>
+            </v-col>
+
+            <v-col lg="4">
+                <v-skeleton-loader
+                        class="mx-auto mt-2"
+                        type="image, article, list-item, list-item, list-item,list-item"
+                ></v-skeleton-loader>
+            </v-col>
+
+            <v-col lg="8">
+                <v-skeleton-loader
+                        class="mx-auto mt-2"
+                        type="table-row"
+                ></v-skeleton-loader>
+                <v-skeleton-loader
+                        class="mx-auto mt-2"
+                        type="table-tbody"
+                ></v-skeleton-loader>
+            </v-col>
+
         </v-row>
 
     </v-container>
@@ -110,13 +221,13 @@
                 return this.$store.state.projects.currentProject;
             }
         },
-        components:{
+        components: {
             LogotypeUpdateComponent
         },
-        data(){
-            return{
+        data() {
+            return {
                 applicationDialog: false,
-                application:{
+                application: {
                     project_role_id: null,
                     admin: false,
                     loading: false
@@ -124,7 +235,7 @@
             }
         },
         methods: {
-            enterToProject(){
+            enterToProject() {
                 this.application.loading = true
                 this.$store.dispatch('enterToProject', {id: this.project.id, ...this.application}).then(() => {
                     this.application.loading = false
@@ -132,12 +243,34 @@
                 })
             },
 
-            isFullRole(role){
+            isFullRole(role) {
                 return this.$store.getters.getParticipantsByProjectRole(role.id).length >= parseInt(role.quota)
+            },
+
+            approve(project) {
+                this.loading = true;
+                if (confirm('Вы действительно хотите одобрить?')) {
+                    this.$store.dispatch('approveProject', {id: project.id}).then(() => {
+                        this.$store.dispatch('getProjects');
+                        this.loading = false;
+                        this.$store.dispatch('getProjectsByUser', {user_id: this.$store.state.user.currentUser.id})
+                    })
+                }
+            },
+            remove(project) {
+                if (confirm('Вы действительно хотите удалить проект?')) {
+                    this.loading = true;
+                    this.$store.dispatch('removeProject', {id: project.id}).then(() => {
+                        this.loading = false;
+                        this.$store.dispatch('getProjects');
+                        this.$store.dispatch('getProjectsByUser', {user_id: this.$store.state.user.currentUser.id})
+                    })
+
+                }
             }
         },
         mounted() {
-            if(!this.$store.state.user.currentUser.id) return this.$router.push('/auth')
+            if (!this.$store.state.user.currentUser.id) return this.$router.push('/auth')
             Promise.all([
                 this.$store.dispatch('getEmployees'),
                 this.$store.dispatch('getProjectTypes'),
@@ -146,7 +279,7 @@
                 this.$store.dispatch('getProjectParticipants', {id: this.$route.params.project_id}),
                 this.$store.dispatch('getCurrentProject', {id: this.$route.params.project_id})]).then(() => {
                 this.loading = false;
-                this.$emit('changeTitle', this.$store.state.projects.currentProject.title)
+                // this.$emit('changeTitle', this.$store.state.projects.currentProject.title)
             })
         }
     }
