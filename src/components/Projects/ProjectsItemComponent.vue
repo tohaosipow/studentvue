@@ -90,26 +90,6 @@
                                    </v-list-item-icon>
                                </v-list-item>
 
-                               <v-subheader>Администрирование</v-subheader>
-
-                               <v-list-item @click="approve(project)" v-if="$store.state.user.currentUser.admin == 1 && $store.state.projects.currentProject.approved == 0">
-                                   <v-list-item-content>
-                                       <v-list-item-title>Одобрить проект</v-list-item-title>
-                                   </v-list-item-content>
-                                   <v-list-item-icon>
-                                       <v-icon color="green">mdi-exit-to-app</v-icon>
-                                   </v-list-item-icon>
-                               </v-list-item>
-
-                               <v-list-item  v-if="$store.state.projects.currentUserStatusInProject && $store.state.projects.currentUserStatusInProject.approved == 0"  @click="$store.dispatch('declineUserOnProject', {id: project.id, user_id: $store.state.user.currentUser.id})" >
-                                   <v-list-item-content>
-                                       <v-list-item-title>Отменить заявку</v-list-item-title>
-                                   </v-list-item-content>
-                                   <v-list-item-icon>
-                                       <v-icon>mdi-exit-to-app</v-icon>
-                                   </v-list-item-icon>
-                               </v-list-item>
-
                                <v-dialog max-width="500" persistent v-model="applicationDialog">
                                    <template v-slot:activator="{ on }">
                                        <v-list-item v-if="$store.state.projects.currentUserStatusInProject === undefined" v-on="on">
@@ -138,6 +118,30 @@
                                        </v-card-actions>
                                    </v-card>
                                </v-dialog>
+
+                               <v-list-item  v-if="$store.state.projects.currentUserStatusInProject && $store.state.projects.currentUserStatusInProject.approved == 0"  @click="$store.dispatch('declineUserOnProject', {id: project.id, user_id: $store.state.user.currentUser.id})" >
+                                   <v-list-item-content>
+                                       <v-list-item-title>Отменить заявку</v-list-item-title>
+                                   </v-list-item-content>
+                                   <v-list-item-icon>
+                                       <v-icon>mdi-exit-to-app</v-icon>
+                                   </v-list-item-icon>
+                               </v-list-item>
+
+                               <v-subheader>Администрирование</v-subheader>
+
+                               <v-list-item @click="approve(project)" v-if="$store.state.user.currentUser.admin == 1 && $store.state.projects.currentProject.approved == 0">
+                                   <v-list-item-content>
+                                       <v-list-item-title>Одобрить проект</v-list-item-title>
+                                   </v-list-item-content>
+                                   <v-list-item-icon>
+                                       <v-icon color="green">mdi-exit-to-app</v-icon>
+                                   </v-list-item-icon>
+                               </v-list-item>
+
+
+
+
                                <v-list-item @click="remove(project); $router.push('/projects/')">
                                    <v-list-item-content>
                                        <v-list-item-title>Удалить</v-list-item-title>
