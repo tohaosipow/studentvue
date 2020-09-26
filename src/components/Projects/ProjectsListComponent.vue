@@ -65,7 +65,7 @@
                     <v-list-item three-line>
                         <v-list-item-content>
                             <div class="overline mb-4">Вакансии</div>
-                            <v-chip-group>
+                            <v-chip-group @click.prevent.stop="() => {}">
                                 <v-menu :key="role.id" bottom
                                         origin="top left"
                                         right
