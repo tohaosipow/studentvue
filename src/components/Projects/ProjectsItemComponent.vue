@@ -142,7 +142,7 @@
 
 
 
-                               <v-list-item @click="remove(project); $router.push('/projects/')">
+                               <v-list-item @click="remove(project)">
                                    <v-list-item-content>
                                        <v-list-item-title>Удалить</v-list-item-title>
                                    </v-list-item-content>
@@ -260,6 +260,7 @@
                         this.loading = false;
                         this.$store.dispatch('getProjects');
                         this.$store.dispatch('getProjectsByUser', {user_id: this.$store.state.user.currentUser.id})
+                        this.$router.push('/projects/')
                     })
 
                 }
