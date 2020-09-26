@@ -17,8 +17,6 @@
             </template>
             <span>Создайте проект</span>
         </v-tooltip>
-        <h1 class="heading">Проекты</h1>
-        <p>Студенческие проекты являются неотъемлимой частью студенческой жизни</p>
         <v-tabs
                 background-color="white"
                 color="blue darken-2 accent-4"
@@ -39,11 +37,11 @@
         <v-row v-else>
 
             <v-col :key="project.id" cols="12" lg="6" v-for="project in projects">
-                <v-card :to="'/projects/'+project.id"
+                <v-card @click="$router.push('/projects/'+project.id)"
                         class="mx-auto"
                         outlined
                 >
-                    <v-list-item three-line>
+                    <v-list-item   three-line>
                         <v-list-item-content>
                             <div class="overline mb-4">{{project.type.name}} проект</div>
                             <v-list-item-title class="headline mb-1" style="white-space: normal">{{project.title}}</v-list-item-title>
@@ -62,10 +60,11 @@
                         </v-list-item-avatar>
                     </v-list-item>
 
+
                     <v-list-item three-line>
                         <v-list-item-content>
                             <div class="overline mb-4">Вакансии</div>
-                            <v-chip-group @click.prevent.stop="() => {}">
+                            <v-chip-group column @click.prevent.stop="() => {}">
                                 <v-menu :key="role.id" bottom
                                         origin="top left"
                                         right
@@ -74,7 +73,7 @@
                                 >
                                     <template v-slot:activator="{ on }">
 
-                                        <v-chip v-on="on"
+                                        <v-chip light
                                                 class="ma-2"
                                                 text-color="white"
                                                 style="padding-left: 40px;"
@@ -85,7 +84,7 @@
                                                     left
                                                     style="position: absolute; z-index: 2; left: 10px"
                                                     color="#eaeaea"
-                                                    class="text-white darken-4"
+                                                    class="text-white darken-4 hidden-sm-only"
                                             >
                                             {{role.quota}}
                                             </v-avatar>
