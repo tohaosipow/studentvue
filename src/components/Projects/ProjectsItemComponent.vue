@@ -17,13 +17,6 @@
           href: 'breadcrumbs_link_2',
         }]"></v-breadcrumbs>
 
-            <div>
-
-
-                <h1 class="heading">{{project.title}}</h1>
-                <p>{{project.task}}</p>
-
-            </div>
         </div>
         <v-row v-if="project">
             <v-col lg="4">
@@ -33,7 +26,7 @@
                             class="white--text align-end"
                             height="200px"
                     >
-                        <v-card-title style="z-index: 2; position:relative;">{{project.title}}</v-card-title>
+                        <v-card-title style="z-index: 2; position:relative;  word-break: break-word;">{{project.title}}</v-card-title>
                         <v-overlay :value="true" absolute z-index="1">
                         </v-overlay>
 
@@ -145,7 +138,7 @@
                                        </v-card-actions>
                                    </v-card>
                                </v-dialog>
-                               <v-list-item>
+                               <v-list-item @click="remove(project); $router.push('/projects/')">
                                    <v-list-item-content>
                                        <v-list-item-title>Удалить</v-list-item-title>
                                    </v-list-item-content>
@@ -173,7 +166,6 @@
                                v-if="$store.state.user.currentUser.admin == 1 || $store.getters.canEditProject">Роли в проекте
                         </v-tab>
                         <v-tab :to="{name: 'project.participants'}">Участники</v-tab>
-                        <v-tab @click="remove(project)" style="color: red;">Удалить проект</v-tab>
                     </v-tabs>
                 </v-card>
                 <router-view/>

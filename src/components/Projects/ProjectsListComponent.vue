@@ -41,6 +41,12 @@
                         class="mx-auto"
                         outlined
                 >
+
+                        <v-img  class="d-block d-sm-none"
+                                :src="project.logotype_url"
+                                dark
+                        ></v-img>
+
                     <v-list-item   three-line>
                         <v-list-item-content>
                             <div class="overline mb-4">{{project.type.name}} проект</div>
@@ -50,6 +56,7 @@
 
                         <v-list-item-avatar
                                 color="grey"
+                                class="hidden-xs-only"
                                 size="150"
                                 tile
                         >
@@ -84,7 +91,7 @@
                                                     left
                                                     style="position: absolute; z-index: 2; left: 10px"
                                                     color="#eaeaea"
-                                                    class="text-white darken-4 hidden-sm-only"
+                                                    class="text-white darken-4"
                                             >
                                             {{role.quota}}
                                             </v-avatar>
