@@ -169,8 +169,8 @@
                             {value: 'employee', name: 'Сотрудник'},
                             {value: 'student', name: 'Студент'},
                             {value: 'pupil', name: 'Школьник'},
-                            {value: 'visitor', name: 'Пользователь'},
-                            {value: 'company', name: 'Партнер'},
+                            {value: 'visitor', name: 'Другое'},
+                            {value: 'company', name: 'Внешний партнер'},
                         ]" auto-select-first item-text="name" item-value="value"
                                                         label="Выберите роль" outlined v-model="user.role"/>
                                     </v-col>
