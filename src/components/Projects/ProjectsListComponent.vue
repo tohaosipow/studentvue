@@ -42,21 +42,22 @@
                         outlined
                 >
 
-                        <v-img  class="d-block d-sm-none"
-                                :src="project.logotype_url"
-                                dark
-                        ></v-img>
+                    <v-img :src="project.logotype_url"
+                           class="d-block d-sm-none"
+                           dark
+                    ></v-img>
 
-                    <v-list-item   three-line>
+                    <v-list-item three-line>
                         <v-list-item-content>
                             <div class="overline mb-4">{{project.type.name}} проект</div>
-                            <v-list-item-title class="headline mb-1" style="white-space: normal">{{project.title}}</v-list-item-title>
+                            <v-list-item-title class="headline mb-1" style="white-space: normal">{{project.title}}
+                            </v-list-item-title>
                             <v-list-item-subtitle style="-webkit-line-clamp: 4">{{project.task}}</v-list-item-subtitle>
                         </v-list-item-content>
 
                         <v-list-item-avatar
-                                color="grey"
                                 class="hidden-xs-only"
+                                color="grey"
                                 size="150"
                                 tile
                         >
@@ -71,7 +72,7 @@
                     <v-list-item three-line>
                         <v-list-item-content>
                             <div class="overline mb-4">Вакансии</div>
-                            <v-chip-group column @click.prevent.stop="() => {}">
+                            <v-chip-group @click.prevent.stop="() => {}" column>
                                 <v-menu :key="role.id" bottom
                                         origin="top left"
                                         right
@@ -80,20 +81,21 @@
                                 >
                                     <template v-slot:activator="{ on }">
 
-                                        <v-chip light
-                                                class="ma-2"
-                                                text-color="white"
+                                        <v-chip class="ma-2"
+                                                light
                                                 style="padding-left: 40px;"
+                                                text-color="white"
                                         >
 
-                                            <v-progress-circular color="green" style="position: absolute; left: 0" :value="parseInt(role.users.length/role.quota*100)"></v-progress-circular>
+                                            <v-progress-circular :value="parseInt(role.users.length/role.quota*100)" color="green"
+                                                                 style="position: absolute; left: 0"></v-progress-circular>
                                             <v-avatar
+                                                    class="text-white darken-4"
+                                                    color="#eaeaea"
                                                     left
                                                     style="position: absolute; z-index: 2; left: 10px"
-                                                    color="#eaeaea"
-                                                    class="text-white darken-4"
                                             >
-                                            {{role.quota}}
+                                                {{role.quota}}
                                             </v-avatar>
                                             {{role.name}}
                                         </v-chip>
@@ -116,11 +118,17 @@
 
 
                     <v-card-actions v-if="project.approved == 0">
-                        <v-btn small @click.prevent.stop="approve(project)"  v-if="$store.state.user.currentUser.admin == 1 && project.approved == 0" class="ma-2" tile outlined color="success">
-                            <v-icon left>mdi-check</v-icon> Одобрить
+                        <v-btn @click.prevent.stop="approve(project)" class="ma-2"
+                               color="success" outlined
+                               small tile v-if="$store.state.user.currentUser.admin == 1 && project.approved == 0">
+                            <v-icon left>mdi-check</v-icon>
+                            Одобрить
                         </v-btn>
-                        <v-btn small @click.prevent.stop="remove(project)" v-if="$store.state.user.currentUser.admin == 1 || project.responsible_user_id == $store.state.user.currentUser.id" class="ma-2" tile outlined color="error">
-                            <v-icon left>mdi-delete</v-icon> Удалить
+                        <v-btn @click.prevent.stop="remove(project)" class="ma-2"
+                               color="error"
+                               outlined small tile v-if="$store.state.user.currentUser.admin == 1 || project.responsible_user_id == $store.state.user.currentUser.id">
+                            <v-icon left>mdi-delete</v-icon>
+                            Удалить
                         </v-btn>
                     </v-card-actions>
                 </v-card>
@@ -257,7 +265,7 @@
             }
         },
         mounted() {
-            this.$emit('changeTitle', 'Проекты')
+            this.$emit('changeTitle', 'Проекты');
             // eslint-disable-next-line no-console
             console.log(this.$store.state.user.currentUser.id);
             if (this.$store.state.user.currentUser.id > 0) {
@@ -265,6 +273,7 @@
                     this.$store.dispatch('getEmployees'),
                     this.$store.dispatch('getProjectsByUser', {user_id: this.$store.state.user.currentUser.id}),
                     this.$store.dispatch('getProjects')]).then(() => {
+                    this.my = this.$store.state.projects.userProjects.length > 0 ? 1 : 0
                     this.loading = false;
                 })
             } else {

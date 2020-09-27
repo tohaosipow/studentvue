@@ -44,6 +44,18 @@
                             <v-icon  @click.stop="$store.dispatch('logout'), $router.push('/auth')">mdi-logout</v-icon>
                         </v-list-item-action>
                     </v-list-item>
+                    <v-list-item v-else two-line>
+
+                        <v-list-item-content>
+                            <v-list-item-title> Вход / регистрация
+                            </v-list-item-title>
+                            <v-list-item-subtitle>Войдите или зарегистрируйтесь
+                            </v-list-item-subtitle>
+                        </v-list-item-content>
+                        <v-list-item-action>
+                            <v-icon  @click.stop="$store.dispatch('logout'), $router.push('/auth')">mdi-login</v-icon>
+                        </v-list-item-action>
+                    </v-list-item>
 
                     <v-divider></v-divider>
 
