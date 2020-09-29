@@ -83,7 +83,7 @@
                     </v-card-text>
                     <v-card-actions>
 
-                        <v-btn :to="{name: 'events.item', params: {id: event.id}}"
+                        <v-btn :to="{name: 'events.item.info', params: {id: event.id}}"
                                color="blue"
                                text
                         >

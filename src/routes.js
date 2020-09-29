@@ -22,6 +22,7 @@ import ProjectsItemInfoComponent from "@/components/Projects/ProjectsItem/Projec
 import ProjectsItemParticipantsComponent from "@/components/Projects/ProjectsItem/ProjectsItemParticipantsComponent";
 import ProjectsItemRolesComponent from "@/components/Projects/ProjectsItem/ProjectsItemRolesComponent";
 import EventRateComponent from "@/components/Events/EventRateComponent";
+import EventInfoComponent from "@/components/Events/EventInfoComponent";
 
 
 const routes = [
@@ -33,6 +34,7 @@ const routes = [
         children:
             [
                 {path: 'participants', component: EventParticipantComponent, name: 'event.participants'},
+                {path: 'info', component: EventInfoComponent, name: 'events.item.info'},
                 {path: 'teams', component: EventTeamsComponent, name: 'event.teams'},
                 {path: 'criteria', component: EventRubricsComponent, name: 'event.criteria'},
                 {path: 'points', component: EventPointComponent, name: 'event.points'},

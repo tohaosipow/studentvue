@@ -41,7 +41,7 @@
                         </tr>
                         <tr>
                             <th class="text-left">Команда</th>
-                            <th :key="rubric.id" class="text-left"
+                            <th style="width: 100px; font-size: 10px; writing-mode: lr-tb !important;" :key="rubric.id"
                                 v-for="rubric in $store.state.events.currentEvent.rubrics">{{rubric.title}}
                             </th>
                             <th>Общий балл</th>
@@ -50,21 +50,19 @@
                         <tbody>
                         <tr :key="team_.id" v-for="team_ in $store.state.events.teams">
                             <td>{{ team_.name }}</td>
-                            <td :key="rubric.id" class="text-left"
+                            <td style="width: 100px; font-size: 12px;" :key="rubric.id" class="text-left"
                                 v-for="rubric in $store.state.events.currentEvent.rubrics">
-                                <v-list-item>
-                                    <v-text-field
+                                    <v-text-field style="vertical-align: middle !important;"
                                             :loading="loading"
                                             :value="getPointEarned(team_.id, $store.state.user.currentUser.id, rubric.id)"
                                             :min="0"
                                             outlined
-                                            full-width
+                                            dense
                                             :rules="[value => value >= 0 && value <= rubric.points_max || 'Недопустимый балл']"
                                             :max="rubric.points_max"
                                             type="number"
                                             v-on:change="updatePoint($store.state.user.currentUser.id, rubric.id, $event, team_.id)"
                                     ></v-text-field>
-                                </v-list-item>
                             </td>
                             <td>
                                 {{$store.getters.getTotalTeamPointsByTeamIdAndAdminID(team_.id, $store.state.user.currentUser.id)}}
@@ -86,9 +84,9 @@
                         </tr>
                         <tr>
                             <th class="text-left">Член жюри</th>
-                            <th :key="rubric.id" class="text-left"
+                            <td :key="rubric.id" class="text-center"
                                 v-for="rubric in $store.state.events.currentEvent.rubrics">{{rubric.title}}
-                            </th>
+                            </td>
                             <th>Общий балл</th>
                         </tr>
                         </thead>

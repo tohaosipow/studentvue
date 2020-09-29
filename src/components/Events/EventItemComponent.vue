@@ -1,81 +1,46 @@
 <template>
-    <v-container :fluid="$store.state.user.fluid" v-if="$store.state.events.currentEvent">
+    <div>
         <v-row>
-            <v-col lg="3">
+            <v-col lg="12">
                 <v-card>
-                    <v-img
-                            :src="event.header_url"
-                            height="200px"
-                    ></v-img>
 
-                    <v-list-item>
-                        <v-list-item-title>Подача заявок</v-list-item-title>
-                        <v-list-item-subtitle class="text-right">{{$moment(event.check_start_at).format('DD.MM')}} -
-                            {{$moment(event.check_end_at).format('DD.MM')}}
-                        </v-list-item-subtitle>
-                    </v-list-item>
-                    <v-divider/>
-                    <v-subheader>Проведения мероприятия</v-subheader>
-                    <v-list-item>
-                        <v-list-item-title>Место</v-list-item-title>
-                        <v-list-item-subtitle class="text-right">{{event.u_place.name}}
-                        </v-list-item-subtitle>
-                    </v-list-item>
-                    <v-list-item>
-                        <v-list-item-title>Начало</v-list-item-title>
-                        <v-list-item-subtitle class="text-right">{{$moment(event.start_at).format('DD.MM HH:mm')}}
-                        </v-list-item-subtitle>
-                    </v-list-item>
-                    <v-list-item>
-                        <v-list-item-title>Конец</v-list-item-title>
-                        <v-list-item-subtitle class="text-right">{{$moment(event.end_at).format('DD.MM HH:mm')}}
-                        </v-list-item-subtitle>
-                    </v-list-item>
-                    <v-list-item>
-                        <v-list-item-title>Длительность</v-list-item-title>
-                        <v-list-item-subtitle class="text-right">
-                            {{$moment.duration($moment(event.end_at).diff(this.$moment(event.start_at))).hours()}} ч.
-                            {{$moment.duration($moment(event.end_at).diff(this.$moment(event.start_at))).minutes()}}
-                            мин.
-                        </v-list-item-subtitle>
-                    </v-list-item>
-                    <v-divider/>
-                    <v-subheader>Организатор</v-subheader>
-                    <v-list-item>
-                        <v-list-item-title>{{event.user.name}}</v-list-item-title>
-                        <v-list-item-icon>
-                            <v-icon>
-                                mdi-account
-                            </v-icon>
-                        </v-list-item-icon>
-                    </v-list-item>
-                    <v-list-item>
-                        <v-list-item-title>Телефон</v-list-item-title>
-                        <v-list-item-subtitle class="text-right">{{event.phone}}</v-list-item-subtitle>
-                    </v-list-item>
-                    <v-divider/>
-                    <v-subheader>Начисление баллов</v-subheader>
-                    <v-list-item :key="role.id" v-for="role in event.roles.filter((el) => {return parseInt(el.hidden) === 0})">
-                        <v-list-item-title>{{role.role.name}}</v-list-item-title>
-                        <v-list-item-subtitle class="text-right">{{role.points_max}} балл
-                        </v-list-item-subtitle>
-                    </v-list-item>
-                    <v-divider/>
+                    <EventCheckComponent/>
+                    <v-row>
+                        <v-col lg="3">
+                            <v-img
+                                    :src="event.header_url"
+                                    contain
+                                    height="300px"
+                                    style="padding: 10px"
+                            ></v-img>
+
+
+                        </v-col>
+                        <v-col lg="9">
+
+                            <v-card-title class="title">{{event.name}}</v-card-title>
+                            <v-card-text>
+                                {{event.description}}
+                            </v-card-text>
+
+
+                        </v-col>
+                    </v-row>
+
 
                 </v-card>
             </v-col>
-            <v-col lg="9">
-                <v-card>
-                    <EventCheckComponent/>
-                    <v-card-title class="title">{{event.name}}</v-card-title>
-                    <v-card-text>
-                        {{event.description}}
-                    </v-card-text>
+            <v-col lg="12" style="min-height: 400px">
+                <v-card min-height="100%">
+
                     <v-tabs background-color="transparent"
                             color="blue"
                             grow
                             v-model="part"
                     >
+                        <v-tab :to="{name: 'events.item.info', params: {id: $store.state.events.currentEvent.id}}">
+                            Информация
+                        </v-tab>
                         <v-tab :to="{name: 'event.participants', params: {id: $store.state.events.currentEvent.id}}"
                                v-if="$store.state.user.currentUser.admin === 1 || $store.getters.isEventAdmin($store.state.user.currentUser.id)">
                             Участники
@@ -106,9 +71,7 @@
                             </v-card>
                         </v-tab-item>
                         <v-tab-item v-if="$store.state.user.currentUser.admin === 1">
-                            <v-card color="basil" flat>
-                                <EventRubricsComponent :rubrics="event.rubrics"></EventRubricsComponent>
-                            </v-card>
+                            <EventRubricsComponent :rubrics="event.rubrics"></EventRubricsComponent>
                         </v-tab-item>
                         <v-tab-item v-if="$store.getters.checkCanSetPoints($store.state.user.currentUser.id)">
                         </v-tab-item>
@@ -123,7 +86,7 @@
 
             </v-col>
         </v-row>
-    </v-container>
+    </div>
 </template>
 
 <script>

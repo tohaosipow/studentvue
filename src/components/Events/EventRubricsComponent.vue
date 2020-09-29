@@ -1,5 +1,5 @@
 <template>
-    <v-card>
+    <v-sheet>
         <v-list-item @click="() => {}" :key="rubric.id" v-for="rubric in rubrics">
             <v-list-item-icon>
                 <v-avatar color="blue">{{rubric.points_max}}</v-avatar>
@@ -46,7 +46,7 @@
             <RubricCreateEditComponent v-on:close="editRubricDialog = false" :event_id="$store.state.events.currentEvent.id"></RubricCreateEditComponent>
 
         </v-dialog>
-    </v-card>
+    </v-sheet>
 </template>
 
 <script>
