@@ -3,6 +3,7 @@
 
         <v-form @submit.prevent.stop="reset">
             <v-card-title>Восстановление пароля</v-card-title>
+            <v-card-subtitle>Укажите новый пароль и его подтверждение в полях ниже</v-card-subtitle>
             <v-card-text>
                 <h2></h2>
 
