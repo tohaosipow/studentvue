@@ -15,7 +15,7 @@
                     v-model="drawer"
             >
                 <div class="text-center pa-4 text-white" style="color: white">
-                    <h4>АИС "Абитуриент"    <v-icon right style="position: absolute; right: 10px;" v-if="drawer && $vuetify.breakpoint.mdAndDown" @click.stop="drawer = !drawer">mdi-chevron-left</v-icon> </h4>
+                    <h4>АИС "Студент СурГУ"    <v-icon right style="position: absolute; right: 10px;" v-if="drawer && $vuetify.breakpoint.mdAndDown" @click.stop="drawer = !drawer">mdi-chevron-left</v-icon> </h4>
                 </div>
 
                 <v-list

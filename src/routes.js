@@ -23,6 +23,7 @@ import ProjectsItemParticipantsComponent from "@/components/Projects/ProjectsIte
 import ProjectsItemRolesComponent from "@/components/Projects/ProjectsItem/ProjectsItemRolesComponent";
 import EventRateComponent from "@/components/Events/EventRateComponent";
 import EventInfoComponent from "@/components/Events/EventInfoComponent";
+import ResetComponent from "@/components/ResetComponent";
 
 
 const routes = [
@@ -45,6 +46,7 @@ const routes = [
     {path: '/events/:id/teams/:team_id', component: TeamComponent, name: 'teams.item'},
     {path: '/points/:id', component: EventPointComponent, name: 'points'},
     {path: '/auth', component: AuthComponent},
+    {path: '/reset/:token', component: ResetComponent},
     {path: '/timetable', component: TimetableComponent},
     {path: '/timetable/my/:id?', component: MyTimetableComponent},
     {path: '/timetable/create/master', component: DisciplineCreatorIndex, name: 'timetable.master'},

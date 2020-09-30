@@ -31,6 +31,14 @@ export default {
 
     store(data){
         return window.axios.post(endpoint+'/api/users/'+data.id + '/store', data);
+    },
+
+    reset(data){
+        return window.axios.post(endpoint+'/api/account/reset_password', data);
+    },
+
+    forgot_password(data){
+        return window.axios.get(endpoint+'/api/account/forgot_password?email='+data.email);
     }
 
 
