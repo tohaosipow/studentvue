@@ -214,6 +214,12 @@ export default {
                 return true;
             })
         },
+        updateEvent({commit}, data) {
+            return events.update(data).then((r) => {
+                commit('setCurrentEvent', r.data);
+                return true;
+            })
+        },
 
         getEvents({commit}) {
             return events.getEvents().then((r) => {

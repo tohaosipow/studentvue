@@ -26,7 +26,7 @@
 
                 <v-row align="center">
                     <v-col cols="12" lg="3">
-                        <v-btn color="blue" dark>
+                        <v-btn type="submit" color="blue" dark>
                             Войти c логином и паролем
                         </v-btn>
                     </v-col>

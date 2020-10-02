@@ -2,7 +2,7 @@
     <div>
     <v-card>
         <v-skeleton-loader type="list-item-avatar-two-line,list-item-avatar-two-line,list-item-avatar-two-line,list-item-avatar-two-line"
-                           v-if="loading"
+                           v-if="!event"
         >
 
         </v-skeleton-loader>
@@ -71,6 +71,7 @@
     export default {
         name: "EventInfoComponent",
         methods: {},
+
         computed: {
             event() {
                 return this.$store.state.events.currentEvent

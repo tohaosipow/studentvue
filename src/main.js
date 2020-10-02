@@ -8,13 +8,14 @@ import index from "@/store";
 import Vuex from 'vuex'
 import VueQrcodeReader from "vue-qrcode-reader";
 import moment from "moment";
-
+import picker from "vue-datetime-picker";
 Vue.prototype.$moment = moment;
 
 Vue.use(VueQrcodeReader);
 Vue.use(Vuetify);
 Vue.use(VueRouter);
 Vue.use(Vuex);
+Vue.use(picker);
 
 new Vue({
     render: h => h(App),
