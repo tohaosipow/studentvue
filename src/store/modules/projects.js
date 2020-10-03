@@ -60,7 +60,7 @@ export default {
             state.projects = [...state.projects.map((el) => {
                 return parseInt(el.id) === parseInt(project.id) ? project : el
             })];
-            if(parseInt(state.currentProject.id) === parseInt(project.id)) state.currentProject = project;
+            if (parseInt(state.currentProject.id) === parseInt(project.id)) state.currentProject = project;
         },
 
         setCurrentProject(state, project) {
@@ -142,6 +142,31 @@ export default {
                 return dispatch('getCurrentProject', {id: state.currentProject.id})
             });
 
+        },
+
+
+
+        storeProjectRole({dispatch, state}, data) {
+            return new Promise((resolve, reject) => {
+                project_roles.store(data).then((response) => {
+                    resolve(response);
+                    dispatch('getCurrentProject', {id: state.currentProject.id})
+                }).catch((e) => {
+                    reject(e)
+                })
+            });
+        },
+
+
+        removeProjectRole({dispatch, state}, data) {
+            return new Promise((resolve, reject) => {
+                project_roles.delete(data).then((response) => {
+                    resolve(response);
+                    dispatch('getCurrentProject', {id: state.currentProject.id})
+                }).catch((e) => {
+                    reject(e)
+                })
+            });
         },
 
         getCurrentProject({commit}, data) {

@@ -142,7 +142,7 @@
 
 
 
-                               <v-list-item @click="remove(project)">
+                               <v-list-item @click="remove(project)"  v-if="$store.state.user.currentUser.admin == 1">
                                    <v-list-item-content>
                                        <v-list-item-title>Удалить</v-list-item-title>
                                    </v-list-item-content>
