@@ -59,5 +59,9 @@ export default {
 
     update(data){
         return window.axios.post(endpoint+'/api/events/'+data.id+'/update', data.obj);
+    },
+
+    link(data){
+        return window.axios.get(endpoint+'/api/event/'+data.id+'/link');
     }
 }

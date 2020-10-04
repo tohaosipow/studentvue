@@ -26,6 +26,7 @@
                                     </template>
 
 
+
                                 </div>
                             </v-card>
 
@@ -37,6 +38,35 @@
                             <v-card-text>
                                 {{event.description}}
                             </v-card-text>
+                            <v-card-actions>
+                                <v-dialog
+                                        v-model="connectToEvent"
+                                        width="500"
+                                >
+                                    <v-card :loading="true">
+                                        <v-card-title>Подключение к онлайн-мероприятию</v-card-title>
+                                        <v-card-actions>
+                                        <v-row justify="center">
+                                            <v-progress-circular
+                                                    :width="3" class="pa-5"
+                                                    color="blue"
+                                                    :size="50"
+                                                    indeterminate
+                                            ></v-progress-circular>
+                                        </v-row>
+
+                                        </v-card-actions>
+                                        <p style="text-align: center; padding: 20px; margin-top: 10px;">Пожалуйста подождите ... </p>
+
+
+                                    </v-card>
+                                </v-dialog>
+                                <v-btn @click="connect" v-if="event.is_online"  class="mt-2" color="blue" icon outlined rounded>
+                                    <v-icon left>mdi-account-network</v-icon>
+                                    Подключиться к мероприятию
+                                </v-btn>
+                            </v-card-actions>
+
 
 
                         </v-col>
@@ -110,6 +140,7 @@
     import EventCheckComponent from "@/components/Events/EventCheckComponent";
     import EventTeamsComponent from "@/components/Events/EventTeamsComponent";
     import EventEditDialogComponent from "@/components/Events/EventEditDialogComponent";
+    import events from "@/api/events";
    // import EventQRRegisterComponent from "@/components/Events/EventQRRegisterComponent";
 
 
@@ -140,7 +171,19 @@
         },
         data() {
             return {
-                part: 0
+                part: 0,
+                connectToEvent: false
+            }
+        },
+
+        methods:{
+            connect(){
+                this.connectToEvent = true;
+                events.link({id: this.event.id}).then((response) => {
+                    // eslint-disable-next-line no-console
+                    console.log(response.data)
+                    window.location.href = response.data;
+                })
             }
         }
     }
