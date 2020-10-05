@@ -2,10 +2,10 @@
     <v-sheet style="padding: 2em">
         <v-row align="center" justify="center">
             <v-col md="1" sm="2">
-                <v-img src="http://www.surgu.ru/assets/front/logo-ce9a2f65225f534c436fd68e635d5d93.png"></v-img>
+                <v-img src="https://ams3.digitaloceanspaces.com/enrollee/surgu.png"></v-img>
             </v-col>
             <v-col md="11" sm="10">
-                <span style="font-size: 25px; display: block">АИС "Абитуриент"</span>
+                <span style="font-size: 25px; display: block">АИС "Студент СурГУ"</span>
                 портал для студентов и преподавателей <span style="color: #0174bd;">Сургутского государственного университета</span>
 
             </v-col>
