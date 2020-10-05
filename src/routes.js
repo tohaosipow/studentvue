@@ -24,10 +24,12 @@ import ProjectsItemRolesComponent from "@/components/Projects/ProjectsItem/Proje
 import EventRateComponent from "@/components/Events/EventRateComponent";
 import EventInfoComponent from "@/components/Events/EventInfoComponent";
 import ResetComponent from "@/components/ResetComponent";
+import Homepage from "@/components/Dashboard/Homepage";
 
 
 const routes = [
-    {path: '/', component: EventsComponent, name: 'events'},
+    {path: '/', component: Homepage, name: 'home'},
+    {path: '/events', component: EventsComponent, name: 'events'},
     {path: '/events/my', component: EventsComponent, name: 'user.events', props: {my: true}},
     {path: '/events/create', component: EventsCreateComponent, name: 'user.events'},
     {

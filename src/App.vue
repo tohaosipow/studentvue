@@ -60,6 +60,19 @@
                     <v-divider></v-divider>
 
                     <v-list-item to="/"
+                                 link
+                    >
+                        <v-list-item-icon>
+                            <v-icon>mdi-home</v-icon>
+                        </v-list-item-icon>
+
+                        <v-list-item-content>
+                            <v-list-item-title>Главная</v-list-item-title>
+                            <v-list-item-subtitle>about this</v-list-item-subtitle>
+                        </v-list-item-content>
+                    </v-list-item>
+
+                    <v-list-item to="/events"
                             link
                     >
                         <v-list-item-icon>
