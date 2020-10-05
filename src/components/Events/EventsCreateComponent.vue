@@ -193,6 +193,7 @@
             }
         },
         mounted() {
+            if(!this.$store.state.user.currentUser.id) return this.$router.push('/auth')
             Promise.all([
                 this.$store.dispatch('getEventTypes'),
                 this.$store.dispatch('getPlaces'),

@@ -13,10 +13,34 @@
         <v-divider class="mt-4"/>
         <h2 class="mt-4" style="font-size: 20px; color: #0174bd; font-weight: 900; ">Мероприятия</h2>
         <v-row>
+
+            <v-col v-if="notice == 1" cols="12"
+                   sm="4">
+                <v-card height="250"
+                        color="blue"
+                        dark
+                >
+                    <v-card-title class="headline">
+                        Новинка!
+                        <v-btn @click="notice = 0" style="position: absolute; right: 0; top: 0" icon>
+                            <v-icon>mdi-close</v-icon>
+                        </v-btn>
+                    </v-card-title>
+
+                    <v-card-text>Теперь можно создавать онлайн мероприятия и проводить их прямо на этой платформе! Достаточно указать при создании мероприятия, что оно будет онлайн в формате.</v-card-text>
+                    <br/>
+                    <v-card-actions>
+                        <v-btn :to="'/events/create'" text>
+                            Попробовать
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-col>
             <v-col :key="event.id" cols="12"
                    sm="4"
-                   v-for="event in $store.state.events.events.slice($store.state.events.events.length - 4, $store.state.events.events.length - 1)"
+                   v-for="event in $store.state.events.events.slice($store.state.events.events.length - 4 + notice, $store.state.events.events.length - 1)"
             >
+
                 <v-card :to="'/events/'+event.id" ripple elevation="0">
                     <v-img :src="event.header_url" class="white--text align-end"
 
@@ -90,13 +114,14 @@
         },
         data(){
            return{
-               dialog: false
+               dialog: false,
+               notice: 1
            }
         },
         mounted() {
             this.$store.dispatch('getEvents');
             this.$store.dispatch('getProjects');
-            if(this.$store.state.user.currentUser.id < 0) setTimeout(() => {this.dialog = true}, 5000);
+            if(!this.$store.state.user.currentUser.id) setTimeout(() => {this.dialog = true}, 5000);
         }
     }
 </script>
