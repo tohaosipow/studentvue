@@ -1,6 +1,6 @@
 <template>
     <v-sheet>
-        <v-alert
+        <v-alert v-if="$store.state.events.currentEvent.rubrics.length === 0"
                 prominent
                 type="info"
         >
@@ -77,10 +77,12 @@
         },
         methods: {
             removeRubric(id) {
-                this.loading = true;
-                this.$store.dispatch('deleteRubric', {id}).then(() => {
-                    this.loading = false;
-                })
+                if(confirm("Вы действительно хотите удалить критерий? Если по нему выставлены оценки, то они удаляться!!!")) {
+                    this.loading = true;
+                    this.$store.dispatch('deleteRubric', {id}).then(() => {
+                        this.loading = false;
+                    })
+                }
             }
         },
         mounted() {
