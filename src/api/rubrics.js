@@ -5,6 +5,10 @@ export default {
         return window.axios.post(endpoint+'/api/rubrics/store', {title, description, points_max, event_id});
     },
 
+    removeRubric(data){
+        return window.axios.post(endpoint+'/api/rubrics/'+data.id+'/delete');
+    },
+
     getEvent(id){
         return window.axios.get(endpoint+'/api/event/'+id);
     },

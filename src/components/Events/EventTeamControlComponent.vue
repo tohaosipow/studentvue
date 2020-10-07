@@ -9,30 +9,27 @@
                 <v-icon color="blue darken-2" v-else>mdi-account</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
-                <v-list-item-title>{{member.first_name}}  {{member.last_name}} {{member.third_name}}</v-list-item-title>
-                <v-list-item-subtitle v-if="member.event_checks[0]">{{member.event_checks[0].event_check_roles.map((el) => {return
-                    el.event_role.role.name}).join(',')}}
+                <v-list-item-title>{{member.first_name}} {{member.last_name}} {{member.third_name}}</v-list-item-title>
+                <v-list-item-subtitle v-if="member.event_checks[0]">{{member.event_checks[0].event_check_roles.map((el) => {return el.event_role.role.name}).join(',')}}
                 </v-list-item-subtitle>
                 <v-list-item-subtitle v-else>
                     Роль не выбрана
                 </v-list-item-subtitle>
             </v-list-item-content>
-            <v-list-item-action v-if="!member.pivot.approved">
-                <v-btn @click="acceptMember(team.id, member.id)" color="success" outlined small>
-                    <v-icon left>mdi-check</v-icon>
-                    Одобрить
-                </v-btn>
-            </v-list-item-action>
-            <v-list-item-action v-else>
-                <v-btn  color="success" icon>
-                    <v-icon>mdi-check</v-icon>
-                </v-btn>
-            </v-list-item-action>
-            <v-list-item-action>
-                <v-btn :disabled="team.user_id === member.id" @click="declineMember(team.id, member.id)" color="red lighten-2" icon>
-                    <v-icon >mdi-delete</v-icon>
-                </v-btn>
-            </v-list-item-action>
+            <template v-if="!$store.getters.isEventPast()">
+                <v-list-item-action v-if="!member.pivot.approved">
+                    <v-btn @click="acceptMember(team.id, member.id)" color="success" outlined small>
+                        <v-icon left>mdi-check</v-icon>
+                        Одобрить
+                    </v-btn>
+                </v-list-item-action>
+                <v-list-item-action>
+                    <v-btn :disabled="team.user_id === member.id" @click="declineMember(team.id, member.id)"
+                           color="red lighten-2" icon>
+                        <v-icon>mdi-delete</v-icon>
+                    </v-btn>
+                </v-list-item-action>
+            </template>
         </v-list-item>
     </v-card>
 </template>

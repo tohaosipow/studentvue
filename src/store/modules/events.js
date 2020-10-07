@@ -4,6 +4,7 @@ import event_checks from "@/api/event_checks";
 import teams from "@/api/teams";
 import team_projects from "@/api/team_projects";
 import user_roles from "@/api/user_roles";
+import moment from 'moment';
 
 export default {
     state: {
@@ -57,6 +58,10 @@ export default {
 
         addRubricToCurrentEvent(state, rubric) {
             state.currentEvent.rubrics = [...state.currentEvent.rubrics, rubric];
+        },
+
+        removeRubricFromCurrentEvent(state, rubric) {
+            state.currentEvent.rubrics = state.currentEvent.rubrics.filter((r) => {return parseInt(r.id) !== parseInt(rubric.id)})
         },
 
         setEventUserPoints(state, user_points) {
@@ -182,6 +187,12 @@ export default {
             }
         },
 
+        isEventPast: function (state) {
+            return () => {
+                return moment(state.currentEvent.end_at).isBefore(moment())
+            }
+        },
+
         checkCanSetPoints: function (state) {
             return (user_id) => {
                 let can = false;
@@ -201,6 +212,20 @@ export default {
         }
     },
     actions: {
+
+        approveJoinToEvent({dispatch}, data){
+            return event_checks.approve(data.id).then(() => {
+                dispatch('getEvent', {id: data.event_id});
+                return true;
+            })
+        },
+
+        declineJoinToEvent({dispatch}, data){
+            return event_checks.decline(data.id).then(() => {
+                dispatch('getEvent', {id: data.event_id});
+                return true;
+            })
+        },
 
         changeParticipantRole({commit}, data){
             return events.changeParticipantRole(data).then((r) => {
@@ -236,6 +261,13 @@ export default {
         storeRubric({commit}, {title, description, points_max, event_id}) {
             return rubrics.storeRubric(title, description, points_max, event_id).then((r) => {
                 commit('addRubricToCurrentEvent', r.data);
+            })
+        },
+
+        deleteRubric({commit, state, dispatch}, data) {
+            return rubrics.removeRubric(data).then((r) => {
+                commit('removeRubricFromCurrentEvent', r.data);
+                dispatch('getEvent', {id: state.currentEvent.id});
             })
         },
 

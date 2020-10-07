@@ -15,7 +15,7 @@
                                 ></v-img>
 
 
-                                <div class="pa-2">
+                                <div class="pa-2" v-if="!$store.getters.isEventPast()">
                                     <EventCheckComponent/>
                                     <template v-if="$store.getters.isEventAdmin($store.state.user.currentUser.id)">
                                         <EventEditDialogComponent/>
@@ -61,7 +61,7 @@
 
                                     </v-card>
                                 </v-dialog>
-                                <v-btn @click="connect" v-if="event.is_online"  class="mt-2" color="blue" icon outlined rounded>
+                                <v-btn @click="connect" v-if="event.is_online && $store.state.events.userStatus.approved"  class="mt-2" color="blue" icon outlined rounded>
                                     <v-icon left>mdi-account-network</v-icon>
                                     Подключиться к мероприятию
                                 </v-btn>
@@ -75,7 +75,7 @@
 
                 </v-card>
             </v-col>
-            <v-col lg="12" style="min-height: 400px">
+            <v-col  lg="12" style="min-height: 400px">
                 <v-card min-height="100%">
 
                     <v-tabs background-color="transparent"
@@ -86,12 +86,16 @@
                         <v-tab :to="{name: 'events.item.info', params: {id: $store.state.events.currentEvent.id}}">
                             Информация
                         </v-tab>
+                        <v-tab :to="{name: 'events.item.checks', params: {id: $store.state.events.currentEvent.id}}"
+                               v-if="$store.state.user.currentUser.admin === 1 || $store.getters.isEventAdmin($store.state.user.currentUser.id)">
+                            Заявки на мероприятие
+                        </v-tab>
                         <v-tab :to="{name: 'event.participants', params: {id: $store.state.events.currentEvent.id}}"
                                v-if="$store.state.user.currentUser.admin === 1 || $store.getters.isEventAdmin($store.state.user.currentUser.id)">
                             Участники
                         </v-tab>
                         <v-tab :to="{name: 'event.teams', params: {id: $store.state.events.currentEvent.id}}"
-                               v-if="$store.state.events.currentEvent.teams_allowed ">
+                               v-if="$store.state.events.currentEvent.teams_allowed && ($store.state.events.userStatus.approve || $store.state.user.currentUser.admin === 1)">
                             Команды
                         </v-tab>
                         <v-tab :to="{name: 'event.criteria', params: {id: $store.state.events.currentEvent.id}}"

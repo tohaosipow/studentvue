@@ -3,14 +3,17 @@
         <v-card-title>
             <span class="headline">Создание критерия</span>
         </v-card-title>
+        <v-alert type="error" :key="i" v-for="(error, i) in errors">
+            {{error[0]}}
+        </v-alert>
         <v-card-text>
             <v-container>
                 <v-row>
                     <v-col cols="12" sm="12" md="12">
                         <v-form>
-                        <v-text-field v-model="rubric.title"   :rules="[v => !!v || 'Нужно заполнить']"  counter placeholder="Участие"  outlined label="Название критерия" required></v-text-field>
-                        <v-text-field v-model="rubric.description" :rules="[v => !!v || 'Нужно заполнить']" placeholder="Начисляется в случае участия"   counter clearable outlined label="Описание критерия" required></v-text-field>
-                        <v-text-field v-model="rubric.points_max" :rules="[v => !!v  || 'Нужно заполнить', v => v > 0 || 'Не меньше 0 !']"  placeholder="5" type="number"  clearable outlined label="Максимальный балл" required></v-text-field>
+                        <v-text-field :error-messages="errors.title" v-model="rubric.title"   :rules="[v => !!v || 'Нужно заполнить']"  counter placeholder="Участие"  outlined label="Название критерия" required></v-text-field>
+                        <v-text-field :error-messages="errors.description" v-model="rubric.description" :rules="[v => !!v || 'Нужно заполнить']" placeholder="Начисляется в случае участия"   counter clearable outlined label="Описание критерия" required></v-text-field>
+                        <v-text-field  :error-messages="errors.points_max" v-model="rubric.points_max" :rules="[v => !!v  || 'Нужно заполнить', v => v > 0 || 'Не меньше 0 !']"  placeholder="5" type="number"  clearable outlined label="Максимальный балл" required></v-text-field>
                         <v-btn @click="save" text color="blue">Создать</v-btn>
                         </v-form>
                     </v-col>
@@ -40,6 +43,7 @@
                     description: '',
                     points_max: '',
                 },
+                errors: {},
                 loading: false
             }
         },
@@ -49,7 +53,10 @@
                 this.$store.dispatch('storeRubric', {title: this.rubric.title, description: this.rubric.description, points_max: this.rubric.points_max, event_id: this.event_id}).then(() => {
                    this.loading = false;
                    this.$emit('close');
-                });
+                }).catch((e) => {
+                    this.loading = false;
+                    this.errors = e.response.data.errors;
+                })
             }
         }
     }

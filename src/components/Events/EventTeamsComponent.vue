@@ -16,12 +16,12 @@
                     <v-list-item-title>{{team.name}}</v-list-item-title>
                     <v-list-item-subtitle>{{team.description}}</v-list-item-subtitle>
                 </v-list-item-content>
-                <v-list-item-action v-if="$store.state.user.currentUser.id > 0">
+                <v-list-item-action  v-if="$store.state.user.currentUser.id > 0 &&  !$store.getters.isEventPast()">
                     <template v-if="$store.state.events.userStatus.id === undefined">
                         Необходимо "Подать заявку" на мероприятие
                     </template>
                     <template v-else>
-                        <v-btn @click.prevent.stop="() => {}"
+                        <v-btn  @click.prevent.stop="() => {}"
                                class="ma-2"
                                color="success"
                                outlined rounded tile
@@ -77,13 +77,10 @@
                 </v-list-item-content>
             </v-list-item>
             <v-dialog max-width="600" v-model="controlTeamDialog">
-                <template v-slot:activator="{ on }">
-
-                </template>
                 <EventTeamControlComponent :team="currentTeam"></EventTeamControlComponent>
             </v-dialog>
 
-            <v-dialog max-width="600px" persistent v-if="$store.state.user.currentUser.id > 0" v-model="editTeamDialog">
+            <v-dialog   max-width="600px" persistent v-if="$store.state.user.currentUser.id > 0 && !$store.getters.isEventPast()" v-model="editTeamDialog">
                 <template v-slot:activator="{ on }">
                     <v-btn absolute
                            bottom

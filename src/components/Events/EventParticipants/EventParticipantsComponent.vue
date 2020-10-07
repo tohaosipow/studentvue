@@ -30,9 +30,6 @@
                 </template>
             </v-edit-dialog>
         </template>
-        <template v-slot:item.approve="{ item }">
-            <EventUserCheckSwitch :event="$store.state.events.currentEvent" :user="item"></EventUserCheckSwitch>
-        </template>
 
         <template v-slot:item.is_visit="{ item }">
             <EventUserIsVisitSwitch :event="$store.state.events.currentEvent" :user="item"></EventUserIsVisitSwitch>
@@ -63,12 +60,12 @@
 </template>
 
 <script>
-    import EventUserCheckSwitch from "@/components/Events/EventParticipants/EventUserCheckSwitch";
+  //  import EventUserCheckSwitch from "@/components/Events/EventParticipants/EventUserCheckSwitch";
     import EventUserIsVisitSwitch from "@/components/Events/EventParticipants/EventUserIsVisitSwitch";
 
     export default {
         name: "EventParticipantComponent",
-        components: {EventUserCheckSwitch, EventUserIsVisitSwitch},
+        components: { EventUserIsVisitSwitch},
         data() {
             return {
                 loading: true,
@@ -83,8 +80,6 @@
                     {text: 'Email', value: 'email'},
                     {text: 'Тип', value: 'type'},
                     {text: 'Роль', value: 'role'},
-                    {text: 'Баллы', value: 'points'},
-                    {text: 'Одобрение заявки', value: 'approve'},
                     {text: 'Присутствие', value: 'is_visit'},
                 ],
             }

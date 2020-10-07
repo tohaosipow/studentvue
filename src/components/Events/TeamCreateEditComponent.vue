@@ -38,7 +38,6 @@
                 formData.append('description', this.team.description);
                 formData.append('name', this.team.name);
                 this.$store.dispatch('createTeam', {event_id: this.$store.state.events.currentEvent.id, form_data: formData}).then(() => {
-                    alert();
                    this.$emit('close');
                 });
 

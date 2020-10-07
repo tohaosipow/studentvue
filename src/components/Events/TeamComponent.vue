@@ -7,12 +7,27 @@
                         <v-img :src="team.logo"></v-img>
                     </v-list-item-avatar>
                     <v-list-item-content>
-                        <v-list-item-title class="headline"> {{team.name}}t</v-list-item-title>
-                        <v-list-item-subtitle> {{team.description}}r</v-list-item-subtitle>
+                        <v-list-item-title class="headline"> {{team.name}}</v-list-item-title>
+                        <v-list-item-subtitle> {{team.description}}</v-list-item-subtitle>
                     </v-list-item-content>
                 </v-list-item>
-                <v-card-title>Проекты</v-card-title>
-                <EventProjectsComponent :team="team"></EventProjectsComponent>
+            </v-card>
+            <v-card elevation="0" class="mt-2" width="100%">
+                <v-list-item>
+                    <v-list-item-content>
+                        <v-list-item-title class="headline">Список участников</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+
+                <v-list-item :key="member.id" v-for="member in team.members">
+                    <v-list-item-avatar color="grey">
+                        <v-img :src="member.avatar"></v-img>
+                    </v-list-item-avatar>
+                    <v-list-item-content>
+                        <v-list-item-title>{{member.name}}</v-list-item-title>
+                        <v-list-item-subtitle>{{member.role}}</v-list-item-subtitle>
+                    </v-list-item-content>
+                </v-list-item>
             </v-card>
         </v-row>
     </v-container>
@@ -20,12 +35,11 @@
 </template>
 
 <script>
-    import EventProjectsComponent from "@/components/Events/EventProjectsComponent";
+
 
     export default {
         name: "TeamComponent",
         components: {
-            EventProjectsComponent
         },
         computed: {
             team() {

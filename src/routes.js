@@ -25,6 +25,7 @@ import EventRateComponent from "@/components/Events/EventRateComponent";
 import EventInfoComponent from "@/components/Events/EventInfoComponent";
 import ResetComponent from "@/components/ResetComponent";
 import Homepage from "@/components/Dashboard/Homepage";
+import EventChecksComponent from "@/components/Events/EventParticipants/EventChecksComponent";
 
 
 const routes = [
@@ -38,6 +39,7 @@ const routes = [
             [
                 {path: 'participants', component: EventParticipantComponent, name: 'event.participants'},
                 {path: 'info', component: EventInfoComponent, name: 'events.item.info'},
+                {path: 'checks', component: EventChecksComponent, name: 'events.item.checks'},
                 {path: 'teams', component: EventTeamsComponent, name: 'event.teams'},
                 {path: 'criteria', component: EventRubricsComponent, name: 'event.criteria'},
                 {path: 'points', component: EventPointComponent, name: 'event.points'},

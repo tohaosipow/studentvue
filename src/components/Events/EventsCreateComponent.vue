@@ -177,6 +177,7 @@
             },
 
             save() {
+                this.loading = true;
                 let fd = new FormData();
                 Object.keys(this.event).forEach((key) => {
                     if (this.event[key] === true) this.event[key] = 1;
@@ -187,8 +188,10 @@
                 fd.set('roles', JSON.stringify(this.event_roles));
                 this.$store.dispatch('storeEvent', fd).then(() => {
                     this.$router.push('/')
+                    this.loading = false;
                 }).catch((e) => {
                     this.errors = e.response.data.errors
+                    this.loading = false;
                 })
             }
         },
