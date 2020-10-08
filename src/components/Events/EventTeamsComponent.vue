@@ -79,10 +79,10 @@
                             <v-img :src="team.logo" width="100%"></v-img>
                         </v-col>
                         <v-col cols="12" col="12" lg="3">
-                            <v-card-title>
+                            <v-card-title  style="z-index: 2; position:relative;  word-break: break-word;">
                                 {{team.name}}
                             </v-card-title>
-                            <v-card-subtitle>
+                            <v-card-subtitle  style="z-index: 2; position:relative;  word-break: break-word;">
                                 {{team.name}}
                             </v-card-subtitle>
                             <v-card-actions>
