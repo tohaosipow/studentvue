@@ -70,7 +70,6 @@
              </v-data-table> !-->
 
             <v-card :elevation="0" outlined :key="team.id"
-                    :to="{name: 'teams.item', params: {id: $store.state.events.currentEvent.id, team_id: team.id}}"
                     three-line
                     v-for="(team, index) in this.$store.getters.getTeamsSortByPoints">
 
