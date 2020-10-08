@@ -79,7 +79,7 @@
                         <v-col lg="2" md="2" sm="3" col="12">
                             <v-img :src="team.logo" width="100%"></v-img>
                         </v-col>
-                        <v-col lg="3">
+                        <v-col cols="12" lg="3">
                             <v-card-title class="headline">
                                 {{team.name}}
                             </v-card-title>
@@ -116,8 +116,8 @@
                                 </div>
                             </v-card-actions>
                         </v-col>
-                        <v-col lg="6" col="8">
-                            <v-row justify="space-between" align="center">
+                        <v-col lg="6" cols="12" col="8">
+                            <v-row class="pa-2" justify="space-between" align="center">
                                 <v-col lg="5" sm="5">
                                     <v-btn color="blue" outlined
                                            v-if="team.user_id === $store.state.user.currentUser.id || $store.state.user.currentUser.admin === 1">
@@ -137,7 +137,7 @@
                                         Удалить
                                     </v-btn>
                                 </v-col>
-                                <v-col lg="2" sm="2">
+                                <v-col style="display: flex; justify-content: flex-end" lg="2" sm="2">
                                     <template v-if="parseInt($store.state.events.currentEvent.show_points_to_participants) === 1 || $store.getters.checkCanSetPoints($store.state.user.currentUser.id)">
                                         <v-list-item-avatar color="#ffd700" size="36" v-if="index === 0">
                                             <span class="white--text">{{team.points}}</span>
