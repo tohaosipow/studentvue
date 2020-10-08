@@ -52,16 +52,6 @@
 
 
                 </v-list-item-action>
-                <v-list-item-action
-                        v-if="$store.state.user.currentUser.admin === 1">
-                    <v-btn icon>
-                        <v-icon @click.prevent.stop.prevent.stop="currentTeam = team; controlTeamDialog = true"
-                                color="blue darken-2">mdi-settings
-                        </v-icon>
-                    </v-btn>
-
-
-                </v-list-item-action>
                 <template
                         v-if="parseInt($store.state.events.currentEvent.show_points_to_participants) === 1 || $store.getters.checkCanSetPoints($store.state.user.currentUser.id)">
                     <v-list-item-avatar color="#ffd700" size="36" v-if="index === 0">
