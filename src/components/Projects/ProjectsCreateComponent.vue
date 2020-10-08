@@ -55,40 +55,6 @@
                     </v-card-text>
 
                 </v-card>
-                <v-card v-if="need_team" class="mt-2" outlined>
-                    <v-card-title class="subtitle-1">Необходимые участники</v-card-title>
-                    <v-card-text>
-                        <transition-group name="list" tag="p">
-                            <v-row align="center" :key="index" v-for="(role, index) in roles">
-                                <v-col cols="8">
-                                    <v-text-field dense filled label="Название роли"
-                                                  outlined placeholder="Например программист"
-                                                  v-model="role.name"/>
-                                    <v-text-field dense  label="Задачи роли"
-                                                  outlined placeholder="Например писать код"
-                                                  v-model="role.tasks"/>
-                                </v-col>
-                                <v-col cols="3">
-                                    <v-text-field dense label="Квота" max="5" min="0" outlined
-                                                  suffix="чел. " type="number" v-model="role.quota"/>
-                                </v-col>
-                                <v-col cols="1">
-                                    <v-btn @click="removeRole(index)" color="red" icon text>
-                                        <v-icon>mdi-delete</v-icon>
-                                    </v-btn>
-                                    <br>
-                                    <br>
-                                </v-col>
-                                <v-divider/>
-                            </v-row>
-                        </transition-group>
-                        <v-btn @click="addRole" class="mx-auto" color="green" outlined small>
-                            <v-icon>mdi-plus</v-icon>
-                            Добавить роль
-                        </v-btn>
-
-                    </v-card-text>
-                </v-card>
                 <v-card class="mt-2">
                     <v-card-text>
                         <v-btn :loading="loading" @click="save" outlined color="blue darken-2">Добавить проект</v-btn>
@@ -144,7 +110,7 @@
                 Object.keys(this.project).forEach((key) => {
                     bodyFormData.set(key, this.project[key])
                 });
-                bodyFormData.set('roles', JSON.stringify(this.roles));
+                bodyFormData.set('roles', JSON.stringify([]));
                 if(this.logotype !== null) bodyFormData.append('logotype', this.logotype)
                 this.$store.dispatch('storeProject', bodyFormData).then(() => {
                     this.$router.push('/projects');
