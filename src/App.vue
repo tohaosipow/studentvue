@@ -48,7 +48,7 @@
                 >
                     <v-list-item two-line v-if="$store.state.user.currentUser.id > 0">
                         <v-list-item-avatar>
-                            <img src="https://randomuser.me/api/portraits/men/81.jpg">
+                            <img src="https://www.hipokrates.torun.pl/wp-content/uploads/2016/02/nophoto-150x150.jpg">
                         </v-list-item-avatar>
 
                         <v-list-item-content>
