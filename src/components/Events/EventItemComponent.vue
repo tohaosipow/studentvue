@@ -95,7 +95,7 @@
                             Участники
                         </v-tab>
                         <v-tab :to="{name: 'event.teams', params: {id: $store.state.events.currentEvent.id}}"
-                               v-if="$store.state.events.currentEvent.teams_allowed && ($store.state.events.userStatus.approve || $store.state.user.currentUser.admin === 1)">
+                               v-if="$store.state.events.currentEvent.teams_allowed && ($store.state.events.userStatus.approved || $store.state.user.currentUser.admin === 1)">
                             Команды
                         </v-tab>
                         <v-tab :to="{name: 'event.criteria', params: {id: $store.state.events.currentEvent.id}}"
@@ -113,24 +113,6 @@
 
                     </v-tabs>
                     <router-view></router-view>
-                    <v-tabs-items v-model="part">
-                        <v-tab-item v-if="$store.state.events.currentEvent.teams_allowed">
-                            <v-card color="basil" flat>
-                                <EventTeamsComponent></EventTeamsComponent>
-                            </v-card>
-                        </v-tab-item>
-                        <v-tab-item v-if="$store.state.user.currentUser.admin === 1">
-                            <EventRubricsComponent :rubrics="event.rubrics"></EventRubricsComponent>
-                        </v-tab-item>
-                        <v-tab-item v-if="$store.getters.checkCanSetPoints($store.state.user.currentUser.id)">
-                        </v-tab-item>
-                        <!--<v-tab-item v-if="$store.getters.checkCanSetPoints($store.state.user.currentUser.id)">
-                            <v-card>
-                                <EventQRRegisterComponent></EventQRRegisterComponent>
-                            </v-card>
-                        </v-tab-item> !-->
-
-                    </v-tabs-items>
                 </v-card>
 
             </v-col>
