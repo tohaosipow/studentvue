@@ -1,21 +1,44 @@
 <template>
     <div id="app">
-        <v-app light v-if="loaded">
-            <v-app-bar v-if="$vuetify.breakpoint.mdAndDown" dark  color="#1976d2" app>
-                <v-app-bar-nav-icon v-if="!drawer" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+        <v-app  light v-if="loaded">
+            <v-app-bar app color="#1976d2" dark v-if="$vuetify.breakpoint.mdAndDown">
+                <v-app-bar-nav-icon @click.stop="drawer = !drawer" v-if="!drawer"></v-app-bar-nav-icon>
             </v-app-bar>
+
+            <v-snackbar
+                    v-model="snackbar_error.enable"
+                    color="red"
+            >
+                {{ snackbar_error.text }}
+
+                <template v-slot:action="{ attrs }">
+                    <v-btn
+                            color="pink"
+                            text
+                            v-bind="attrs"
+                            @click="snackbar_error.enable = false"
+                    >
+                        Закрыть
+                    </v-btn>
+                </template>
+            </v-snackbar>
 
             <v-navigation-drawer
                     app
                     color="#1976d2"
-                    disable-route-watcher
                     dark
-                    style="min-height: 100vh"
+                    disable-route-watcher
                     hide-overlay
+                    style="min-height: 100vh"
                     v-model="drawer"
             >
                 <div class="text-center pa-4 text-white" style="color: white">
-                    <h4>АИС "Студент СурГУ"    <v-icon right style="position: absolute; right: 10px;" v-if="drawer && $vuetify.breakpoint.mdAndDown" @click.stop="drawer = !drawer">mdi-chevron-left</v-icon> </h4>
+                    <h4>АИС "Студент СурГУ"
+                        <v-icon @click.stop="drawer = !drawer" right
+                                style="position: absolute; right: 10px;" v-if="drawer && $vuetify.breakpoint.mdAndDown">
+                            mdi-chevron-left
+                        </v-icon>
+                    </h4>
                 </div>
 
                 <v-list
@@ -23,7 +46,7 @@
                         dense
                         nav
                 >
-                    <v-list-item v-if="$store.state.user.currentUser.id > 0" two-line>
+                    <v-list-item two-line v-if="$store.state.user.currentUser.id > 0">
                         <v-list-item-avatar>
                             <img src="https://randomuser.me/api/portraits/men/81.jpg">
                         </v-list-item-avatar>
@@ -41,10 +64,10 @@
                             </v-list-item-subtitle>
                         </v-list-item-content>
                         <v-list-item-action>
-                            <v-icon  @click.stop="$store.dispatch('logout'), $router.push('/auth')">mdi-logout</v-icon>
+                            <v-icon @click.stop="$store.dispatch('logout'), $router.push('/auth')">mdi-logout</v-icon>
                         </v-list-item-action>
                     </v-list-item>
-                    <v-list-item v-else two-line>
+                    <v-list-item two-line v-else>
 
                         <v-list-item-content>
                             <v-list-item-title> Вход / регистрация
@@ -53,14 +76,14 @@
                             </v-list-item-subtitle>
                         </v-list-item-content>
                         <v-list-item-action>
-                            <v-icon  @click.stop="$store.dispatch('logout'), $router.push('/auth')">mdi-login</v-icon>
+                            <v-icon @click.stop="$store.dispatch('logout'), $router.push('/auth')">mdi-login</v-icon>
                         </v-list-item-action>
                     </v-list-item>
 
                     <v-divider></v-divider>
 
-                    <v-list-item to="/"
-                                 link
+                    <v-list-item link
+                                 to="/"
                     >
                         <v-list-item-icon>
                             <v-icon>mdi-home</v-icon>
@@ -72,8 +95,8 @@
                         </v-list-item-content>
                     </v-list-item>
 
-                    <v-list-item to="/events"
-                            link
+                    <v-list-item link
+                                 to="/events"
                     >
                         <v-list-item-icon>
                             <v-icon>mdi-calendar</v-icon>
@@ -84,8 +107,8 @@
                             <v-list-item-subtitle>be yourself</v-list-item-subtitle>
                         </v-list-item-content>
                     </v-list-item>
-                    <v-list-item to="/projects"
-                            link
+                    <v-list-item link
+                                 to="/projects"
                     >
                         <v-list-item-icon>
                             <v-icon>mdi-google-circles</v-icon>
@@ -259,6 +282,17 @@
         mounted() {
             this.drawer = this.$vuetify.breakpoint.mdAndUp;
 
+            window.axios.interceptors.response.use(
+                response => {
+                    return response;
+                },
+                (error)  =>{
+                    let return_error = {...error};
+                    this.onError(error.response.data.message)
+                    return Promise.reject(return_error)
+                }
+            );
+
             let token = localStorage.getItem('access_token');
             if (token) {
                 window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
@@ -270,12 +304,27 @@
             } else {
                 this.loaded = true;
             }
+
+            this.$root.$on('requestError', (e) => {
+                this.snackbar_error.text = e;
+                this.snackbar_error.enable = true;
+            })
+        },
+        methods: {
+            onError(text) {
+                this.snackbar_error.enable = true;
+                this.snackbar_error.text = text;
+            }
         },
         data: () => ({
             drawer: true,
             items: [],
             items2: [],
             loaded: false,
+            snackbar_error: {
+                enable: false,
+                text: ''
+            },
             title: 'АИС "Студент СурГУ"'
         }),
 
@@ -284,7 +333,7 @@
                 // eslint-disable-next-line no-console
                 console.log(this.$vuetify.application.left)
 
-               // this.$store.commit('setFluid', !this.drawer)
+                // this.$store.commit('setFluid', !this.drawer)
             }
         }
     }

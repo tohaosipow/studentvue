@@ -52,6 +52,16 @@
 
 
                 </v-list-item-action>
+                <v-list-item-action
+                        v-if="team.user_id === $store.state.user.currentUser.id || $store.state.user.currentUser.admin === 1">
+                    <v-btn icon>
+                        <v-icon @click.prevent.stop.prevent.stop="deleteTeam(team.id)"
+                                color="red darken-2">mdi-delete
+                        </v-icon>
+                    </v-btn>
+
+
+                </v-list-item-action>
                 <template
                         v-if="parseInt($store.state.events.currentEvent.show_points_to_participants) === 1 || $store.getters.checkCanSetPoints($store.state.user.currentUser.id)">
                     <v-list-item-avatar color="#ffd700" size="36" v-if="index === 0">
@@ -113,6 +123,11 @@
             join(team_id) {
                 this.$store.dispatch('joinTeam', {team_id});
                 this.$store.dispatch('userTeam', {event_id: this.$store.state.events.currentEvent.id});
+            },
+
+            deleteTeam(team_id) {
+                this.$store.dispatch('deleteTeam', {team_id});
+                this.$store.dispatch('userTeam', {id: team_id});
             }
         },
         data() {

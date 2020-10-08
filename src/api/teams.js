@@ -10,6 +10,10 @@ export default {
         return window.axios.post(endpoint+'/api/event/'+event_id+'/teams/create', form_data, {headers: {'Content-Type': 'multipart/form-data'}});
     },
 
+    delete(data){
+        return window.axios.post(endpoint+'/api/teams/'+data.team_id+'/delete');
+    },
+
     join(team_id){
         return window.axios.post(endpoint+'/api/teams/'+team_id+'/join')
     },

@@ -349,6 +349,12 @@ export default {
             });
         },
 
+        deleteTeam({dispatch, state}, data) {
+            return teams.delete(data).then(() => {
+                return dispatch('getTeams', {event_id: state.currentEvent.id});
+            })
+        },
+
         acceptMember({commit}, {team_id, user_id}) {
             return teams.acceptMember(team_id, user_id).then((response) => {
                 commit('updateTeamMembers', {team_id: team_id, members: response.data});
