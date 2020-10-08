@@ -43,12 +43,12 @@
         methods: {
             acceptMember(team_id, user_id) {
                 this.$store.dispatch('acceptMember', {team_id, user_id});
-                this.$store.dispatch('userTeam', {event_id: this.$store.state.events.currentEvent.id});
+                this.$store.dispatch('getUserTeam', {event_id: this.$store.state.events.currentEvent.id});
             },
 
             declineMember(team_id, user_id) {
                 this.$store.dispatch('declineMember', {team_id, user_id});
-                this.$store.dispatch('userTeam', {event_id: this.$store.state.events.currentEvent.id});
+                this.$store.dispatch('getUserTeam', {event_id: this.$store.state.events.currentEvent.id});
             }
         }
     }

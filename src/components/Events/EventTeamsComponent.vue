@@ -122,12 +122,12 @@
         methods: {
             join(team_id) {
                 this.$store.dispatch('joinTeam', {team_id});
-                this.$store.dispatch('userTeam', {event_id: this.$store.state.events.currentEvent.id});
+                this.$store.dispatch('getUserTeam', {event_id: this.$store.state.events.currentEvent.id});
             },
 
             deleteTeam(team_id) {
                 this.$store.dispatch('deleteTeam', {team_id});
-                this.$store.dispatch('userTeam', {id: team_id});
+                this.$store.dispatch('getUserTeam', {id: team_id});
             }
         },
         data() {
