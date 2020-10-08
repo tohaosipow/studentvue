@@ -79,8 +79,8 @@
                         <v-col lg="2" md="2" sm="3" col="12">
                             <v-img :src="team.logo" width="100%"></v-img>
                         </v-col>
-                        <v-col cols="12" lg="3">
-                            <v-card-title class="headline">
+                        <v-col cols="12" col="12" lg="3">
+                            <v-card-title>
                                 {{team.name}}
                             </v-card-title>
                             <v-card-subtitle>
