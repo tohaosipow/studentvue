@@ -127,7 +127,7 @@
 
             deleteTeam(team_id) {
                 this.$store.dispatch('deleteTeam', {team_id});
-                this.$store.dispatch('getUserTeam', {id: team_id});
+                this.$store.dispatch('getUserTeam', {event_id: this.$store.state.events.currentEvent.id});
             }
         },
         data() {
