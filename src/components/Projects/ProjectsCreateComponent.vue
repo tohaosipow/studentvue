@@ -112,8 +112,8 @@
                     this.$router.push('/projects');
                     this.loading = false;
                 }).catch((e) => {
-                    this.errors = e.response.data.errors;
                     this.loading = false;
+                    if(e.response.data) this.errors = e.response.data.errors;
                 })
 
 
