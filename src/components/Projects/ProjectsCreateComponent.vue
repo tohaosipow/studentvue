@@ -47,10 +47,6 @@
                                     v-model="project.resources"/>
                         <v-file-input :error-messages="errors.logotype"  v-model="logotype" label="Логотип проекта" outlined  filled shaped dense/>
 
-                        <v-checkbox
-                                label="Я знаю, кто именно мне нужен и хочу указать необходимые роли"
-                                v-model="need_team"
-                                :value="1"/>
 
                     </v-card-text>
 
