@@ -110,7 +110,6 @@
                                v-if="$store.getters.checkCanSetPoints($store.state.user.currentUser.id) || $store.getters.isEventAdmin($store.state.user.currentUser.id)">
                             QR вход
                         </v-tab> !-->
-
                     </v-tabs>
                     <router-view></router-view>
                 </v-card>
@@ -122,9 +121,7 @@
 
 <script>
     import EventParticipantComponent from "@/components/Events/EventParticipants/EventParticipantsComponent";
-    import EventRubricsComponent from "@/components/Events/EventRubricsComponent";
     import EventCheckComponent from "@/components/Events/EventCheckComponent";
-    import EventTeamsComponent from "@/components/Events/EventTeamsComponent";
     import EventEditDialogComponent from "@/components/Events/EventEditDialogComponent";
     import events from "@/api/events";
    // import EventQRRegisterComponent from "@/components/Events/EventQRRegisterComponent";
@@ -136,9 +133,7 @@
 
             // eslint-disable-next-line vue/no-unused-components
             EventParticipantComponent,
-            EventRubricsComponent,
             EventCheckComponent,
-            EventTeamsComponent,
             EventEditDialogComponent
           //  EventQRRegisterComponent
         },
@@ -166,8 +161,6 @@
             connect(){
                 this.connectToEvent = true;
                 events.link({id: this.event.id}).then((response) => {
-                    // eslint-disable-next-line no-console
-                    console.log(response.data)
                     window.location.href = response.data;
                 })
             }
