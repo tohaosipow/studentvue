@@ -119,7 +119,7 @@
                             <v-row class="pa-2" justify="space-between" align="center">
                                 <v-col lg="5" sm="5">
                                     <v-btn @click.prevent.stop.prevent.stop="currentTeam = team, controlTeamDialog = true" color="blue" outlined
-                                           v-if="team.user_id === $store.state.user.currentUser.id || $store.state.user.currentUser.admin === 1">
+                                           v-if="!$store.getters.isEventPast() && (team.user_id === $store.state.user.currentUser.id || $store.state.user.currentUser.admin === 1)">
                                         <v-icon
                                                 color="blue darken-2"
                                                 left>mdi-settings
@@ -129,11 +129,12 @@
                                 </v-col>
                                 <v-col lg="5" sm="5">
                                     <v-btn @click.prevent.stop.prevent.stop="deleteTeam(team.id)" color="red" outlined
-                                           v-if="team.user_id === $store.state.user.currentUser.id || $store.state.user.currentUser.admin === 1">
+                                           v-if="!$store.getters.isEventPast() && (team.user_id === $store.state.user.currentUser.id || $store.state.user.currentUser.admin === 1)">
                                         <v-icon
                                                 color="red darken-2">mdi-delete
                                         </v-icon>
                                         Удалить
+
                                     </v-btn>
                                 </v-col>
                                 <v-col style="display: flex; justify-content: flex-end" lg="2" sm="2">
