@@ -1,6 +1,7 @@
 import project_types from "@/api/project_types";
 import projects from "@/api/projects";
 import project_roles from "@/api/project_roles";
+import project_files from "@/api/project_files";
 
 
 export default {
@@ -10,10 +11,16 @@ export default {
         userProjects: [],
         currentProject: null,
         currentProjectParticipants: [],
-        currentUserStatusInProject: null
+        currentUserStatusInProject: null,
+        currentProjectFiles: []
 
     },
     mutations: {
+
+        setCurrentProjectFiles(state, files){
+            state.currentProjectFiles = files;
+        },
+
         setCurrentUserStatusInProject(state, status) {
             state.currentUserStatusInProject = status;
         },
@@ -76,6 +83,11 @@ export default {
             return state.currentUserStatusInProject && state.currentUserStatusInProject.admin == 1 && state.currentUserStatusInProject.approved == 1
         },
 
+        isProjectAdmin(state, getters, g_state) {
+            return (state.currentUserStatusInProject && state.currentUserStatusInProject.admin == 1 && state.currentUserStatusInProject.approved == 1) || g_state.user.currentUser.admin == 1 || state.currentProject.responsible_user.id == g_state.user.currentUser.id
+        },
+
+
         getParticipantsByProjectRole: (state) => (project_role_id) => {
             return state.currentProjectParticipants.filter((p) => {
                 return parseInt(p.pivot.project_role_id) === parseInt(project_role_id)
@@ -87,6 +99,38 @@ export default {
             return project_types.all().then((response) => {
                 commit('setProjectTypes', response.data);
             })
+        },
+
+        getProjectFiles({commit}, {project_id}) {
+            return project_files.all(project_id).then((response) => {
+                commit('setCurrentProjectFiles', response.data);
+            })
+        },
+
+        removeProjectFile({dispatch, state}, {project_file_id}) {
+            return new Promise(((resolve, reject) => {
+                project_files.remove(project_file_id).then(() => {
+                    dispatch('getProjectFiles', {project_id: state.currentProject.id}).then(() => {
+                        resolve();
+                    });
+                }).catch((e) => {
+                    reject(e);
+                })
+            }))
+        },
+
+
+        storeProjectFile({dispatch, state}, {project_id, data}) {
+            return new Promise(((resolve, reject) => {
+                project_files.store(project_id, data).then(() => {
+                    dispatch('getProjectFiles', {project_id: state.currentProject.id}).then(() => {
+                        resolve();
+                    });
+
+                }).catch((e) => {
+                    reject(e);
+                })
+            }))
         },
 
         getProjects({commit}) {

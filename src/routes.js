@@ -26,6 +26,7 @@ import EventInfoComponent from "@/components/Events/EventInfoComponent";
 import ResetComponent from "@/components/ResetComponent";
 import Homepage from "@/components/Dashboard/Homepage";
 import EventChecksComponent from "@/components/Events/EventParticipants/EventChecksComponent";
+import ProjectsItemFilesComponent from "@/components/Projects/ProjectsItem/ProjectsItemFilesComponent";
 
 
 const routes = [
@@ -64,6 +65,7 @@ const routes = [
             {path: 'info', component: ProjectsItemInfoComponent, name: 'project.info'},
             {path: 'roles', component: ProjectsItemRolesComponent, name: 'project.roles'},
             {path: 'participants', component: ProjectsItemParticipantsComponent, name: 'project.participants'},
+            {path: 'files', component: ProjectsItemFilesComponent, name: 'project.files'},
         ]
     },
     {path: '/admin/users', component: UsersListComponent},

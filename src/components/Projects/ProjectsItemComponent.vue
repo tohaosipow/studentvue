@@ -170,6 +170,7 @@
                                v-if="$store.state.user.currentUser.admin == 1 || $store.getters.canEditProject">Роли в проекте
                         </v-tab>
                         <v-tab :to="{name: 'project.participants'}">Участники</v-tab>
+                        <v-tab :to="{name: 'project.files'}">Файлы</v-tab>
                     </v-tabs>
                 </v-card>
                 <router-view/>
