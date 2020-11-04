@@ -9,6 +9,7 @@ import discreator from "@/store/modules/discreator";
 import groupcreator from "@/store/modules/groupcreator";
 import lessonmanager from "@/store/modules/lessonmanager";
 import projects from "@/store/modules/projects";
+import chats from "@/store/modules/chats.js";
 
 
 
@@ -21,7 +22,7 @@ const debug = process.env.NODE_ENV !== 'production';
 
 export default new Vuex.Store({
     modules: {
-        user, events, dictionaries, timetables, discreator, groupcreator, lessonmanager, projects
+        user, events, dictionaries, timetables, discreator, groupcreator, lessonmanager, projects, chats
     },
     strict: debug
 })

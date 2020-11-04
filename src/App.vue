@@ -119,6 +119,18 @@
                             <v-list-item-subtitle>improve yourself</v-list-item-subtitle>
                         </v-list-item-content>
                     </v-list-item>
+                    <v-list-item link
+                                 to="/messages"
+                    >
+                        <v-list-item-icon>
+                            <v-icon>mdi-chat</v-icon>
+                        </v-list-item-icon>
+
+                        <v-list-item-content>
+                            <v-list-item-title>Сообщения</v-list-item-title>
+                            <v-list-item-subtitle>messenger</v-list-item-subtitle>
+                        </v-list-item-content>
+                    </v-list-item>
                 </v-list>
             </v-navigation-drawer>
 

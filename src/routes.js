@@ -27,6 +27,8 @@ import ResetComponent from "@/components/ResetComponent";
 import Homepage from "@/components/Dashboard/Homepage";
 import EventChecksComponent from "@/components/Events/EventParticipants/EventChecksComponent";
 import ProjectsItemFilesComponent from "@/components/Projects/ProjectsItem/ProjectsItemFilesComponent";
+import ProfileComponent from "@/components/Profile/ProfileComponent";
+import MessagesComponent from "@/components/Messages/MessagesComponent.vue";
 
 
 const routes = [
@@ -56,7 +58,8 @@ const routes = [
     {path: '/timetable/my/:id?', component: MyTimetableComponent},
     {path: '/timetable/create/master', component: DisciplineCreatorIndex, name: 'timetable.master'},
     {path: '/authByToken/:token', component: AuthByToken},
-    {path: '/profile/:id/edit', component: EditProfileComponent},
+    {path: '/profile/:id/edit', component: EditProfileComponent, name: 'profile.edit'},
+    {path: '/profile/:id', component: ProfileComponent, name: 'profile'},
     {path: '/projects', component: ProjectsListComponent},
     {path: '/projects/create', component: ProjectsCreateComponent},
     {
@@ -68,6 +71,7 @@ const routes = [
             {path: 'files', component: ProjectsItemFilesComponent, name: 'project.files'},
         ]
     },
+    {path: '/messages', component: MessagesComponent},
     {path: '/admin/users', component: UsersListComponent},
 ]
 

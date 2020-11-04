@@ -9,8 +9,9 @@ import Vuex from 'vuex'
 import VueQrcodeReader from "vue-qrcode-reader";
 import moment from "moment";
 import picker from "vue-datetime-picker";
+import 'moment/locale/ru'
 Vue.prototype.$moment = moment;
-
+Vue.prototype.$moment.locale('ru')
 Vue.use(VueQrcodeReader);
 Vue.use(Vuetify);
 Vue.use(VueRouter);
