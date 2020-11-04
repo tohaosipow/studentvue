@@ -82,13 +82,13 @@
                 this.loading = false;
             })
 
-            setInterval(() => {
+            /*setInterval(() => {
                 this.$store.dispatch('getChats').then(() => {
                     this.select_chat = this.chats[0]
                     this.loading = false;
                 });
 
-            }, 1000)
+            }, 1000) */
 
         }
     }
