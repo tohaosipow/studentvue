@@ -81,7 +81,7 @@
                 if(this.chat && this.chat.id > 0) {
                     this.$store.dispatch('getCurrentChatMessages', {id: this.chat.id}).then(() => {
                         this.loading = false;
-                        this.$refs.message_box.scrollTop = this.$refs.message_box.scrollHeight;
+                       // this.$refs.message_box.scrollTop = this.$refs.message_box.scrollHeight;
                     })
 
                 }
