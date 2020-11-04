@@ -7,7 +7,7 @@
                 </div>
 
             </v-card-text>
-            <div class="pa-3 messages" ref="message_box" style="overflow-y: scroll; height: 400px">
+            <div class="pa-3 messages" ref="message_box" style="overflow-y: scroll; height: calc(100vh - 350px)">
                 <Message :date="item.created_at" :key="item.id" :me="$store.state.user.currentUser.id === item.owner_id"
                          :name="item.owner.first_name + ' ' + item.owner.last_name"
                          :text="item.text"
