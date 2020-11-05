@@ -10,7 +10,7 @@
             <div class="pa-3 messages" ref="message_box" style="overflow-y: scroll; height: calc(100vh - 350px)">
                 <Message :date="item.created_at" :key="item.id" :me="$store.state.user.currentUser.id === item.owner_id"
                          :name="item.owner.first_name + ' ' + item.owner.last_name"
-                         :text="item.text" :id="item.id"
+                         :text="item.text" :id="item.id" :readers="item.readers"
                          v-for="item in messages"/>
 
             </div>
@@ -66,6 +66,14 @@
                     this.$refs.message_box.scrollTop = this.$refs.message_box.scrollHeight;
 
                 })
+            },
+
+            updateMessages(){
+                this.$store.dispatch('getCurrentChatMessages', {id: this.chat.id}).then(() => {
+                    this.loading = false;
+                    this.$refs.message_box.scrollTop = this.$refs.message_box.scrollHeight;
+
+                })
             }
         },
         watch: {
@@ -77,15 +85,11 @@
                     window.Echo.private(`messages.chat.${this.chat.id}`)
                         .listen('messages_send', (message) => {
                             this.$store.commit('addMessage', message);
+                            this.updateMessages();
                             this.$refs.message_box.scrollTop+=200;
                         });
 
-
-                    this.$store.dispatch('getCurrentChatMessages', {id: this.chat.id}).then(() => {
-                        this.loading = false;
-                        this.$refs.message_box.scrollTop = this.$refs.message_box.scrollHeight;
-
-                    })
+                    this.updateMessages();
                 }
             },
         },
