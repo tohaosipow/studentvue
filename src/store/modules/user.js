@@ -28,6 +28,7 @@ export default {
             console.log("SET TOKEN", token);
             localStorage.setItem('access_token', token);
             window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+
             state.token = token
         }
     }
@@ -50,6 +51,7 @@ export default {
                 user.authUser(username, password).then((response) => {
                     // eslint-disable-next-line no-console
                     commit('setToken', response.data.access_token);
+                    window.Echo.options.auth.headers['Authorization'] = `Bearer ${response.data.access_token}`;
                     dispatch('getUser').then(() => {
                         resolve()
                     });

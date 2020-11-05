@@ -22,5 +22,14 @@ export default {
     },
 
 
+    getChatById(data){
+        return window.axios.post(endpoint+'/api/chats/'+data.id);
+    },
+
+    markAsRead(data){
+        return window.axios.post(endpoint+'/api/messages/'+data.id+'/markAsRead');
+    },
+
+
 
 }

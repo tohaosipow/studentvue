@@ -1,7 +1,7 @@
 <template>
     <div>
         <NewChatComponent @newchat="$emit('newchat')" v-if="!chat"/>
-        <v-card ref="main_block" v-else>
+        <v-card  :loading="loading" ref="main_block" v-else>
             <v-card-text>
                 <div class="text-center" v-if="!messages.length">Сообщений пока нет, но Вы можете отправить первое.
                 </div>
@@ -10,11 +10,12 @@
             <div class="pa-3 messages" ref="message_box" style="overflow-y: scroll; height: calc(100vh - 350px)">
                 <Message :date="item.created_at" :key="item.id" :me="$store.state.user.currentUser.id === item.owner_id"
                          :name="item.owner.first_name + ' ' + item.owner.last_name"
-                         :text="item.text"
+                         :text="item.text" :id="item.id"
                          v-for="item in messages"/>
+
             </div>
             <div class="pa-2" ref="input_box" style="background: #fafafa;">
-                <form @submit.prevent="sendMessage">
+                <form v-on:keyup.enter="sendMessage" @submit.prevent="sendMessage">
                     <v-textarea class="mt-5" clearable label="Ваше сообщение" outlined
                                 ref="input_field"
                                 v-model="text"
@@ -68,25 +69,35 @@
             }
         },
         watch: {
-            chat() {
-                this.$store.dispatch('getCurrentChatMessages', {id: this.chat.id}).then(() => {
-                    this.loading = false;
-                    this.$refs.message_box.scrollTop = this.$refs.message_box.scrollHeight;
-                })
+            chat(now, before) {
+                // eslint-disable-next-line no-console
+                console.log(now, before)
+                if(!before || now.id !== before.id) {
+                    if(before) window.Echo.leave(`messages.chat.${before.id}`)
+                    window.Echo.private(`messages.chat.${this.chat.id}`)
+                        .listen('messages_send', (message) => {
+                            this.$store.commit('addMessage', message);
+                            this.$refs.message_box.scrollTop+=200;
+                        });
+
+
+                    this.$store.dispatch('getCurrentChatMessages', {id: this.chat.id}).then(() => {
+                        this.loading = false;
+                        this.$refs.message_box.scrollTop = this.$refs.message_box.scrollHeight;
+
+                    })
+                }
             },
         },
 
-        mounted(){
-            setInterval(() => {
-                if(this.chat && this.chat.id > 0) {
-                    this.$store.dispatch('getCurrentChatMessages', {id: this.chat.id}).then(() => {
-                        this.loading = false;
-                       // this.$refs.message_box.scrollTop = this.$refs.message_box.scrollHeight;
-                    })
+        mounted() {
 
-                }
-            }, 1000)
+
         },
+
+        beforeDestroy(){
+            if(this.chat) window.Echo.leave(`messages.chat.${this.chat.id}`)
+        }
 
 
     }

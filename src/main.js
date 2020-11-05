@@ -7,11 +7,13 @@ import {router} from "@/routes";
 import index from "@/store";
 import Vuex from 'vuex'
 import VueQrcodeReader from "vue-qrcode-reader";
-import moment from "moment";
+import moment from "moment-timezone";
 import picker from "vue-datetime-picker";
 import 'moment/locale/ru'
+
 Vue.prototype.$moment = moment;
-Vue.prototype.$moment.locale('ru')
+Vue.prototype.$moment.locale('ru');
+Vue.prototype.$moment.tz.setDefault("UTC");
 Vue.use(VueQrcodeReader);
 Vue.use(Vuetify);
 Vue.use(VueRouter);

@@ -10,6 +10,47 @@ import groupcreator from "@/store/modules/groupcreator";
 import lessonmanager from "@/store/modules/lessonmanager";
 import projects from "@/store/modules/projects";
 import chats from "@/store/modules/chats.js";
+import Echo from "laravel-echo"
+import Pusher from "pusher-js"
+
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: '8e49eed7830e83836e95',
+    cluster: 'eu',
+    forceTLS: true,
+    namespace: false,
+    authEndpoint: process.env.NODE_ENV === 'development'?'http://localhost:8000/broadcasting/auth':'http://api.student.surgu.ru/broadcasting/auth',// 'http://localhost:8000/broadcasting/auth',
+    auth: {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+            Accept: 'application/json',
+        },
+    },
+});
+
+window.Pusher = Pusher;
+/*
+
+mport Echo from "laravel-echo"
+
+window.io = require('socket.io-client');
+
+
+if (typeof io !== 'undefined') {
+    window.Echo = new Echo({
+        broadcaster: 'socket.io',
+        namespace: false,
+        host: process.env.NODE_ENV === 'development'?'http://localhost:6001':'http://api.student.surgu.ru:6001',
+        authEndpoint: process.env.NODE_ENV === 'development'?'http://localhost:8000/broadcasting/auth':'http://api.student.surgu.ru/broadcasting/auth',// 'http://localhost:8000/broadcasting/auth',
+        auth: {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+                Accept: 'application/json',
+            },
+        },
+    });
+*/
+
 
 
 

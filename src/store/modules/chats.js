@@ -11,6 +11,9 @@ export default {
         setChats(state, chats) {
             state.chats = chats;
         },
+        updateChat(state, chat) {
+            state.chats = state.chats.map((ch) => ch.id == chat.id?chat:ch);
+        },
         setUsers(state, users) {
             state.users = users;
         },
@@ -46,10 +49,8 @@ export default {
                 commit('setMessages', response.data);
             })
         },
-        sendMessage({commit}, data) {
-            return chats.sendMessage(data).then((response) => {
-                commit('addMessage', response.data);
-            })
+        sendMessage(_, data) {
+            return chats.sendMessage(data)
         }
     }
 }

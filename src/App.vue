@@ -119,7 +119,7 @@
                             <v-list-item-subtitle>improve yourself</v-list-item-subtitle>
                         </v-list-item-content>
                     </v-list-item>
-                    <v-list-item link
+                    <v-list-item link v-if="$store.state.user.currentUser.id > 0"
                                  to="/messages"
                     >
                         <v-list-item-icon>
