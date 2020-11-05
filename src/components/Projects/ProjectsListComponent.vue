@@ -84,7 +84,7 @@
                                         <v-chip class="ma-2"
                                                 light
                                                 style="padding-left: 40px;"
-                                                text-color="white"
+
                                         >
 
                                             <v-progress-circular :value="parseInt(role.users.length/role.quota*100)" color="green"
