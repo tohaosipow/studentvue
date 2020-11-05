@@ -19,7 +19,7 @@ window.Echo = new Echo({
     cluster: 'eu',
     forceTLS: true,
     namespace: false,
-    authEndpoint: process.env.NODE_ENV === 'development'?'http://localhost:8000/broadcasting/auth':'http://api.student.surgu.ru/broadcasting/auth',// 'http://localhost:8000/broadcasting/auth',
+    authEndpoint: process.env.NODE_ENV === 'development'?'http://localhost:8000/broadcasting/auth':'https://api.student.surgu.ru/broadcasting/auth',// 'http://localhost:8000/broadcasting/auth',
     auth: {
         headers: {
             Authorization: `Bearer ${localStorage.getItem('access_token')}`,
