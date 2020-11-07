@@ -29,6 +29,7 @@ import EventChecksComponent from "@/components/Events/EventParticipants/EventChe
 import ProjectsItemFilesComponent from "@/components/Projects/ProjectsItem/ProjectsItemFilesComponent";
 import ProfileComponent from "@/components/Profile/ProfileComponent";
 import MessagesComponent from "@/components/Messages/MessagesComponent.vue";
+import ProjectsItemChatComponent from "@/components/Projects/ProjectsItem/ProjectsItemChatComponent.vue";
 
 
 const routes = [
@@ -69,6 +70,7 @@ const routes = [
             {path: 'roles', component: ProjectsItemRolesComponent, name: 'project.roles'},
             {path: 'participants', component: ProjectsItemParticipantsComponent, name: 'project.participants'},
             {path: 'files', component: ProjectsItemFilesComponent, name: 'project.files'},
+            {path: 'chat', component: ProjectsItemChatComponent, name: 'project.chat'},
         ]
     },
     {path: '/messages', component: MessagesComponent},

@@ -171,6 +171,7 @@
                         </v-tab>
                         <v-tab :to="{name: 'project.participants'}">Участники</v-tab>
                         <v-tab :to="{name: 'project.files'}">Файлы</v-tab>
+                        <v-tab v-if="$store.getters.canWriteToChat" :to="{name: 'project.chat'}">Чат</v-tab>
                     </v-tabs>
                 </v-card>
                 <router-view/>

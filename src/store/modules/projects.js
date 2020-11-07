@@ -2,6 +2,7 @@ import project_types from "@/api/project_types";
 import projects from "@/api/projects";
 import project_roles from "@/api/project_roles";
 import project_files from "@/api/project_files";
+import chats from "@/api/chats.js";
 
 
 export default {
@@ -12,11 +13,15 @@ export default {
         currentProject: null,
         currentProjectParticipants: [],
         currentUserStatusInProject: null,
-        currentProjectFiles: []
+        currentProjectFiles: [],
+        currentProjectChat: null
 
     },
     mutations: {
 
+        setCurrentProjectChat(state, chat){
+            state.currentProjectChat = chat
+        },
         setCurrentProjectFiles(state, files){
             state.currentProjectFiles = files;
         },
@@ -87,6 +92,14 @@ export default {
             return (state.currentUserStatusInProject && state.currentUserStatusInProject.admin == 1 && state.currentUserStatusInProject.approved == 1) || g_state.user.currentUser.admin == 1 || state.currentProject.responsible_user.id == g_state.user.currentUser.id
         },
 
+        isProjectParticipant(state) {
+            return state.currentUserStatusInProject != null
+        },
+
+        canWriteToChat(state, getters) {
+            return getters.isProjectAdmin || getters.isProjectParticipant;
+        },
+
 
         getParticipantsByProjectRole: (state) => (project_role_id) => {
             return state.currentProjectParticipants.filter((p) => {
@@ -98,6 +111,12 @@ export default {
         getProjectTypes({commit}) {
             return project_types.all().then((response) => {
                 commit('setProjectTypes', response.data);
+            })
+        },
+
+        getProjectChat({commit, state}) {
+            return chats.getChatById({id: state.currentProject.chat_id}).then((response) => {
+                commit('setCurrentProjectChat', response.data);
             })
         },
 
