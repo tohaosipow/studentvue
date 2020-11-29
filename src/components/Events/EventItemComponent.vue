@@ -61,7 +61,7 @@
 
                                     </v-card>
                                 </v-dialog>
-                                <v-btn @click="connect" v-if="event.is_online && $store.state.events.userStatus.approved"  class="mt-2" color="blue" icon outlined rounded>
+                                <v-btn @click="connect" v-if="event.is_online && $store.state.events.userStatus.approved"  class="mt-2 icon outlined rounded" dark color="blue" >
                                     <v-icon left>mdi-account-network</v-icon>
                                     Подключиться к мероприятию
                                 </v-btn>
