@@ -1,6 +1,6 @@
 <template>
     <v-card :loading="loading"
-            v-if="$store.getters.isEventAdmin($store.state.user.currentUser.id)">
+            v-if="$store.getters.isEventAdmin($store.state.user.currentUser.id) || $store.state.user.currentUser.admin > 0">
         <v-card-title>
             <v-text-field
                     append-icon="mdi-magnify"
