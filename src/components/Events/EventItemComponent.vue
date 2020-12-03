@@ -35,9 +35,7 @@
                         <v-col lg="8">
 
                             <v-card-title class="title">{{event.name}}</v-card-title>
-                            <v-card-text>
-                                {{event.description}}
-                            </v-card-text>
+                            <v-card-text v-html="event.description"/>
                             <v-card-actions>
                                 <v-dialog
                                         v-model="connectToEvent"
