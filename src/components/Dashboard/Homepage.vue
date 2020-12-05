@@ -121,7 +121,7 @@
         mounted() {
             this.$store.dispatch('getEvents');
             this.$store.dispatch('getProjects');
-            if(!this.$store.state.user.currentUser.id) setTimeout(() => {this.dialog = true}, 5000);
+          //  if(!this.$store.state.user.currentUser.id) setTimeout(() => {this.dialog = true}, 5000);
         }
     }
 </script>
