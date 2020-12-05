@@ -272,7 +272,7 @@
         },
         computed: {
             projects() {
-                let my = this.filter.my === 1 ? this.$store.state.projects.userProjects : this.$store.state.projects.projects.filter((project) => {
+                let my = this.filter.my == 1 ? this.$store.state.projects.userProjects : this.$store.state.projects.projects.filter((project) => {
                     return parseInt(project.approved) === 0 && parseInt(this.$store.state.user.currentUser.admin) === 1 || parseInt(project.approved) === 1
                 });
 
