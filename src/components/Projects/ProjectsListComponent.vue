@@ -1,5 +1,37 @@
 <template>
     <v-container>
+        <v-card outlined>
+            <v-card-title>Поиск проекта</v-card-title>
+            <v-card-text>
+                <v-row justify="space-between" align-content="center">
+                    <v-col lg="12">
+                        <v-text-field
+                                v-model="filter.title"
+                                label="Название проекта"
+                        ></v-text-field>
+                        <v-select
+                                v-model="filter.type"
+                                :items="$store.state.projects.project_types"
+                                chips
+                                deletable-chips
+                                item-value="id"
+                                color="blue"
+                                item-text="name"
+                                outlined
+                                no-data-text="Нет типов"
+                                label="Тип проекта"
+                                multiple
+                        ></v-select>
+                        <v-switch v-if="$store.state.user.currentUser.id > 0"
+                                v-model="filter.my"
+                                label="Отобразить только мои проекты"
+                        ></v-switch>
+                    </v-col>
+
+                </v-row>
+
+            </v-card-text>
+        </v-card>
         <v-tooltip :value="true" left>
             <template v-slot:activator="{ on }">
                 <v-btn
@@ -17,15 +49,15 @@
             </template>
             <span>Создайте проект</span>
         </v-tooltip>
-        <v-tabs
-                background-color="white"
-                color="blue darken-2 accent-4"
-                right
-                v-model="my"
-        >
-            <v-tab>Все проекты</v-tab>
-            <v-tab v-if="$store.state.user.currentUser.id > 0">Мои проекты</v-tab>
-        </v-tabs>
+<!--        <v-tabs-->
+<!--                background-color="white"-->
+<!--                color="blue darken-2 accent-4"-->
+<!--                right-->
+<!--                v-model="my"-->
+<!--        >-->
+<!--            <v-tab>Все проекты</v-tab>-->
+<!--            <v-tab v-if="$store.state.user.currentUser.id > 0">Мои проекты</v-tab>-->
+<!--        </v-tabs>-->
         <v-row v-if="loading">
             <v-col :key="i" cols="12" lg="6" v-for="i in 8">
                 <v-skeleton-loader
@@ -206,10 +238,10 @@
                     <v-alert prominent
                              text
                              type="info"
-                             v-if="my === 1"
+                             v-if="filter.my === 1"
                     >
                         <v-row align="center">
-                            <v-col class="grow">Проектов нет. Самое время их создать или вступить в чужой.</v-col>
+                            <v-col class="grow">Проектов по заданным фильтрам нет. Самое время их создать или вступить в чужой.</v-col>
                             <v-col class="shrink">
                                 <v-btn color="green" to="/projects/create">Создать свой</v-btn>
                             </v-col>
@@ -230,15 +262,21 @@
         data() {
             return {
                 loading: true,
-                my: 1,
-                userProject: []
+                userProject: [],
+                filter: {
+                    title: "",
+                    type: [],
+                    my: 1,
+                }
             }
         },
         computed: {
             projects() {
-                return this.my === 1 ? this.$store.state.projects.userProjects : this.$store.state.projects.projects.filter((project) => {
+                let my = this.filter.my === 1 ? this.$store.state.projects.userProjects : this.$store.state.projects.projects.filter((project) => {
                     return parseInt(project.approved) === 0 && parseInt(this.$store.state.user.currentUser.admin) === 1 || parseInt(project.approved) === 1
                 });
+
+                return my.filter(el => this.filter.type.indexOf(el.type.id) !== -1).filter(el => el.title.toLowerCase().indexOf(this.filter.title.toLowerCase()) !== -1)
             }
         },
         methods: {
@@ -271,17 +309,21 @@
             if (this.$store.state.user.currentUser.id > 0) {
                 Promise.all([
                     this.$store.dispatch('getEmployees'),
+                    this.$store.dispatch('getProjectTypes'),
                     this.$store.dispatch('getProjectsByUser', {user_id: this.$store.state.user.currentUser.id}),
                     this.$store.dispatch('getProjects')]).then(() => {
-                    this.my = this.$store.state.projects.userProjects.length > 0 ? 1 : 0
+                    this.filter.my = this.$store.state.projects.userProjects.length > 0 ? 1 : 0
                     this.loading = false;
+                    this.filter.type = this.$store.state.projects.project_types.map(el => el.id)
                 })
             } else {
-                this.my = 0;
+                this.filter.my = 0;
                 Promise.all([
                     this.$store.dispatch('getEmployees'),
+                    this.$store.dispatch('getProjectTypes'),
                     this.$store.dispatch('getProjects')]).then(() => {
                     this.loading = false;
+                    this.filter.type = this.$store.state.projects.project_types.map(el => el.id);
                 })
             }
         }
