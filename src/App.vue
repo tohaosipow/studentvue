@@ -5,6 +5,7 @@
                 <v-app-bar-nav-icon @click.stop="drawer = !drawer" v-if="!drawer"></v-app-bar-nav-icon>
             </v-app-bar>
 
+            <CompleteProfile @close="completeDialog = false" :enable="completeDialog"/>
             <v-snackbar
                     v-model="snackbar_error.enable"
                     color="red"
@@ -286,9 +287,11 @@
 <script>
 
 
+    import CompleteProfile from "@/components/Profile/CompleteProfile.vue";
+
     export default {
         name: 'app',
-        components: {},
+        components: {CompleteProfile},
         created() {
         },
         mounted() {
@@ -309,6 +312,7 @@
             if (token) {
                 window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
                 this.$store.dispatch('getUser').then(() => {
+                    if(this.$store.state.user.currentUser.role === 'student' && !this.$store.state.user.currentUser.student_groups_id) this.completeDialog = true;
                     this.loaded = true;
                 });
                 this.$store.dispatch('getDepartments');
@@ -332,6 +336,7 @@
             drawer: true,
             items: [],
             items2: [],
+            completeDialog: false,
             loaded: false,
             snackbar_error: {
                 enable: false,

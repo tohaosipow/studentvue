@@ -57,17 +57,8 @@
                             <v-row transition="scroll-y-transition" v-if="user.role === 'student'">
                                 <v-subheader>Информация о студенте</v-subheader>
                                 <v-col lg="12">
-                                    <v-autocomplete
-                                            :items="$store.getters.getStudentsDepartments"
-                                            hint="Выберите существующее или укажите свое, если его нет в списке"
-                                            item-text="name"
-                                            item-value="id"
-                                            label="Структурное подразделение"
-                                            outlined
-                                            v-model="user.department_id"
-                                    />
 
-                                    <v-autocomplete
+                                    <v-select
                                             :items="$store.state.dictionaries.studentGroups"
                                             hint="Выберите существующую или укажите свою, если ее нет в списке"
                                             item-text="name"

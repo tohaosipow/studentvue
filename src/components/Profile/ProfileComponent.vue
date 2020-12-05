@@ -79,7 +79,7 @@
             user() {
                 return this.$store.state.user.currentUser
             }
-        }
+        },
     }
 </script>
 
