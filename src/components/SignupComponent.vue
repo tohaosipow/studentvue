@@ -233,8 +233,11 @@
                                 </v-row>
                                 <transition name="fade">
                                     <v-row transition="scroll-y-transition" v-if="user.role === 'student'">
-                                        <v-subheader>Информация о студенте</v-subheader>
-                                        <v-col lg="12">
+
+                                        <v-col cols="12" lg="12">
+                                            <v-subheader>Информация о студенте</v-subheader>
+                                        </v-col>
+                                        <v-col cols="12" lg="12">
                                             <v-autocomplete
                                                     :items="$store.state.dictionaries.studentGroups"
                                                     hint="Выберите существующую"
@@ -253,7 +256,7 @@
                                 <transition name="fade">
                                     <v-row transition="scroll-y-transition" v-if="user.role === 'employee'">
                                         <v-subheader>Информация о сотруднике</v-subheader>
-                                        <v-col lg="12">
+                                        <v-col cols="12" lg="12">
                                             <v-combobox
                                                     :items="$store.state.dictionaries.departments"
                                                     :rules="[v => !!v || 'Item is required']"
@@ -279,7 +282,7 @@
                                 <transition name="fade">
                                     <v-row transition="scroll-y-transition" v-if="user.role === 'pupil'">
                                         <v-subheader>Информация об ученике</v-subheader>
-                                        <v-col lg="12">
+                                        <v-col cols="12" lg="12">
                                             <v-text-field
                                                     label="Учебное заведение"
                                                     outlined
