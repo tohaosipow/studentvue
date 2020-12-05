@@ -302,7 +302,7 @@
 
                                 <v-row>
                                     <v-col lg="12">
-                                        <v-btn :disabled="!form_valid" @click="signUp" color="blue" outlined>
+                                        <v-btn  @click="signUp" color="blue" outlined>
                                             Зарегистрироваться
                                         </v-btn>
                                     </v-col>
