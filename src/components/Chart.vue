@@ -1,8 +1,8 @@
 <script>
-    import { Pie } from 'vue-chartjs'
+    import { Doughnut } from 'vue-chartjs'
 
     export default {
-        extends: Pie,
+        extends: Doughnut,
         props: ['keys', 'values'],
         mounted () {
             // Overwriting base render method with actual data.

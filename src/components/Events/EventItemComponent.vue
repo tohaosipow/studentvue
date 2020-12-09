@@ -104,6 +104,10 @@
                                v-if="$store.getters.checkCanSetPoints($store.state.user.currentUser.id) || $store.getters.isEventAdmin($store.state.user.currentUser.id) ">
                             Оценки
                         </v-tab>
+                        <v-tab :to="{name: 'event.stats', params: {id: $store.state.events.currentEvent.id}}"
+                               v-if="$store.getters.isEventAdmin($store.state.user.currentUser.id)">
+                            Статистика
+                        </v-tab>
                         <!--<v-tab :to="{name: 'event.qr_enter', params: {id: $store.state.events.currentEvent.id}}"
                                v-if="$store.getters.checkCanSetPoints($store.state.user.currentUser.id) || $store.getters.isEventAdmin($store.state.user.currentUser.id)">
                             QR вход

@@ -66,32 +66,16 @@
                     </v-list-item-subtitle>
                 </v-list-item>
             </div>
-            <v-card-text>
-                <h4>Статистика участников по подразделениям</h4>
-                <v-row>
-                        <v-card>
-                            <Chart :keys='statistics.map(e => e[0].length === 0?"Не указано":e[0])' :values="statistics.map(e => e[1])"
-                                   v-if="statistics.length > 0"/>
-                        </v-card>
-                </v-row>
-            </v-card-text>
-
-
         </v-card>
     </div>
 </template>
 
 <script>
-    import events from "@/api/events.js";
-    import Chart from "@/components/Chart.vue";
-
     export default {
         name: "EventInfoComponent",
         methods: {},
-        components: {Chart},
         data() {
             return {
-                statistics: [],
             }
         },
         computed: {
@@ -100,9 +84,6 @@
             }
         },
         mounted() {
-            events.stats({id: this.$store.state.events.currentEvent.id}).then((r) => {
-                this.statistics = Object.entries(r.data);
-            })
         }
     }
 </script>

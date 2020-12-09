@@ -30,6 +30,7 @@ import ProjectsItemFilesComponent from "@/components/Projects/ProjectsItem/Proje
 import ProfileComponent from "@/components/Profile/ProfileComponent";
 import MessagesComponent from "@/components/Messages/MessagesComponent.vue";
 import ProjectsItemChatComponent from "@/components/Projects/ProjectsItem/ProjectsItemChatComponent.vue";
+import EventStatsComponent from "@/components/Events/EventStatsComponent.vue";
 
 
 const routes = [
@@ -49,6 +50,7 @@ const routes = [
                 {path: 'points', component: EventPointComponent, name: 'event.points'},
                 {path: 'qr_enter', component: EventQRRegisterComponent, name: 'event.qr_enter'},
                 {path: 'rating', component: EventRateComponent, name: 'event.rating'},
+                {path: 'stats', component: EventStatsComponent, name: 'event.stats'},
             ]
     },
     {path: '/events/:id/teams/:team_id', component: TeamComponent, name: 'teams.item'},
