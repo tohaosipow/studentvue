@@ -36,7 +36,7 @@
 
                             <v-card-title class="title">{{event.name}}</v-card-title>
                             <v-card-text v-html="event.description"/>
-                            <template v-if="event.rate">
+                            <v-row v-if="event.rate">
                                 <span class="grey--text text--lighten-2 caption mr-2">
                                     {{parseFloat(event.rate).toFixed(2)}}
                                 </span>
@@ -48,7 +48,7 @@
                                         half-increments
                                         readonly
                                 ></v-rating>
-                            </template>
+                            </v-row>
 
                             <v-card-actions>
                                 <v-dialog
