@@ -69,7 +69,7 @@
             <v-card-text>
                 <h4>Статистика участников по подразделениям</h4>
                 <v-row>
-                    <v-col lg="4">
+                    <v-col lg="12">
                         <v-card>
                             <Chart :keys='statistics.map(e => e[0].length === 0?"Не указано":e[0])' :values="statistics.map(e => e[1])"
                                    v-if="statistics.length > 0"/>
