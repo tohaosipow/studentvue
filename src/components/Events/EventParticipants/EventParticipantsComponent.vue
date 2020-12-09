@@ -1,71 +1,77 @@
 <template>
-    <v-data-table
-            :headers="headers"
-            :items="this.$store.state.events.participants" :items-per-page="10" :loading="loading"
-            loading-text="Загружаем ... "
-            show-select
-            v-if="$store.state.user.currentUser.admin === 1 || $store.getters.isEventAdmin($store.state.user.currentUser.id)"
-    >
+    <div>
+        <v-btn class="m-2" outlined :href="'https://api.student.surgu.ru/events/'+this.$store.state.events.currentEvent.id+'/participants/csv'">Скачать</v-btn>
 
-        <template v-slot:item.role="props">
-            <v-edit-dialog
-            >
-                <v-chip :key="index"
-                        class="ma-2"
-                        label
-                        v-for="(role, index) in props.item.roles.map((el) => {return el.event_role.role.name})"
+
+        <v-data-table
+                :headers="headers"
+                :items="this.$store.state.events.participants" :items-per-page="10" :loading="loading"
+                loading-text="Загружаем ... "
+                show-select
+                v-if="$store.state.user.currentUser.admin === 1 || $store.getters.isEventAdmin($store.state.user.currentUser.id)"
+        >
+
+            <template v-slot:item.role="props">
+                <v-edit-dialog
                 >
-                    {{role}}
-                </v-chip>
-                <template v-slot:input>
-                    <v-autocomplete :items="$store.state.events.currentEvent.roles"
-                                    :value="props.item.roles.map((el) => {return el.event_role.id})"
-                                    color="pink"
-                                    item-text="role.name"
-                                    @input="changeParticipantRole(props.item.id, $event)"
-                                    item-value="id"
-                                    multiple
-                                    label="Редактирование"
-                    />
-                </template>
-            </v-edit-dialog>
-        </template>
+                    <v-chip :key="index"
+                            class="ma-2"
+                            label
+                            v-for="(role, index) in props.item.roles.map((el) => {return el.event_role.role.name})"
+                    >
+                        {{role}}
+                    </v-chip>
+                    <template v-slot:input>
+                        <v-autocomplete :items="$store.state.events.currentEvent.roles"
+                                        :value="props.item.roles.map((el) => {return el.event_role.id})"
+                                        @input="changeParticipantRole(props.item.id, $event)"
+                                        color="pink"
+                                        item-text="role.name"
+                                        item-value="id"
+                                        label="Редактирование"
+                                        multiple
+                        />
+                    </template>
+                </v-edit-dialog>
+            </template>
 
-        <template v-slot:item.is_visit="{ item }">
-            <EventUserIsVisitSwitch :event="$store.state.events.currentEvent" :user="item"></EventUserIsVisitSwitch>
-        </template>
+            <template v-slot:item.is_visit="{ item }">
+                <EventUserIsVisitSwitch :event="$store.state.events.currentEvent" :user="item"></EventUserIsVisitSwitch>
+            </template>
 
-        <template v-slot:item.type="{ item }">
-            <div v-if="item.role === 'student'">
-                Студент
-                <span v-if="item.student_group">{{item.student_group.name}}</span> -
-                <span v-if="item.student_group && item.student_group.department">{{item.student_group.department.name}}</span>
-            </div>
-            <div v-if="item.role === 'employee'">
-                {{item.employee_post}}
-                <span v-if="item.department">{{item.department.name}}</span>
+            <template v-slot:item.type="{ item }">
+                <div v-if="item.role === 'student'">
+                    Студент
+                    <span v-if="item.student_group">{{item.student_group.name}}</span> -
+                    <span v-if="item.student_group && item.student_group.department">{{item.student_group.department.name}}</span>
+                </div>
+                <div v-if="item.role === 'employee'">
+                    {{item.employee_post}}
+                    <span v-if="item.department">{{item.department.name}}</span>
 
-            </div>
-            <div v-if="item.role === 'pupil'">
-                {{item.pupil_school}}
-                {{item.pupil_class}}
-            </div>
-            <div v-if="item.role === 'visitor'">
-                Посетитель
-            </div>
+                </div>
+                <div v-if="item.role === 'pupil'">
+                    {{item.pupil_school}}
+                    {{item.pupil_class}}
+                </div>
+                <div v-if="item.role === 'visitor'">
+                    Посетитель
+                </div>
 
-        </template>
+            </template>
 
-    </v-data-table>
+        </v-data-table>
+    </div>
+
 </template>
 
 <script>
-  //  import EventUserCheckSwitch from "@/components/Events/EventParticipants/EventUserCheckSwitch";
+    //  import EventUserCheckSwitch from "@/components/Events/EventParticipants/EventUserCheckSwitch";
     import EventUserIsVisitSwitch from "@/components/Events/EventParticipants/EventUserIsVisitSwitch";
 
     export default {
         name: "EventParticipantComponent",
-        components: { EventUserIsVisitSwitch},
+        components: {EventUserIsVisitSwitch},
         data() {
             return {
                 loading: true,
@@ -86,11 +92,15 @@
                 ],
             }
         },
-        methods:{
-            changeParticipantRole(user_id, roles){
+        methods: {
+            changeParticipantRole(user_id, roles) {
                 // eslint-disable-next-line no-console
                 console.log(user_id, roles)
-                this.$store.dispatch('changeParticipantRole', {event_id: this.$store.state.events.currentEvent.id, user_id, roles})
+                this.$store.dispatch('changeParticipantRole', {
+                    event_id: this.$store.state.events.currentEvent.id,
+                    user_id,
+                    roles
+                })
             }
         },
         mounted() {
