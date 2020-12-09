@@ -36,7 +36,7 @@
 
                             <v-card-title class="title">{{event.name}}</v-card-title>
                             <v-card-text v-html="event.description"/>
-                            <v-row v-if="event.rate">
+                            <v-row justify="center" align-content="center" v-if="event.rate">
                                 <span class="grey--text text--lighten-2 caption mr-2">
                                     {{parseFloat(event.rate).toFixed(2)}}
                                 </span>
