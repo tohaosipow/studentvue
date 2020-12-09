@@ -63,5 +63,9 @@ export default {
 
     link(data){
         return window.axios.get(endpoint+'/api/event/'+data.id+'/link');
+    },
+
+    stats(data){
+        return window.axios.get(endpoint+'/api/events/'+data.id+'/stats');
     }
 }
