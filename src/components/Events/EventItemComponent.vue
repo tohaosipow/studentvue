@@ -36,6 +36,14 @@
 
                             <v-card-title class="title">{{event.name}}</v-card-title>
                             <v-card-text v-html="event.description"/>
+                            <v-rating
+                                    v-model="event.rate"
+                                    color="yellow darken-3"
+                                    background-color="grey darken-1"
+                                    empty-icon="$ratingFull"
+                                    half-increments
+                                    readonly
+                            ></v-rating>
                             <v-card-actions>
                                 <v-dialog
                                         v-model="connectToEvent"
