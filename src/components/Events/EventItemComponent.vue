@@ -37,6 +37,9 @@
                             <v-card-title class="title">{{event.name}}</v-card-title>
                             <v-card-text v-html="event.description"/>
                             <template v-if="event.rate">
+                                <span class="grey--text text--lighten-2 caption mr-2">
+                                    {{parseFloat(event.rate).toFixed(2)}}
+                                </span>
                                 <v-rating
                                         :value="Math.round(event.rate)"
                                         color="yellow darken-3"
@@ -44,7 +47,7 @@
                                         empty-icon="$ratingFull"
                                         half-increments
                                         readonly
-                                ></v-rating> {{parseFloat(event.rate).toFixed(2)}}
+                                ></v-rating>
                             </template>
 
                             <v-card-actions>
