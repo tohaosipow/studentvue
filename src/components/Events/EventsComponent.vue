@@ -96,17 +96,22 @@
                                         align="center"
                                         class="mx-0"
                                 >
-                                    <v-rating :value="parseFloat(event.rate)"
-                                              color="amber"
-                                              dense
-                                              half-increments
-                                              readonly
-                                              size="14"
-                                              v-if="parseFloat(event.rate)"
-                                    ></v-rating>
 
-                                    <div class="grey--text ml-4" v-if="parseFloat(event.rate)">
-                                        {{parseFloat(event.rate).toFixed(2)}}
+                                    <div  v-if="parseFloat(event.rate)" class="grey--text pa-2 mr-4">
+                                        рейтинг <br/>
+                                        <span class="black--text py-4" style="font-size: 20px;">
+                                            {{parseFloat(event.rate).toFixed(2)}}
+                                             <v-rating :value="parseFloat(event.rate)"
+                                                       color="amber"
+                                                       dense
+                                                       half-increments
+                                                       readonly
+                                                       size="14"
+                                                       class="ml-2"
+
+                                             ></v-rating>
+
+                                        </span>
                                     </div>
                                     <div class="grey--text pa-2 mr-4">
                                         участвует <br/>
