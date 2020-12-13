@@ -239,9 +239,9 @@
         },
         computed: {
             events() {
-                if (this.my) return this.$store.state.events.events.filter((el) => {
+                if (this.my) return [...this.$store.state.events.events.filter((el) => {
                     return this.actual === 0 && this.$moment(el.check_end_at).isBefore(this.$moment()) || this.actual == 1 && this.$moment(el.check_end_at).isAfter(this.$moment())
-                })
+                })].reverse()
                 else return this.$store.state.events.events.filter((el) => {
                     return this.actual === 0 && this.$moment(el.check_end_at).isBefore(this.$moment()) || this.actual == 1 && this.$moment(el.check_end_at).isAfter(this.$moment())
                 })
