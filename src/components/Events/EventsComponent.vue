@@ -92,24 +92,27 @@
 
                             <v-card-text>
 
-                                <v-row style="background: #fafafa"
-                                        align="center"
-                                        class="mx-0"
+                                <v-row align="center"
+                                       class="mx-0"
+                                       style="background: #fafafa"
                                 >
 
-                                    <div  v-if="parseFloat(event.rate)" class="grey--text pa-2 mr-4">
+                                    <div class="grey--text pa-2 mr-4" v-if="parseFloat(event.rate)">
                                         рейтинг <br/>
                                         <span class="black--text py-4" style="font-size: 20px;">
-                                            {{parseFloat(event.rate).toFixed(2)}}
+                                            <div class="d-flex">
+                                            <span>  {{parseFloat(event.rate).toFixed(2)}}</span>
                                              <v-rating :value="parseFloat(event.rate)"
+                                                       class="ml-2"
                                                        color="amber"
                                                        dense
                                                        half-increments
                                                        readonly
                                                        size="14"
-                                                       class="ml-2"
 
                                              ></v-rating>
+                                            </div>
+
 
                                         </span>
                                     </div>
