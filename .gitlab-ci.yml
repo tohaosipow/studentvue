@@ -1,0 +1,15 @@
+stages:
+  - Build
+
+build:
+  image: docker:19.03.12
+  services:
+    - docker:19.03.12-dind
+  stage: Build
+  before_script:
+    - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+  script:
+    - docker build -t $CI_PROJECT_NAME:latest .
+  tags:
+    - docker
+
