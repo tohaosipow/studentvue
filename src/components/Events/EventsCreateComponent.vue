@@ -72,45 +72,45 @@
                     </v-card-actions>
                 </v-card>
             </v-col>
-            <v-col cols="12" lg="5">
-                <v-card>
-                    <v-card-title>Роли</v-card-title>
-                    <v-card-text>
-                        <v-sheet class="pa-3 text-center" color="grey lighten-3" v-if="event_roles.length < 1">Добавьте
-                            роли
-                        </v-sheet>
-                        <v-sheet :key="index" class="pa-5 mt-3" color="grey lighten-4"
-                                 v-for="(role, index) in event_roles">
-                            <v-row align="center">
-                                <v-col lg="6">
-                                    <v-autocomplete :items="user_roles" auto-select-first item-text="name"
-                                                    item-value="id" label="Роль" v-model="role.user_role_id"/>
-                                </v-col>
-                                <v-col lg="5">
-                                    <v-text-field hint="Баллы, начисляемые за участие" items=""
-                                                  label="Баллы" type="number" v-model="role.points_max"/>
-                                </v-col>
-                                <v-col lg="1">
-                                    <v-btn icon>
-                                        <v-icon @click="removeRole(index)" color="red">mdi-delete</v-icon>
-                                    </v-btn>
-                                    <br>
-                                </v-col>
-                                <v-col lg="12">
-                                    <v-checkbox dense label="Недоступна для выбора при регистрации"
-                                                v-model="role.hidden"/>
-                                    <v-checkbox dense label="Может оценивать участников" v-model="role.can_set_points"/>
-                                    <v-checkbox dense label="Может редактировать мероприятие" v-model="role.admin"/>
-                                </v-col>
+<!--            <v-col cols="12" lg="5">-->
+<!--                <v-card>-->
+<!--                    <v-card-title>Роли</v-card-title>-->
+<!--                    <v-card-text>-->
+<!--                        <v-sheet class="pa-3 text-center" color="grey lighten-3" v-if="event_roles.length < 1">Добавьте-->
+<!--                            роли-->
+<!--                        </v-sheet>-->
+<!--                        <v-sheet :key="index" class="pa-5 mt-3" color="grey lighten-4"-->
+<!--                                 v-for="(role, index) in event_roles">-->
+<!--                            <v-row align="center">-->
+<!--                                <v-col lg="6">-->
+<!--                                    <v-autocomplete :items="user_roles" auto-select-first item-text="name"-->
+<!--                                                    item-value="id" label="Роль" v-model="role.user_role_id"/>-->
+<!--                                </v-col>-->
+<!--                                <v-col lg="5">-->
+<!--                                    <v-text-field hint="Баллы, начисляемые за участие" items=""-->
+<!--                                                  label="Баллы" type="number" v-model="role.points_max"/>-->
+<!--                                </v-col>-->
+<!--                                <v-col lg="1">-->
+<!--                                    <v-btn icon>-->
+<!--                                        <v-icon @click="removeRole(index)" color="red">mdi-delete</v-icon>-->
+<!--                                    </v-btn>-->
+<!--                                    <br>-->
+<!--                                </v-col>-->
+<!--                                <v-col lg="12">-->
+<!--                                    <v-checkbox dense label="Недоступна для выбора при регистрации"-->
+<!--                                                v-model="role.hidden"/>-->
+<!--                                    <v-checkbox dense label="Может оценивать участников" v-model="role.can_set_points"/>-->
+<!--                                    <v-checkbox dense label="Может редактировать мероприятие" v-model="role.admin"/>-->
+<!--                                </v-col>-->
 
-                            </v-row>
-                        </v-sheet>
-                    </v-card-text>
-                    <v-card-actions>
-                        <v-btn @click="addRole" color="green" text>Добавить роль в мероприятие</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-col>
+<!--                            </v-row>-->
+<!--                        </v-sheet>-->
+<!--                    </v-card-text>-->
+<!--                    <v-card-actions>-->
+<!--                        <v-btn @click="addRole" color="green" text>Добавить роль в мероприятие</v-btn>-->
+<!--                    </v-card-actions>-->
+<!--                </v-card>-->
+<!--            </v-col>-->
         </v-row>
 
         <v-dialog max-width="500" v-model="createPlaceModalShow">

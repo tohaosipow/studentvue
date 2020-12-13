@@ -60,42 +60,149 @@
             </v-card-text>
         </v-card> !-->
 
-        <v-row>
-            <v-col :key="event.id" lg="6" v-for="event in events">
-                <v-card
+        <v-row v-if="events.length > 0">
+            <v-col :key="event.id" lg="12" v-for="event in events">
+                <v-card outlined
+                        :loading="loading"
                         class="mx-auto"
                 >
-                    <v-img
-                            :src="event.header_url"
-                            height="200px"
-                    ></v-img>
+                    <template slot="progress">
+                        <v-progress-linear
+                                color="deep-purple"
+                                height="10"
+                                indeterminate
+                        ></v-progress-linear>
+                    </template>
 
-                    <v-card-title class="title">{{event.name}}</v-card-title>
+                    <v-row align-content="stretch">
+                        <v-col lg="4" cols="12">
+                            <v-img
+                                    height="100%"
+                                    max-width="100%"
+                                    contain
+                                    class="align-end"
+                                    :src="event.header_url"
+                            >
+                            </v-img>
+                        </v-col>
+                        <v-col lg="8" cols="12">
+                            <v-card-title style="white-space: normal">
+                                <b>{{$moment(event.start_at).format("DD.MM.YYYY")}}</b>: {{event.name}}
+                            </v-card-title>
 
-                    <v-card-subtitle>
-                        {{event.start_at}}
-                    </v-card-subtitle>
-                    <v-card-text>
-                        <div style="height: 150px; display: inline-block; overflow:hidden;  text-overflow: ellipsis;">
-                            {{event.description}}
-                        </div>
+                            <v-card-text>
 
-                    </v-card-text>
-                    <v-card-actions>
+                                <v-row
+                                        align="center"
+                                        class="mx-0"
+                                >
+                                    <v-rating
+                                            :value="parseFloat(event.rate)"
+                                            color="amber"
+                                            dense
+                                            half-increments
+                                            readonly
+                                            size="14"
+                                    ></v-rating>
 
-                        <v-btn :to="{name: 'events.item.info', params: {id: event.id}}"
-                               color="blue"
-                               text
-                        >
-                            Подробнее
-                        </v-btn>
+                                    <div class="grey--text ml-4">
+                                        {{event.rate}}
+                                    </div>
+                                    <div>
+                                        {{event.participants_count}} участников
+                                    </div>
+                                </v-row>
 
-                        <v-spacer></v-spacer>
-                    </v-card-actions>
+                                <div class="my-4 subtitle-1">
+
+                                </div>
+
+                                <div style="max-height: 200px; overflow: hidden">
+                                    {{event.description}}
+                                </div>
+                            </v-card-text>
+                            <v-card-actions>
+                                <v-btn
+                                        color="blue lighten-2"
+                                        text
+                                        :to="{name: 'events.item.info', params: {id: event.id}}"
+                                >
+                                    Перейти к мероприятию
+                                </v-btn>
+                            </v-card-actions>
+                        </v-col>
+                    </v-row>
+
+
+
+
+
+<!--                    <v-divider class="mx-4"></v-divider>-->
+
+<!--                    <v-card-title>Tonight's availability</v-card-title>-->
+
+<!--                    <v-card-text>-->
+<!--                        <v-chip-group-->
+<!--                                v-model="selection"-->
+<!--                                active-class="deep-purple accent-4 white&#45;&#45;text"-->
+<!--                                column-->
+<!--                        >-->
+<!--                            <v-chip>5:30PM</v-chip>-->
+
+<!--                            <v-chip>7:30PM</v-chip>-->
+
+<!--                            <v-chip>8:00PM</v-chip>-->
+
+<!--                            <v-chip>9:00PM</v-chip>-->
+<!--                        </v-chip-group>-->
+<!--                    </v-card-text>-->
+
 
                 </v-card>
+
+<!--                <v-card outlined-->
+<!--                        class="mx-auto"-->
+<!--                >-->
+<!--                    <v-img-->
+<!--                            :src="event.header_url"-->
+<!--                            height="200px"-->
+<!--                    ></v-img>-->
+
+<!--                    <v-card-title class="title">{{event.name}}</v-card-title>-->
+
+<!--                    <v-card-subtitle>-->
+<!--                        {{event.start_at}}-->
+<!--                    </v-card-subtitle>-->
+<!--                    <v-card-text>-->
+<!--                        <div style="height: 150px; display: inline-block; overflow:hidden;  text-overflow: ellipsis;">-->
+<!--                            {{event.description}}-->
+<!--                        </div>-->
+
+<!--                    </v-card-text>-->
+<!--                    <v-card-actions>-->
+
+<!--                        <v-btn :to="{name: 'events.item.info', params: {id: event.id}}"-->
+<!--                               color="blue"-->
+<!--                               text-->
+<!--                        >-->
+<!--                            Подробнее-->
+<!--                        </v-btn>-->
+
+<!--                        <v-spacer></v-spacer>-->
+<!--                    </v-card-actions>-->
+
+<!--                </v-card>-->
             </v-col>
         </v-row>
+        <div v-else>
+            <v-alert class="mt-2"
+                    outlined
+                    type="warning"
+                    border="left"
+            >
+               Ближайших мероприятий нет, но вы можете организовать новое
+            </v-alert>
+        </div>
 
     </v-container>
 </template>
