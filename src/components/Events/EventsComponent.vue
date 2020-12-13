@@ -106,7 +106,7 @@
                                     ></v-rating>
 
                                     <div class="grey--text ml-4">
-                                        {{event.rate}}
+                                        {{parseFloat(event.rate).toFixed(2)}}
                                     </div>
                                     <div>
                                         {{event.participants_count}} участников
