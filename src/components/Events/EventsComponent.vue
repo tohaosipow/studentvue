@@ -1,16 +1,16 @@
 <template>
     <v-container :fluid="$store.state.user.fluid">
-        <v-tooltip left :value="true">
+        <v-tooltip :value="true" left>
             <template v-slot:activator="{ on }">
                 <v-btn
+                        bottom
                         color="blue darken-2"
                         dark
-                        to="/events/create"
-                        v-on="on"
                         fab
                         fixed
                         right
-                        bottom
+                        to="/events/create"
+                        v-on="on"
                 >
                     <v-icon>mdi-plus</v-icon>
                 </v-btn>
@@ -18,10 +18,10 @@
             <span>Создайте мероприятие</span>
         </v-tooltip>
         <v-tabs
-                v-model="actual"
                 background-color="white"
                 color="blue darken-2 accent-4"
                 right
+                v-model="actual"
         >
             <v-tab>Прошедшие</v-tab>
             <v-tab>Актуальные</v-tab>
@@ -62,9 +62,9 @@
 
         <v-row v-if="events.length > 0">
             <v-col :key="event.id" lg="12" v-for="event in events">
-                <v-card outlined
-                        :loading="loading"
+                <v-card :loading="loading"
                         class="mx-auto"
+                        outlined
                 >
                     <template slot="progress">
                         <v-progress-linear
@@ -75,42 +75,56 @@
                     </template>
 
                     <v-row align-content="stretch">
-                        <v-col lg="4" cols="12">
+                        <v-col cols="12" lg="4">
                             <v-img
+                                    :src="event.header_url"
+                                    class="align-end"
+                                    contain
                                     height="100%"
                                     max-width="100%"
-                                    contain
-                                    class="align-end"
-                                    :src="event.header_url"
                             >
                             </v-img>
                         </v-col>
-                        <v-col lg="8" cols="12">
+                        <v-col cols="12" lg="8">
                             <v-card-title style="white-space: normal">
                                 <b>{{$moment(event.start_at).format("DD.MM.YYYY")}}</b>: {{event.name}}
                             </v-card-title>
 
                             <v-card-text>
 
-                                <v-row
+                                <v-row style="background: #fafafa"
                                         align="center"
                                         class="mx-0"
                                 >
-                                    <v-rating
-                                            :value="parseFloat(event.rate)"
-                                            color="amber"
-                                            dense
-                                            half-increments
-                                            readonly
-                                            size="14"
+                                    <v-rating :value="parseFloat(event.rate)"
+                                              color="amber"
+                                              dense
+                                              half-increments
+                                              readonly
+                                              size="14"
+                                              v-if="parseFloat(event.rate)"
                                     ></v-rating>
 
-                                    <div class="grey--text ml-4">
+                                    <div class="grey--text ml-4" v-if="parseFloat(event.rate)">
                                         {{parseFloat(event.rate).toFixed(2)}}
                                     </div>
-                                    <div>
-                                        {{event.participants_count}} участников
+                                    <div class="grey--text pa-2 mr-4">
+                                        участвует <br/>
+                                        <span class="black--text py-4" style="font-size: 20px;">{{event.participants_count}} чел</span>
                                     </div>
+                                    <div class="grey--text pa-2 mr-4">
+                                        срок подачи заявок <br/>
+                                        <span class="black--text py-4" style="font-size: 20px"> {{$moment(event.check_end_at).format("DD.MM.YYYY")}}</span>
+                                    </div>
+
+                                    <div class="grey--text pa-2 mr-4">
+                                        продолжительность <br/>
+                                        <span class="black--text py-4" style="font-size: 20px">
+                                        {{$moment.duration($moment(event.end_at).diff($moment(event.start_at))).hours()}} ч.
+                                        {{$moment.duration($moment(event.end_at).diff($moment(event.start_at))).minutes()}} м.
+                                            </span>
+                                    </div>
+
                                 </v-row>
 
                                 <div class="my-4 subtitle-1">
@@ -123,9 +137,9 @@
                             </v-card-text>
                             <v-card-actions>
                                 <v-btn
+                                        :to="{name: 'events.item.info', params: {id: event.id}}"
                                         color="blue lighten-2"
                                         text
-                                        :to="{name: 'events.item.info', params: {id: event.id}}"
                                 >
                                     Перейти к мероприятию
                                 </v-btn>
@@ -134,73 +148,70 @@
                     </v-row>
 
 
+                    <!--                    <v-divider class="mx-4"></v-divider>-->
 
+                    <!--                    <v-card-title>Tonight's availability</v-card-title>-->
 
+                    <!--                    <v-card-text>-->
+                    <!--                        <v-chip-group-->
+                    <!--                                v-model="selection"-->
+                    <!--                                active-class="deep-purple accent-4 white&#45;&#45;text"-->
+                    <!--                                column-->
+                    <!--                        >-->
+                    <!--                            <v-chip>5:30PM</v-chip>-->
 
-<!--                    <v-divider class="mx-4"></v-divider>-->
+                    <!--                            <v-chip>7:30PM</v-chip>-->
 
-<!--                    <v-card-title>Tonight's availability</v-card-title>-->
+                    <!--                            <v-chip>8:00PM</v-chip>-->
 
-<!--                    <v-card-text>-->
-<!--                        <v-chip-group-->
-<!--                                v-model="selection"-->
-<!--                                active-class="deep-purple accent-4 white&#45;&#45;text"-->
-<!--                                column-->
-<!--                        >-->
-<!--                            <v-chip>5:30PM</v-chip>-->
-
-<!--                            <v-chip>7:30PM</v-chip>-->
-
-<!--                            <v-chip>8:00PM</v-chip>-->
-
-<!--                            <v-chip>9:00PM</v-chip>-->
-<!--                        </v-chip-group>-->
-<!--                    </v-card-text>-->
+                    <!--                            <v-chip>9:00PM</v-chip>-->
+                    <!--                        </v-chip-group>-->
+                    <!--                    </v-card-text>-->
 
 
                 </v-card>
 
-<!--                <v-card outlined-->
-<!--                        class="mx-auto"-->
-<!--                >-->
-<!--                    <v-img-->
-<!--                            :src="event.header_url"-->
-<!--                            height="200px"-->
-<!--                    ></v-img>-->
+                <!--                <v-card outlined-->
+                <!--                        class="mx-auto"-->
+                <!--                >-->
+                <!--                    <v-img-->
+                <!--                            :src="event.header_url"-->
+                <!--                            height="200px"-->
+                <!--                    ></v-img>-->
 
-<!--                    <v-card-title class="title">{{event.name}}</v-card-title>-->
+                <!--                    <v-card-title class="title">{{event.name}}</v-card-title>-->
 
-<!--                    <v-card-subtitle>-->
-<!--                        {{event.start_at}}-->
-<!--                    </v-card-subtitle>-->
-<!--                    <v-card-text>-->
-<!--                        <div style="height: 150px; display: inline-block; overflow:hidden;  text-overflow: ellipsis;">-->
-<!--                            {{event.description}}-->
-<!--                        </div>-->
+                <!--                    <v-card-subtitle>-->
+                <!--                        {{event.start_at}}-->
+                <!--                    </v-card-subtitle>-->
+                <!--                    <v-card-text>-->
+                <!--                        <div style="height: 150px; display: inline-block; overflow:hidden;  text-overflow: ellipsis;">-->
+                <!--                            {{event.description}}-->
+                <!--                        </div>-->
 
-<!--                    </v-card-text>-->
-<!--                    <v-card-actions>-->
+                <!--                    </v-card-text>-->
+                <!--                    <v-card-actions>-->
 
-<!--                        <v-btn :to="{name: 'events.item.info', params: {id: event.id}}"-->
-<!--                               color="blue"-->
-<!--                               text-->
-<!--                        >-->
-<!--                            Подробнее-->
-<!--                        </v-btn>-->
+                <!--                        <v-btn :to="{name: 'events.item.info', params: {id: event.id}}"-->
+                <!--                               color="blue"-->
+                <!--                               text-->
+                <!--                        >-->
+                <!--                            Подробнее-->
+                <!--                        </v-btn>-->
 
-<!--                        <v-spacer></v-spacer>-->
-<!--                    </v-card-actions>-->
+                <!--                        <v-spacer></v-spacer>-->
+                <!--                    </v-card-actions>-->
 
-<!--                </v-card>-->
+                <!--                </v-card>-->
             </v-col>
         </v-row>
         <div v-else>
-            <v-alert class="mt-2"
-                    outlined
-                    type="warning"
-                    border="left"
+            <v-alert border="left"
+                     class="mt-2"
+                     outlined
+                     type="warning"
             >
-               Ближайших мероприятий нет, но вы можете организовать новое
+                Ближайших мероприятий нет, но вы можете организовать новое
             </v-alert>
         </div>
 
@@ -208,12 +219,12 @@
 </template>
 
 <script>
-   // import InputDatePicker from "@/components/Utility/InputDatePicker";
+    // import InputDatePicker from "@/components/Utility/InputDatePicker";
 
     export default {
         name: "EventsComponent",
         components: {
-           // InputDatePicker
+            // InputDatePicker
         },
         mounted() {
             this.$store.dispatch('getEvents');
@@ -221,15 +232,19 @@
             this.$store.dispatch('getEmployees');
             this.$emit('changeTitle', 'Мероприятия')
         },
-        data(){
-          return{
-              actual: 1
-          }
+        data() {
+            return {
+                actual: 1
+            }
         },
-        computed:{
-            events(){
-                if(this.my)  return this.$store.state.events.events.filter((el) => {return this.actual === 0 && this.$moment(el.check_end_at).isBefore(this.$moment()) ||  this.actual == 1  && this.$moment(el.check_end_at).isAfter(this.$moment()) })
-                else return this.$store.state.events.events.filter((el) => {return this.actual === 0 && this.$moment(el.check_end_at).isBefore(this.$moment()) ||  this.actual == 1  && this.$moment(el.check_end_at).isAfter(this.$moment()) })
+        computed: {
+            events() {
+                if (this.my) return this.$store.state.events.events.filter((el) => {
+                    return this.actual === 0 && this.$moment(el.check_end_at).isBefore(this.$moment()) || this.actual == 1 && this.$moment(el.check_end_at).isAfter(this.$moment())
+                })
+                else return this.$store.state.events.events.filter((el) => {
+                    return this.actual === 0 && this.$moment(el.check_end_at).isBefore(this.$moment()) || this.actual == 1 && this.$moment(el.check_end_at).isAfter(this.$moment())
+                })
             }
         },
         props: {
