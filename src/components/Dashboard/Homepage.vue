@@ -14,7 +14,7 @@
         <h2 class="mt-4" style="font-size: 20px; color: #0174bd; font-weight: 900; ">Мероприятия</h2>
         <v-row>
 
-            <v-col v-if="notice == 1" cols="12"
+            <v-col v-if="false" cols="12"
                    sm="4">
 <!--                <v-card height="250"-->
 <!--                        color="blue"-->
