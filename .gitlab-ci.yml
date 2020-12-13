@@ -12,5 +12,5 @@ build:
     - docker build -t $CI_REGISTRY_IMAGE:$CI_PIPELINE_IID .
     - docker push $CI_REGISTRY_IMAGE:$CI_PIPELINE_IID
   tags:
-    - docker
+    - student_surgu
 
