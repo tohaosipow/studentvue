@@ -15,6 +15,7 @@ RUN apk add --no-cache --virtual .gyp python make g++ \
 RUN npm install -g http-server
 
 COPY ./src ./src
+COPY ./public ./public
 
 # собираем приложение для production с минификацией
 RUN npm run build
