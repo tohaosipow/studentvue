@@ -312,7 +312,7 @@
             if (token) {
                 window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
                 this.$store.dispatch('getUser').then(() => {
-                    if(this.$store.state.user.currentUser.role === 'student' && !this.$store.state.user.currentUser.student_groups_id) this.completeDialog = true;
+                    if(this.$store.state.user.currentUser.role === 'visitor' || ( this.$store.state.user.currentUser.role === 'student' && !this.$store.state.user.currentUser.student_groups_id)) this.completeDialog = true;
                     this.loaded = true;
                 });
                 this.$store.dispatch('getDepartments');
