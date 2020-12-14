@@ -11,6 +11,7 @@ build:
   script:
     - docker build -t $CI_REGISTRY_IMAGE:$CI_PIPELINE_IID .
     - docker push $CI_REGISTRY_IMAGE:$CI_PIPELINE_IID
+    - docker service update --with-registry-auth --image $CI_REGISTRY_IMAGE:$CI_PIPELINE_IID student_surgu_frontend
   tags:
     - student_surgu
 
