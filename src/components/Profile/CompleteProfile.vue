@@ -40,7 +40,9 @@
                     {id: 'pupil', name: 'Ученик школы'},
                     {id: 'company', name: 'Организация'},
                     ]" item-text="name" item-value="id" label="Роль" v-model="user.role"/>
+                            <a href="https://wa.me/79222588216">Напишите нам, если вашей роли нет.</a>
                         </v-card-text>
+
                     </template>
 
                     <template
@@ -59,7 +61,10 @@
                                     outlined
                                     v-model="user.student_groups_id"
                             />
+                            <a href="https://wa.me/79222588216">Напишите нам, если вашей группы нет.</a>
                         </v-card-text>
+
+
                     </template>
 
                     <template
@@ -82,6 +87,8 @@
                                     label="Должность"
                                     outlined
                                     v-model="user.employee_post"/>
+
+                            <a href="https://wa.me/79222588216">Напишите нам, если вашего СП нет.</a>
                         </v-card-text>
                     </template>
 
