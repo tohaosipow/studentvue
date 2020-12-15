@@ -1,23 +1,23 @@
 <template>
     <div id="app">
-        <v-app  light v-if="loaded">
+        <v-app light v-if="loaded">
             <v-app-bar app color="#1976d2" dark v-if="$vuetify.breakpoint.mdAndDown">
                 <v-app-bar-nav-icon @click.stop="drawer = !drawer" v-if="!drawer"></v-app-bar-nav-icon>
             </v-app-bar>
 
-            <CompleteProfile @close="completeDialog = false" :enable="completeDialog"/>
+            <CompleteProfile :enable="completeDialog" @close="completeDialog = false"/>
             <v-snackbar
-                    v-model="snackbar_error.enable"
                     color="red"
+                    v-model="snackbar_error.enable"
             >
                 {{ snackbar_error.text }}
 
                 <template v-slot:action="{ attrs }">
                     <v-btn
+                            @click="snackbar_error.enable = false"
                             color="pink"
                             text
                             v-bind="attrs"
-                            @click="snackbar_error.enable = false"
                     >
                         Закрыть
                     </v-btn>
@@ -48,11 +48,31 @@
                         nav
                 >
                     <v-list-item two-line v-if="$store.state.user.currentUser.id > 0">
-                        <v-list-item-avatar>
-                            <img src="https://www.hipokrates.torun.pl/wp-content/uploads/2016/02/nophoto-150x150.jpg">
+
+                        <v-list-item-avatar style="overflow: visible">
+
+                        <v-badge
+                                color="purple"
+                                content="6"
+                                offset-x="10"
+                                offset-y="10"
+                        >
+                            <v-avatar size="40">
+                                <v-avatar>
+
+                                    <img :src="$store.state.user.currentUser.avatar">
+
+                                </v-avatar>
+                            </v-avatar>
+                        </v-badge>
                         </v-list-item-avatar>
 
+
+
+
+
                         <v-list-item-content>
+
                             <v-list-item-title> {{$store.state.user.currentUser.first_name}}
                                 {{$store.state.user.currentUser.last_name}}
                             </v-list-item-title>
@@ -62,6 +82,7 @@
                                 <span v-if="$store.state.user.currentUser.role === 'pupil'">Учащийся</span>
                                 <span v-if="$store.state.user.currentUser.role === 'employee'">Сотрудник</span>
                                 <span v-if="$store.state.user.currentUser.role === 'company'">Партнер</span>
+                                <span class="ml-1">{{$store.state.user.currentUser.score}}</span>
                             </v-list-item-subtitle>
                         </v-list-item-content>
                         <v-list-item-action>
@@ -120,8 +141,8 @@
                             <v-list-item-subtitle>improve yourself</v-list-item-subtitle>
                         </v-list-item-content>
                     </v-list-item>
-                    <v-list-item link v-if="$store.state.user.currentUser.id > 0"
-                                 to="/messages"
+                    <v-list-item link to="/messages"
+                                 v-if="$store.state.user.currentUser.id > 0"
                     >
                         <v-list-item-icon>
                             <v-icon>mdi-chat</v-icon>
@@ -301,7 +322,7 @@
                 response => {
                     return response;
                 },
-                (error)  =>{
+                (error) => {
                     let return_error = {...error};
                     this.onError(error.response.data.message)
                     return Promise.reject(return_error)
@@ -312,7 +333,7 @@
             if (token) {
                 window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
                 this.$store.dispatch('getUser').then(() => {
-                    if(this.$store.state.user.currentUser.role === 'visitor' || ( this.$store.state.user.currentUser.role === 'student' && !this.$store.state.user.currentUser.student_groups_id)) this.completeDialog = true;
+                    if (this.$store.state.user.currentUser.role === 'visitor' || (this.$store.state.user.currentUser.role === 'student' && !this.$store.state.user.currentUser.student_groups_id)) this.completeDialog = true;
                     this.loaded = true;
                 });
                 this.$store.dispatch('getDepartments');
