@@ -1,5 +1,16 @@
 <template>
     <v-sheet>
+        <v-breadcrumbs :items="[{
+          text: 'Главная',
+          href: '/',
+          disabled: false,
+          href: 'breadcrumbs_dashboard',
+        },
+        {
+          text: 'Личный кабинет',
+          disabled: true,
+          href: '/#/profile/'+user.id,
+        }]"></v-breadcrumbs>
         <v-card class="mx-auto pa-2" elevation="0"
                 outlined
                 tile
@@ -20,14 +31,15 @@
                         <v-list-item-subtitle>
                                     <span
                                             v-if="user.role === 'visitor'">Посетитель</span>
-                            <span v-if="user.role === 'student'">Студент</span>
+                            <span v-if="user.role === 'student'">Студент {{user.student_group.name}}</span>
                             <span v-if="user.role === 'pupil'">Учащийся</span>
                             <span v-if="user.role === 'employee'">Сотрудник</span>
                             <span v-if="user.role === 'company'">Партнер</span>
                         </v-list-item-subtitle>
 
                     </v-list-item-content>
-                    <v-list-item-action>
+                    <v-list-item-action
+                            v-if="user.id === $store.state.user.currentUser.id || $store.state.user.currentUser.admin > 0">
                         <v-btn :to="{name: 'profile.edit', params: {id: user.id}}" icon>
                             <v-icon color="gray">mdi-pencil</v-icon>
                         </v-btn>
@@ -36,50 +48,32 @@
             </v-col>
         </v-card>
         <v-card class="mt-2" elevation="0">
-
-            <v-list-item
+            <v-alert border="left"
+                     class="mt-2"
+                     outlined
+                     type="info"
             >
-                <v-list-item-avatar>
-                    <v-icon>mdi-calendar</v-icon>
-                </v-list-item-avatar>
-
-                <v-list-item-content>
-                    <v-list-item-title class="heading">
-                        Опыт участия в мероприятиях
-                    </v-list-item-title>
-
-
-                </v-list-item-content>
-            </v-list-item>
-        </v-card>
-        <v-card class="mt-2" elevation="0">
-
-            <v-list-item
-            >
-                <v-list-item-avatar>
-                    <v-icon>mdi-calendar</v-icon>
-                </v-list-item-avatar>
-
-                <v-list-item-content>
-                    <v-list-item-title class="heading">
-                        Опыт участия в проетках
-                    </v-list-item-title>
-
-
-                </v-list-item-content>
-            </v-list-item>
+                Сейчас здесь пусто, но скоро здесь будет очень много интересного...
+            </v-alert>
         </v-card>
     </v-sheet>
 </template>
 
 <script>
+    import users from "@/api/users.js";
+
     export default {
         name: "ProfileComponent",
-        computed: {
-            user() {
-                return this.$store.state.user.currentUser
+        data() {
+            return {
+                user: undefined
             }
         },
+        mounted() {
+            users.item({id: this.$route.params.id}).then((r) => {
+                this.user = r.data;
+            })
+        }
     }
 </script>
 

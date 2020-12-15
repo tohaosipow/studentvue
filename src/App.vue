@@ -53,20 +53,22 @@
                         nav
                 >
                     <Snowf
-                            :amount="50"
+                            :amount="70"
                             :image="null"
-                            :opacity="0.8"
+                            :opacity="0.5"
                             :resize="true"
                             :size="5"
-                            :speed="1.5"
+                            :speed="1.7"
                             :swing="1"
-                            :wind="0"
-                            :zIndex="-1"
+                            :wind="1"
+                            :zIndex="-3"
                             color="#fff"
                     />
 
 
-                    <v-list-item two-line v-if="$store.state.user.currentUser.id > 0">
+                    <v-list-item
+                            @click.stop="$router.push({name: 'profile', params: {id: $store.state.user.currentUser.id}})"
+                            two-line v-if="$store.state.user.currentUser.id > 0">
 
 
                         <v-list-item-avatar style="overflow: visible">

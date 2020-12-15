@@ -1,6 +1,23 @@
 <template>
     <v-container :fluid="$store.state.user.fluid">
+
+        <v-breadcrumbs :items="[{
+          text: 'Главная',
+          disabled: true,
+          href: 'breadcrumbs_dashboard',
+        },
+        {
+          text: 'Личный кабинет',
+          disabled: false,
+          href: '/#/profile/'+user.id,
+        },
+        {
+          text: user.name,
+          disabled: true,
+          href: 'breadcrumbs_link_2',
+        }]"></v-breadcrumbs>
         <v-row v-if="user">
+
 
             <v-col cols="12" lg="8">
                 <transition name="fade">
