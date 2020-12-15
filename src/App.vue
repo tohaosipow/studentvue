@@ -35,8 +35,9 @@
             >
                 <div class="text-center pa-4 text-white" style="color: white">
                     <h4 style="display: flex; align-items: center">
-                        <img class="mr-2" width="30px"
-                             src="https://www.apmo.ru/upload/iblock/803/803fe47506d5aa6b19079797f3f615b0.png"/>
+                        <img class="mr-2"
+                             src="https://www.apmo.ru/upload/iblock/803/803fe47506d5aa6b19079797f3f615b0.png"
+                             width="30px"/>
                         АИС "Студент СурГУ"
 
                         <v-icon @click.stop="drawer = !drawer" right
@@ -53,14 +54,14 @@
                 >
                     <Snowf
                             :amount="50"
+                            :image="null"
+                            :opacity="0.8"
+                            :resize="true"
                             :size="5"
                             :speed="1.5"
-                            :wind="0"
-                            :opacity="0.8"
                             :swing="1"
-                            :image="null"
+                            :wind="0"
                             :zIndex="-1"
-                            :resize="true"
                             color="#fff"
                     />
 
@@ -71,23 +72,16 @@
                         <v-list-item-avatar style="overflow: visible">
 
                             <v-badge
-                                    color="purple"
                                     :content="$store.state.user.currentUser.score"
+                                    color="purple"
                                     offset-x="10"
-                                offset-y="10"
-                        >
-                            <v-avatar size="40">
-                                <v-avatar>
-
-                                    <img :src="$store.state.user.currentUser.avatar">
-
+                                    offset-y="10"
+                            >
+                                <v-avatar size="40">
+                                    <img :src="$store.state.user.currentUser.avatar"/>
                                 </v-avatar>
-                            </v-avatar>
-                        </v-badge>
+                            </v-badge>
                         </v-list-item-avatar>
-
-
-
 
 
                         <v-list-item-content>
