@@ -53,13 +53,14 @@
 
                         <v-badge
                                 color="purple"
-                                :content="$store.state.user.currentUser.avatar"
+                                :content="$store.state.user.currentUser.score"
                                 offset-x="10"
                                 offset-y="10"
                         >
                             <v-avatar size="40">
                                 <v-avatar>
 
+                                    <img :src="$store.state.user.currentUser.avatar">
 
                                 </v-avatar>
                             </v-avatar>
@@ -81,7 +82,6 @@
                                 <span v-if="$store.state.user.currentUser.role === 'pupil'">Учащийся</span>
                                 <span v-if="$store.state.user.currentUser.role === 'employee'">Сотрудник</span>
                                 <span v-if="$store.state.user.currentUser.role === 'company'">Партнер</span>
-                                <span class="ml-1">{{$store.state.user.currentUser.score}}</span>
                             </v-list-item-subtitle>
                         </v-list-item-content>
                         <v-list-item-action>
