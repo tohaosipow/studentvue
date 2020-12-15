@@ -1,27 +1,27 @@
 <template>
     <v-sheet style="padding: 2em">
-        <v-row align="center" justify="center">
-            <v-col md="1" sm="2">
-                <v-img src="https://ams3.digitaloceanspaces.com/enrollee/surgu.png"></v-img>
-            </v-col>
-            <v-col md="11" sm="10">
-                <span style="font-size: 25px; display: block">АИС "Студент СурГУ"</span>
-                портал для студентов и преподавателей <span style="color: #0174bd;">Сургутского государственного университета</span>
+        <!--        <v-row align="center" justify="center">-->
+        <!--            <v-col md="1" sm="2">-->
+        <!--                <v-img src="https://ams3.digitaloceanspaces.com/enrollee/surgu.png"></v-img>-->
+        <!--            </v-col>-->
+        <!--            <v-col md="11" sm="10">-->
+        <!--                <span style="font-size: 25px; display: block">АИС "Студент СурГУ"</span>-->
+        <!--                портал для студентов и преподавателей <span style="color: #0174bd;">Сургутского государственного университета</span>-->
 
-            </v-col>
-        </v-row>
-        <v-divider class="mt-4"/>
-        <h2 class="mt-4" style="font-size: 20px; color: #0174bd; font-weight: 900; ">Мероприятия</h2>
+        <!--            </v-col>-->
+        <!--        </v-row>-->
+        <!--        <v-divider class="mt-4"/>-->
+        <h2 style="font-size: 20px; color: #0174bd; font-weight: 900; ">Мероприятия</h2>
         <v-row>
 
             <v-col v-if="false" cols="12"
                    sm="4">
-<!--                <v-card height="250"-->
-<!--                        color="blue"-->
-<!--                        dark-->
-<!--                >-->
-<!--                    <v-card-title class="headline">-->
-<!--                        Новинка!-->
+                <!--                <v-card height="250"-->
+                <!--                        color="blue"-->
+                <!--                        dark-->
+                <!--                >-->
+                <!--                    <v-card-title class="headline">-->
+                <!--                        Новинка!-->
 <!--                        <v-btn @click="notice = 0" style="position: absolute; right: 0; top: 0" icon>-->
 <!--                            <v-icon>mdi-close</v-icon>-->
 <!--                        </v-btn>-->
