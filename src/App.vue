@@ -53,14 +53,13 @@
 
                         <v-badge
                                 color="purple"
-                                content="6"
+                                :content="$store.state.user.currentUser.avatar"
                                 offset-x="10"
                                 offset-y="10"
                         >
                             <v-avatar size="40">
                                 <v-avatar>
 
-                                    <img :src="$store.state.user.currentUser.avatar">
 
                                 </v-avatar>
                             </v-avatar>
