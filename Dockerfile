@@ -8,7 +8,7 @@ COPY package.json ./
 
 # устанавливаем зависимости проекта
 RUN apk add --no-cache --virtual .gyp python make g++ \
-    && npm install \
+    && npm install --production\
     && apk del .gyp
 
 
