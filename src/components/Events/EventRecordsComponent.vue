@@ -79,7 +79,7 @@
         },
         mounted() {
             events.records({id: this.$store.state.events.currentEvent.id}).then((r) => {
-                this.records = r.data.recording;
+                this.records = typeof r.data.recording == 'object' ? [r.data.recording] : r.data.recording;
             })
         }
     }
