@@ -24,6 +24,15 @@
                                 Название записи
                             </th>
                             <th class="text-left">
+                                Участников
+                            </th>
+                            <th class="text-left">
+                                Продолжительность
+                            </th>
+                            <th class="text-left">
+                                Время обработки
+                            </th>
+                            <th class="text-left">
                                 Открыть
                             </th>
                         </tr>
@@ -34,6 +43,9 @@
                                 v-for="item in records"
                         >
                             <td v-html="item.name">{{ item.name }}</td>
+                            <td>{{ item.participants }}</td>
+                            <td>{{ item.playback.format.length }} минуты</td>
+                            <td>{{ Math.round(item.playback.format.processingTime/60000) }} минуты</td>
                             <td>
                                 <v-btn depressed :href=" item.playback.format.url" outlined text>Открыть</v-btn>
                             </td>
