@@ -119,8 +119,12 @@
                             Оценки
                         </v-tab>
                         <v-tab :to="{name: 'event.stats', params: {id: $store.state.events.currentEvent.id}}"
-                               v-if="$store.getters.isEventAdmin($store.state.user.currentUser.id)">
+                               v-if="$store.getters.isEventAdmin($store.state.user.currentUser.id)  || $store.state.user.currentUser.admin > 0 ">
                             Статистика
+                        </v-tab>
+                        <v-tab :to="{name: 'event.records', params: {id: $store.state.events.currentEvent.id}}"
+                               v-if="$store.getters.isEventAdmin($store.state.user.currentUser.id) || $store.state.user.currentUser.admin > 0">
+                            Записи
                         </v-tab>
                         <!--<v-tab :to="{name: 'event.qr_enter', params: {id: $store.state.events.currentEvent.id}}"
                                v-if="$store.getters.checkCanSetPoints($store.state.user.currentUser.id) || $store.getters.isEventAdmin($store.state.user.currentUser.id)">

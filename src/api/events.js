@@ -57,15 +57,19 @@ export default {
         return window.axios.post(endpoint+'/api/events/store', data);
     },
 
-    update(data){
-        return window.axios.post(endpoint+'/api/events/'+data.id+'/update', data.obj);
+    update(data) {
+        return window.axios.post(endpoint + '/api/events/' + data.id + '/update', data.obj);
     },
 
-    link(data){
-        return window.axios.get(endpoint+'/api/event/'+data.id+'/link');
+    link(data) {
+        return window.axios.get(endpoint + '/api/event/' + data.id + '/link');
     },
 
-    stats(data){
-        return window.axios.get(endpoint+'/api/events/'+data.id+'/stats');
+    stats(data) {
+        return window.axios.get(endpoint + '/api/events/' + data.id + '/stats');
+    },
+
+    records(data) {
+        return window.axios.get(endpoint + '/recs/' + data.id);
     }
 }
