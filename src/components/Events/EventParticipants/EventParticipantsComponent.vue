@@ -17,6 +17,7 @@
         </v-card-title>
 
         <v-data-table :search="search"
+                      group-by="role"
                       :headers="headers"
                       :items="this.$store.state.events.participants" :items-per-page="10" :loading="loading"
                       loading-text="Загружаем ... "
