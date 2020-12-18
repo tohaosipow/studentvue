@@ -16,7 +16,7 @@
                             { text: 'Рейтинг', value: 'score' }
                         ]"
                         :items="student_rates"
-                        :items-per-page="100"
+                        :items-per-page="10"
                         class="elevation-1"
                 >
                     <template v-slot:item.score="{ item }">
@@ -42,7 +42,7 @@
                             { text: 'Рейтинг', value: 'score' }
                         ]"
                         :items="group_rates"
-                        :items-per-page="100"
+                        :items-per-page="10"
                         class="elevation-1"
                 >
                     <template v-slot:item.score="{ item }">
