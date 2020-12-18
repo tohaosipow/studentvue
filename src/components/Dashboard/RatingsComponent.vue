@@ -3,7 +3,7 @@
         <v-col lg="7" cols="12">
             <v-card :loading="loadings.users">
                 <v-card-title>Рейтинг студентов</v-card-title>
-                <BarChart v-if="!loadings.users" height="200" :keys="student_rates.map(el => el.name)"
+                <BarChart v-if="!loadings.users" height="200" :keys="student_rates.slice(0, 10).map(el => el.name)"
                           :values="student_rates.map(el => el.score)"/>
                 <v-data-table
                         :headers="[
@@ -32,7 +32,7 @@
         <v-col lg="5" cols="12">
             <v-card :loading="loadings.groups">
                 <v-card-title>Рейтинг студ. групп</v-card-title>
-                <BarChart v-if="!loadings.groups" height="200" :keys="group_rates.map(el => el.name)"
+                <BarChart v-if="!loadings.groups" height="200" :keys="group_rates.slice(0, 10).map(el => el.name)"
                           :values="group_rates.map(el => el.score)"/>
                 <v-data-table
                         :headers="[

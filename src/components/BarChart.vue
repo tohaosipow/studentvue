@@ -10,6 +10,7 @@
                 labels: this.keys,
                 datasets: [
                     {
+
                         label: 'Рейтинг',
                         data: this.values,
                         backgroundColor: ["#BBEB8B", "#eb8279", "#ebafb1", "#72aceb", "#9cebdb", "#ac90eb", "#c2e2ea", '#E0E0E0'],
