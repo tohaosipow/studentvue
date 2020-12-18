@@ -1,25 +1,30 @@
 <template>
     <div>
-        <v-btn class="m-2" outlined
-               :href="'https://api.student.surgu.ru/events/'+this.$store.state.events.currentEvent.id+'/participants/csv'">
-            Скачать
-        </v-btn>
+        <v-card-text>
+            <v-row justify="space-between" align-content="center">
+                <v-col lg="9">
+                    <v-text-field
+                            append-icon="mdi-account-search"
+                            hide-details
+                            label="Поиск пользователя"
+                            single-line
+                            v-model="search"
+                    ></v-text-field>
+                </v-col>
+                <v-col lg="3">
+                    <v-btn :href="'https://api.student.surgu.ru/events/'+this.$store.state.events.currentEvent.id+'/participants/csv'"
+                           color="blue" outlined
+                           text>
+                        Скачать участников
+                    </v-btn>
+                </v-col>
 
-
-        <v-card-title>
-            <v-text-field
-                    append-icon="mdi-account-search"
-                    hide-details
-                    label="Поиск пользователя"
-                    single-line
-                    v-model="search"
-            ></v-text-field>
-        </v-card-title>
-
-        <v-data-table :search="search"
-                      group-by="role"
-                      :headers="headers"
-                      :items="this.$store.state.events.participants" :items-per-page="10" :loading="loading"
+            </v-row>
+        </v-card-text>
+        <v-data-table :headers="headers"
+                      :items="this.$store.state.events.participants"
+                      :items-per-page="10"
+                      :loading="loading" :search="search" group-by="role"
                       loading-text="Загружаем ... "
                       show-select
                       v-if="$store.state.user.currentUser.admin === 1 || $store.getters.isEventAdmin($store.state.user.currentUser.id)"
