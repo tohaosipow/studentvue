@@ -60,9 +60,10 @@
                     :items-per-page="10"
                     :items="transactions"
                     :headers="[
-                {value: 'id', text: '#'},
-                {value: 'description', text: 'Описание'},
+
+                {value: 'description', text: 'Начисление'},
                 {value: 'score', text: 'Балл'},
+                {value: 'type', text: 'Тип'},
                 {value: 'created_at', text: 'Дата синхронизации'},
             ]"
                     class="elevation-1"
