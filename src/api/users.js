@@ -17,5 +17,9 @@ export default {
         return window.axios.get(endpoint + '/api/users/rating');
     },
 
+    transactions(data) {
+        return window.axios.get(endpoint + '/api/users/' + data.id + '/transactions');
+    },
+
 
 }

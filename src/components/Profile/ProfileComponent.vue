@@ -55,7 +55,21 @@
             >
                 Сейчас здесь пусто, но скоро здесь будет очень много интересного...
             </v-alert>
+
+            <v-data-table
+                    :items-per-page="10"
+                    :items="transactions"
+                    :headers="[
+                {value: 'id', text: '#'},
+                {value: 'description', text: 'Описание'},
+                {value: 'score', text: 'Балл'},
+                {value: 'created_at', text: 'Дата синхронизации'},
+            ]"
+                    class="elevation-1"
+            ></v-data-table>
         </v-card>
+
+
     </v-sheet>
 </template>
 
@@ -66,12 +80,17 @@
         name: "ProfileComponent",
         data() {
             return {
-                user: undefined
+                user: undefined,
+                transactions: []
             }
         },
         mounted() {
             users.item({id: this.$route.params.id}).then((r) => {
                 this.user = r.data;
+            });
+
+            users.transactions({id: this.$route.params.id}).then((r) => {
+                this.transactions = r.data;
             })
         }
     }
