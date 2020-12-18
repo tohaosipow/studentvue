@@ -1,14 +1,27 @@
 <template>
     <div>
-        <v-btn class="m-2" outlined :href="'https://api.student.surgu.ru/events/'+this.$store.state.events.currentEvent.id+'/participants/csv'">Скачать</v-btn>
+        <v-btn class="m-2" outlined
+               :href="'https://api.student.surgu.ru/events/'+this.$store.state.events.currentEvent.id+'/participants/csv'">
+            Скачать
+        </v-btn>
 
 
-        <v-data-table
-                :headers="headers"
-                :items="this.$store.state.events.participants" :items-per-page="10" :loading="loading"
-                loading-text="Загружаем ... "
-                show-select
-                v-if="$store.state.user.currentUser.admin === 1 || $store.getters.isEventAdmin($store.state.user.currentUser.id)"
+        <v-card-title>
+            <v-text-field
+                    append-icon="mdi-account-search"
+                    hide-details
+                    label="Поиск пользователя"
+                    single-line
+                    v-model="search"
+            ></v-text-field>
+        </v-card-title>
+
+        <v-data-table :search="search"
+                      :headers="headers"
+                      :items="this.$store.state.events.participants" :items-per-page="10" :loading="loading"
+                      loading-text="Загружаем ... "
+                      show-select
+                      v-if="$store.state.user.currentUser.admin === 1 || $store.getters.isEventAdmin($store.state.user.currentUser.id)"
         >
 
             <template v-slot:item.role="props">
@@ -75,6 +88,7 @@
         data() {
             return {
                 loading: true,
+                search: "",
                 headers: [
                     {
                         text: '#',
