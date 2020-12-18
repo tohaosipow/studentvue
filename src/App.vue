@@ -167,6 +167,18 @@
                             <v-list-item-subtitle>messenger</v-list-item-subtitle>
                         </v-list-item-content>
                     </v-list-item>
+                    <v-list-item link to="/ratings"
+                                 v-if="$store.state.user.currentUser.id > 0"
+                    >
+                        <v-list-item-icon>
+                            <v-icon>mdi-star</v-icon>
+                        </v-list-item-icon>
+
+                        <v-list-item-content>
+                            <v-list-item-title>Рейтинг</v-list-item-title>
+                            <v-list-item-subtitle>betters</v-list-item-subtitle>
+                        </v-list-item-content>
+                    </v-list-item>
                 </v-list>
             </v-navigation-drawer>
 

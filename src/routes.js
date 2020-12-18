@@ -32,10 +32,12 @@ import MessagesComponent from "@/components/Messages/MessagesComponent.vue";
 import ProjectsItemChatComponent from "@/components/Projects/ProjectsItem/ProjectsItemChatComponent.vue";
 import EventStatsComponent from "@/components/Events/EventStatsComponent.vue";
 import EventRecordsComponent from "@/components/Events/EventRecordsComponent.vue";
+import RatingsComponent from "@/components/Dashboard/RatingsComponent.vue";
 
 
 const routes = [
     {path: '/', component: Homepage, name: 'home'},
+    {path: '/ratings', component: RatingsComponent, name: 'ratings'},
     {path: '/events', component: EventsComponent, name: 'events'},
     {path: '/events/my', component: EventsComponent, name: 'user.events', props: {my: true}},
     {path: '/events/create', component: EventsCreateComponent, name: 'user.events'},

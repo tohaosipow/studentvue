@@ -43,7 +43,7 @@
 
 <script>
     import events from "@/api/events.js";
-    import Chart from "@/components/Chart.vue";
+    import Chart from "@/components/PieChart.vue";
 
     export default {
         name: "EventStatsComponent",

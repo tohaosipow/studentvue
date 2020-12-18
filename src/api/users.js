@@ -13,6 +13,9 @@ export default {
     item(data) {
         return window.axios.get(endpoint + '/api/users/' + data.id);
     },
+    rating() {
+        return window.axios.get(endpoint + '/api/users/rating');
+    },
 
 
 }
