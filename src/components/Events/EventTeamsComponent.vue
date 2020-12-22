@@ -118,8 +118,9 @@
                         <v-col lg="6" cols="12" col="8">
                             <v-row class="pa-2" justify="space-between" align="center">
                                 <v-col lg="5" sm="5">
-                                    <v-btn @click.prevent.stop.prevent.stop="currentTeam = team, controlTeamDialog = true" color="blue" outlined
-                                           v-if="!$store.getters.isEventPast() && (team.user_id === $store.state.user.currentUser.id || $store.state.user.currentUser.admin === 1)">
+                                    <v-btn @click.prevent.stop.prevent.stop="currentTeam = team, controlTeamDialog = true"
+                                           color="blue" outlined
+                                           v-if="(!$store.getters.isEventPast() && team.user_id === $store.state.user.currentUser.id || $store.state.user.currentUser.admin === 1)">
                                         <v-icon
                                                 color="blue darken-2"
                                                 left>mdi-settings
