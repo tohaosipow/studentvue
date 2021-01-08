@@ -41,7 +41,7 @@
                    v-for="event in $store.state.events.events.slice($store.state.events.events.length - 3).reverse()"
             >
 
-                <v-card :to="'/events/'+event.id" ripple elevation="0">
+                <v-card style="border-radius: 30px;" :to="'/events/'+event.id+'/info'" ripple elevation="0">
                     <v-img :src="event.header_url" class="white--text align-end"
 
                            gradient="to top right, rgba(100,115,201,.8), rgba(25,32,72,.7)"
@@ -50,7 +50,8 @@
                         <v-card-title style="z-index: 2; position:relative;  word-break: break-word;">{{event.name}}
                         </v-card-title>
                         <v-card-text>
-                            <v-chip v-if="$moment().isAfter($moment(event.end_at))" outlined color="white">#прошло</v-chip>
+                            <v-chip v-if="$moment().isAfter($moment(event.end_at))" outlined color="white">#прошло
+                            </v-chip>
                         </v-card-text>
 
                     </v-img>
@@ -74,7 +75,7 @@
                    sm="4"
                    v-for="project in $store.state.projects.projects"
             >
-                <v-card :to="'/projects/'+project.id" ripple elevation="0">
+                <v-card style="border-radius: 30px;" :to="'/projects/'+project.id" ripple elevation="0">
                     <v-img :src="project.logotype_url" class="white--text align-end"
 
                            gradient="to top right, rgba(100,115,201,.8), rgba(25,32,72,.7)"

@@ -35,9 +35,7 @@
             >
                 <div class="text-center pa-4 text-white" style="color: white">
                     <h4 style="display: flex; align-items: center">
-                        <img class="mr-2"
-                             src="https://www.apmo.ru/upload/iblock/803/803fe47506d5aa6b19079797f3f615b0.png"
-                             width="30px"/>
+
                         АИС "Студент СурГУ"
 
                         <v-icon @click.stop="drawer = !drawer" right
@@ -52,18 +50,18 @@
                         dense
                         nav
                 >
-                    <Snowf
-                            :amount="70"
-                            :image="null"
-                            :opacity="0.5"
-                            :resize="true"
-                            :size="5"
-                            :speed="1.7"
-                            :swing="1"
-                            :wind="1"
-                            :zIndex="-3"
-                            color="#fff"
-                    />
+                    <!--                    <Snowf-->
+                    <!--                            :amount="70"-->
+                    <!--                            :image="null"-->
+                    <!--                            :opacity="0.5"-->
+                    <!--                            :resize="true"-->
+                    <!--                            :size="5"-->
+                    <!--                            :speed="1.7"-->
+                    <!--                            :swing="1"-->
+                    <!--                            :wind="1"-->
+                    <!--                            :zIndex="-3"-->
+                    <!--                            color="#fff"-->
+                    <!--                    />-->
 
 
                     <v-list-item
@@ -200,11 +198,10 @@
 
 
     import CompleteProfile from "@/components/Profile/CompleteProfile.vue";
-    import Snowf from 'vue-snowf';
 
     export default {
         name: 'app',
-        components: {CompleteProfile, Snowf},
+        components: {CompleteProfile},
         created() {
         },
         mounted() {
