@@ -19,7 +19,7 @@ window.Echo = new Echo({
     broadcaster: 'socket.io',
     namespace: false,
     authEndpoint: process.env.NODE_ENV === 'development' ? 'http://localhost:8000/broadcasting/auth' : 'https://api.student.surgu.ru/broadcasting/auth',// 'http://localhost:8000/broadcasting/auth',
-    host: process.env.NODE_ENV === 'development' ? 'http://localhost:6001' : 'http://api.student.surgu.ru:6001',// 'http://localhost:8000/broadcasting/auth',
+    host: process.env.NODE_ENV === 'development' ? 'localhost:6001' : 'api.student.surgu.ru:6001',// 'http://localhost:8000/broadcasting/auth',
     auth: {
         headers: {
             Authorization: `Bearer ${localStorage.getItem('access_token')}`,
