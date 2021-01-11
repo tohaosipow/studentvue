@@ -17,9 +17,6 @@ window.io = require('socket.io-client');
 
 window.Echo = new Echo({
     broadcaster: 'socket.io',
-    key: '8e49eed7830e83836e95',
-    cluster: 'eu',
-    forceTLS: true,
     namespace: false,
     authEndpoint: process.env.NODE_ENV === 'development' ? 'http://localhost:8000/broadcasting/auth' : 'https://api.student.surgu.ru/broadcasting/auth',// 'http://localhost:8000/broadcasting/auth',
     host: process.env.NODE_ENV === 'development' ? 'localhost:6001' : 'api.student.surgu.ru:6001',// 'http://localhost:8000/broadcasting/auth',
