@@ -22,7 +22,7 @@
             <v-col lg="4">
                 <v-card>
                     <v-img
-                            style="filter: grayscale(100%)"
+                            :style="$store.state.projects.currentProject.project_archive_reasons_id > 0?'filter: grayscale(100%)':''"
                             :src="project.logotype_url"
                             class="white--text align-end"
                             height="200px"
