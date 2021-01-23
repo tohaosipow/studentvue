@@ -9,6 +9,7 @@ export default {
     state: {
         project_types: [],
         projects: [],
+        archiveReasons: [],
         userProjects: [],
         currentProject: null,
         currentProjectParticipants: [],
@@ -19,10 +20,14 @@ export default {
     },
     mutations: {
 
-        setCurrentProjectChat(state, chat){
+        setArchiveReasons(state, reasons) {
+            state.archiveReasons = reasons
+        },
+
+        setCurrentProjectChat(state, chat) {
             state.currentProjectChat = chat
         },
-        setCurrentProjectFiles(state, files){
+        setCurrentProjectFiles(state, files) {
             state.currentProjectFiles = files;
         },
 
@@ -114,6 +119,12 @@ export default {
             })
         },
 
+        getArchiveReasons({commit}) {
+            return projects.getArchiveReasons().then((response) => {
+                commit('setArchiveReasons', response.data);
+            })
+        },
+
         getProjectChat({commit, state}) {
             return chats.getChatById({id: state.currentProject.chat_id}).then((response) => {
                 commit('setCurrentProjectChat', response.data);
@@ -175,6 +186,13 @@ export default {
         removeProject({commit}, data) {
             return projects.remove(data).then(() => {
                 commit('removeProject', data);
+                return true;
+            })
+        },
+
+        archiveProject({commit}, data) {
+            return projects.archiveProject(data).then((response) => {
+                commit('updateProject', response.data);
                 return true;
             })
         },

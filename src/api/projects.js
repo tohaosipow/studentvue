@@ -41,16 +41,25 @@ export default {
         return window.axios.post(endpoint+'/api/projects/'+data.id+'/participants/'+data.user_id+'/decline');
     },
 
-    status(data){
-        return window.axios.get(endpoint+'/api/projects/'+data.id+'/status');
+    status(data) {
+        return window.axios.get(endpoint + '/api/projects/' + data.id + '/status');
     },
 
-    enterToProject(data){
-        return window.axios.post(endpoint+'/api/projects/'+data.id+'/participants/enter', data);
+    enterToProject(data) {
+        return window.axios.post(endpoint + '/api/projects/' + data.id + '/participants/enter', data);
     },
 
-    changeParticipantPermission(data){
-        return window.axios.post(endpoint+'/api/projects/'+data.id+'/participants/'+data.user_id+'/permission', data);
-    }
+    changeParticipantPermission(data) {
+        return window.axios.post(endpoint + '/api/projects/' + data.id + '/participants/' + data.user_id + '/permission', data);
+    },
+
+    getArchiveReasons() {
+        return window.axios.get(endpoint + '/api/archive_reasons');
+    },
+
+    archiveProject(data) {
+        return window.axios.post(endpoint + '/api/project/' + data.id + '/archive', data);
+    },
+
 
 }

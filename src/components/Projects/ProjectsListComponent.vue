@@ -81,6 +81,9 @@
 
                     <v-list-item three-line>
                         <v-list-item-content>
+                            <div class="overline mb-4" v-if="project.archive_reason">Архив
+                                ({{project.archive_reason.reason}})
+                            </div>
                             <div class="overline mb-4">{{project.type.name}} проект</div>
                             <v-list-item-title class="headline mb-1" style="white-space: normal">{{project.title}}
                             </v-list-item-title>
@@ -273,7 +276,7 @@
         computed: {
             projects() {
                 let my = this.filter.my == 1 ? this.$store.state.projects.userProjects : this.$store.state.projects.projects.filter((project) => {
-                    return parseInt(project.approved) === 0 && parseInt(this.$store.state.user.currentUser.admin) === 1 || parseInt(project.approved) === 1
+                    return parseInt(project.approved) === 0 && parseInt(this.$store.state.user.currentUser.admin) === 1 || parseInt(project.approved) === 1 && parseInt(project.project_archive_reasons_id) === 0
                 });
 
                 return my.filter(el => this.filter.type.indexOf(el.type.id) !== -1).filter(el => el.title.toLowerCase().indexOf(this.filter.title.toLowerCase()) !== -1)

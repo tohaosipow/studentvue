@@ -22,12 +22,17 @@
             <v-col lg="4">
                 <v-card>
                     <v-img
+                            style="filter: grayscale(100%)"
                             :src="project.logotype_url"
                             class="white--text align-end"
                             height="200px"
                     >
                         <v-card-title style="z-index: 2; position:relative;  word-break: break-word;">{{project.title}}</v-card-title>
                         <v-overlay :value="true" absolute z-index="1">
+                            <span style="font-size: 30px;"
+                                  v-if="$store.state.projects.currentProject.project_archive_reasons_id > 0">
+                                В архиве
+                            </span>
                         </v-overlay>
 
                         <LogotypeUpdateComponent :project="project"/>
@@ -140,9 +145,7 @@
                                </v-list-item>
 
 
-
-
-                               <v-list-item @click="remove(project)"  v-if="$store.state.user.currentUser.admin == 1">
+                               <v-list-item @click="remove(project)" v-if="$store.state.user.currentUser.admin == 1">
                                    <v-list-item-content>
                                        <v-list-item-title>Удалить</v-list-item-title>
                                    </v-list-item-content>
@@ -150,6 +153,43 @@
                                        <v-icon color="red">mdi-delete</v-icon>
                                    </v-list-item-icon>
                                </v-list-item>
+
+
+                               <v-dialog
+                                       v-if="$store.state.projects.currentProject.project_archive_reasons_id  === null"
+                                       max-width="500" persistent v-model="archiveDialog">
+                                   <template v-slot:activator="{ on }">
+                                       <v-list-item
+                                               :disabled="$store.state.projects.currentProject.project_archive_reasons_id > 0"
+                                               v-on="on" v-if="$store.state.user.currentUser.admin == 1">
+                                           <v-list-item-content>
+                                               <v-list-item-title>В архив</v-list-item-title>
+                                           </v-list-item-content>
+                                           <v-list-item-icon>
+                                               <v-icon color="grey">mdi-archive</v-icon>
+                                           </v-list-item-icon>
+                                       </v-list-item>
+                                   </template>
+                                   <v-card>
+                                       <v-card-title class="headline">Почему вы хотите его архивировать?</v-card-title>
+                                       <v-card-text>
+                                           <v-autocomplete :items="$store.state.projects.archiveReasons"
+                                                           auto-select-first autocomplete="off"
+
+                                                           v-model="project_archive_reasons_id"
+                                                           item-text="reason" item-value="id" label="Причина отклонения"
+                                                           no-data-text="Такой причины нет"/>
+                                       </v-card-text>
+                                       <v-card-actions>
+                                           <v-spacer></v-spacer>
+                                           <v-btn @click="archiveDialog = false" color="blue" text>Отменить</v-btn>
+                                           <v-btn :loading="loading" @click="archive" color="blue darken-2" text>
+                                               Архивировать
+                                           </v-btn>
+                                       </v-card-actions>
+                                   </v-card>
+                               </v-dialog>
+
                            </v-list-item-group>
 
                        </v-list>
@@ -224,7 +264,10 @@
         },
         data() {
             return {
+                loading: false,
                 applicationDialog: false,
+                archiveDialog: false,
+                project_archive_reasons_id: null,
                 application: {
                     project_role_id: null,
                     admin: false,
@@ -243,6 +286,20 @@
 
             isFullRole(role) {
                 return this.$store.getters.getParticipantsByProjectRole(role.id).length >= parseInt(role.quota)
+            },
+
+            archive() {
+                this.loading = true;
+                this.$store.dispatch('archiveProject', {
+                    id: this.$store.state.projects.currentProject.id,
+                    project_archive_reasons_id: this.project_archive_reasons_id
+                }).then(() => {
+                    this.$store.dispatch('getCurrentProject', {id: this.$route.params.project_id}).then(() => {
+                        this.archiveDialog = false;
+                        this.loading = false;
+                    });
+
+                });
             },
 
             approve(project) {
@@ -266,12 +323,13 @@
                     })
 
                 }
-            }
+            },
         },
         mounted() {
             if (!this.$store.state.user.currentUser.id) return this.$router.push('/auth')
             Promise.all([
                 this.$store.dispatch('getEmployees'),
+                this.$store.dispatch('getArchiveReasons'),
                 this.$store.dispatch('getProjectTypes'),
                 this.$store.dispatch('getProjects'),
                 this.$store.dispatch('getCurrentUserStatusInProject', {id: this.$route.params.project_id}),
