@@ -23,7 +23,7 @@ export default {
 
 
     getChatById(data){
-        return window.axios.post(endpoint+'/api/chats/'+data.id);
+        return window.axios.get(endpoint + '/api/chats/' + data.id);
     },
 
     markAsRead(data){
