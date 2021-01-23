@@ -21,18 +21,37 @@
         <v-row v-if="project">
             <v-col lg="4">
                 <v-card>
+                    <div style=" background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 5px;
+  font-family: sans-serif;
+  text-align: center;
+  line-height: 1;
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+align-items: center;
+justify-content: center;
+ position: absolute; width: 100%; height: 100%; z-index: 2"
+                         v-if="$store.state.projects.currentProject.project_archive_reasons_id > 0">
+                        <img style="height: 32px"
+                             src="https://www.flaticon.com/svg/vstatic/svg/3160/3160299.svg?token=exp=1611422332~hmac=1ac9fd51096de924f09163f145aa3eba"
+                             alt="">
+                        <div class="pa-4">
+                            Проект в архиве
+                        </div>
+
+                    </div>
                     <v-img
                             :style="$store.state.projects.currentProject.project_archive_reasons_id > 0?'filter: grayscale(100%)':''"
                             :src="project.logotype_url"
                             class="white--text align-end"
                             height="200px"
                     >
-                        <v-card-title style="z-index: 2; position:relative;  word-break: break-word;">{{project.title}}</v-card-title>
+                        <v-card-title style="z-index: 2; position:relative;  word-break: break-word;">
+                            {{project.title}}
+                        </v-card-title>
                         <v-overlay :value="true" absolute z-index="1">
-                            <span style="font-size: 30px;"
-                                  v-if="$store.state.projects.currentProject.project_archive_reasons_id > 0">
-                                В архиве
-                            </span>
+
                         </v-overlay>
 
                         <LogotypeUpdateComponent :project="project"/>
