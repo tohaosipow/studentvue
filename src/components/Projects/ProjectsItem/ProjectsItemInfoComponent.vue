@@ -21,6 +21,7 @@
             <v-textarea :readonly="readOnly"  label="Требуемые материальные ресурсы ресурсы" outlined
                         v-model="project.resources"/>
 
+
             <v-btn :loading="saveLoading" @click="save" v-if="!readOnly" color="blue darken-2" dark>Сохранить</v-btn>
         </v-card-text>
     </v-card>
@@ -39,17 +40,22 @@
             }
         },
         data(){
-            return {
-                saveLoading: false
-            }
+          return {
+            saveLoading: false
+          }
         },
-        methods:{
+      methods: {
 
-            save(){
-                this.saveLoading = true;
-                this.$store.dispatch('updateProject', this.$store.state.projects.currentProject).then(() => {this.saveLoading  = false});
-            }
+        save() {
+          this.saveLoading = true;
+          this.$store.dispatch('updateProject', this.$store.state.projects.currentProject).then(() => {
+            this.saveLoading = false
+          });
         }
+      },
+      mounted() {
+        window.TrelloBoards.load(document, {allAnchors: false});
+      }
 
     }
 </script>

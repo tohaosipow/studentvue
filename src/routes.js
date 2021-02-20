@@ -33,6 +33,7 @@ import ProjectsItemChatComponent from "@/components/Projects/ProjectsItem/Projec
 import EventStatsComponent from "@/components/Events/EventStatsComponent.vue";
 import EventRecordsComponent from "@/components/Events/EventRecordsComponent.vue";
 import RatingsComponent from "@/components/Dashboard/RatingsComponent.vue";
+import ProjectsItemTrelloComponent from "@/components/Projects/ProjectsItem/ProjectsItemTrelloComponent.vue";
 
 
 const routes = [
@@ -77,6 +78,7 @@ const routes = [
             {path: 'participants', component: ProjectsItemParticipantsComponent, name: 'project.participants'},
             {path: 'files', component: ProjectsItemFilesComponent, name: 'project.files'},
             {path: 'chat', component: ProjectsItemChatComponent, name: 'project.chat'},
+            {path: 'trello', component: ProjectsItemTrelloComponent, name: 'project.trello'},
         ]
     },
     {path: '/messages', component: MessagesComponent},

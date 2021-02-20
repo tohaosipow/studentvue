@@ -23,7 +23,6 @@
                 </v-list-item-action>
             </v-list-item>
         </v-card-text>
-
     </v-card>
 </template>
 
@@ -53,6 +52,7 @@
             this.$store.dispatch('getProjectFiles', {project_id: this.$route.params.project_id}).then(() => {
                 this.loading = false;
             })
+
         }
     }
 </script>
