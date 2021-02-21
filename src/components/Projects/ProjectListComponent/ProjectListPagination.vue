@@ -8,9 +8,9 @@
       <v-tabs-slider color="blue"></v-tabs-slider>
 
       <v-tab
-          v-for="i in $store.state.projects.projects.last_page"
+          v-for="i in last_page"
           :key="i"
-          @click="$emit('new_page', current_page)"
+          @click="click(i)"
       >
         {{ i }}
       </v-tab>
@@ -21,7 +21,12 @@
 <script>
 export default {
   name: "ProjectListPagination",
-  props: ['last_page', 'current_page']
+  props: ['last_page', 'current_page'],
+  methods: {
+    click(i) {
+      this.$emit('new_page', i);
+    }
+  }
 }
 </script>
 

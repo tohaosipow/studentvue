@@ -51,7 +51,8 @@
     </v-tooltip>
     <v-row justify="center">
       <v-col cols="12">
-        <ProjectListPagination @new_page="filter.page=$event"/>
+        <ProjectListPagination :current_page="filter.page" :last_page="$store.state.projects.projects.last_page"
+                               @new_page="filter.page=$event"/>
       </v-col>
     </v-row>
     <v-row v-if="loading">
@@ -171,7 +172,8 @@
       </v-row>
       <v-row justify="center">
         <v-col cols="12">
-          <ProjectListPagination @new_page="filter.page = $event"/>
+          <ProjectListPagination :current_page="filter.page" :last_page="$store.state.projects.projects.last_page"
+                                 @new_page="filter.page=$event"/>
         </v-col>
       </v-row>
     </template>
