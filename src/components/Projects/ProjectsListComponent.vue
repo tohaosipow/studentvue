@@ -49,6 +49,11 @@
       </template>
       <span>Создайте проект</span>
     </v-tooltip>
+    <v-row justify="center">
+      <v-col cols="12">
+        <ProjectListPagination @new_page="filter.page=$event"/>
+      </v-col>
+    </v-row>
     <v-row v-if="loading">
       <v-col v-for="i in 8" :key="i" cols="12" lg="6">
         <v-skeleton-loader
@@ -165,11 +170,9 @@
 
       </v-row>
       <v-row justify="center">
-        <v-btn v-if="$store.state.projects.projects.last_page != filter.page" color="blue" outlined small
-               @click="filter.page++">
-          Посмотреть еще
-        </v-btn>
-
+        <v-col cols="12">
+          <ProjectListPagination @new_page="filter.page = $event"/>
+        </v-col>
       </v-row>
     </template>
     <v-row v-if="projects && projects.length === 0" align-content="center">
@@ -198,8 +201,11 @@
 </template>
 
 <script>
+import ProjectListPagination from "@/components/Projects/ProjectListComponent/ProjectListPagination.vue";
+
 export default {
   name: "ProjectsListComponent",
+  components: {ProjectListPagination},
   data() {
     return {
       isActive: true,
