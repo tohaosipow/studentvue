@@ -1,9 +1,9 @@
 <template>
   <v-card width="100%" outlined>
-    <v-tabs
-        background-color="white darken-3"
-        light
-        show-arrows
+    <v-tabs :value="current_page"
+            background-color="white darken-3"
+            light
+            show-arrows
     >
       <v-tabs-slider color="blue"></v-tabs-slider>
 
