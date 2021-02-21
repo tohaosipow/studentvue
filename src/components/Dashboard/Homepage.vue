@@ -71,9 +71,9 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-col  :key="project.id" cols="12"
+            <v-col :key="project.id" cols="12"
                    sm="4"
-                   v-for="project in $store.state.projects.projects"
+                   v-for="project in $store.state.projects.projects.data"
             >
                 <v-card style="border-radius: 30px;" :to="'/projects/'+project.id" ripple elevation="0">
                     <v-img :src="project.logotype_url" class="white--text align-end"

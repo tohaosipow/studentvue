@@ -8,7 +8,7 @@ import chats from "@/api/chats.js";
 export default {
     state: {
         project_types: [],
-        projects: [],
+        projects: {data: []},
         archiveReasons: [],
         userProjects: [],
         currentProject: null,
