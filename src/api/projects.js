@@ -1,16 +1,16 @@
 import endpoint from "@/api/endpoint";
 
 export default {
-    all(){
-        return window.axios.get(endpoint+'/api/projects');
+    all(data) {
+        return window.axios.get(endpoint + '/api/projects', {params: data});
     },
 
-    byUserID(user_id){
-        return window.axios.get(endpoint+'/api/user/'+user_id+'/projects');
+    byUserID(user_id) {
+        return window.axios.get(endpoint + '/api/user/' + user_id + '/projects');
     },
 
-    store(data){
-        return window.axios.post(endpoint+'/api/projects/store', data);
+    store(data) {
+        return window.axios.post(endpoint + '/api/projects/store', data);
     },
 
     update(data){

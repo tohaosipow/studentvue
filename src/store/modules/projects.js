@@ -163,8 +163,8 @@ export default {
             }))
         },
 
-        getProjects({commit}) {
-            return projects.all().then((response) => {
+        getProjects({commit}, data) {
+            return projects.all(data).then((response) => {
                 commit('setProjects', response.data);
                 return true;
             })
