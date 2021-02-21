@@ -1,6 +1,6 @@
 <template>
   <v-card width="100%" outlined>
-    <v-tabs :value="current_page"
+    <v-tabs :value="current_page - 1"
             background-color="white darken-3"
             light
             show-arrows
