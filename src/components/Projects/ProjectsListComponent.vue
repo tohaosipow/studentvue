@@ -268,7 +268,6 @@ export default {
         this.$store.dispatch('removeProject', {id: project.id}).then(() => {
           this.loading = false;
           this.$store.dispatch('getProjects');
-          this.$store.dispatch('getProjectsByUser', {user_id: this.$store.state.user.currentUser.id})
         })
 
       }

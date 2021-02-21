@@ -5,6 +5,10 @@ export default {
         return window.axios.get(endpoint + '/api/projects', {params: data});
     },
 
+    auth_all(data) {
+        return window.axios.get(endpoint + '/api/auth_projects', {params: data});
+    },
+
     byUserID(user_id) {
         return window.axios.get(endpoint + '/api/user/' + user_id + '/projects');
     },
@@ -13,7 +17,7 @@ export default {
         return window.axios.post(endpoint + '/api/projects/store', data);
     },
 
-    update(data){
+    update(data) {
         if(data.hasOwnProperty('form_data')) return  window.axios.post(endpoint+'/api/projects/'+data.id+'/update', data.form_data);
         else return  window.axios.post(endpoint+'/api/projects/'+data.id+'/update', data);
     },

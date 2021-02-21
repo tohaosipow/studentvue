@@ -97,6 +97,10 @@ export default {
             return (state.currentUserStatusInProject && state.currentUserStatusInProject.admin == 1 && state.currentUserStatusInProject.approved == 1) || g_state.user.currentUser.admin == 1 || state.currentProject.responsible_user.id == g_state.user.currentUser.id
         },
 
+        isAuth(_, __, state) {
+            return state.user.currentUser.id > 0;
+        },
+
         isProjectParticipant(state) {
             return state.currentUserStatusInProject != null
         },
@@ -163,11 +167,19 @@ export default {
             }))
         },
 
-        getProjects({commit}, data) {
-            return projects.all(data).then((response) => {
-                commit('setProjects', response.data);
-                return true;
-            })
+        getProjects({commit, getters}, data) {
+            if (getters.isAuth) {
+                return projects.auth_all(data).then((response) => {
+                    commit('setProjects', response.data);
+                    return true;
+                })
+            } else {
+                return projects.all(data).then((response) => {
+                    commit('setProjects', response.data);
+                    return true;
+                })
+            }
+
         },
         getProjectsByUser({commit}, data) {
             return projects.byUserID(data.user_id).then((response) => {
