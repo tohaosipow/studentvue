@@ -74,7 +74,7 @@ export default {
         updateProject(state, project) {
             // eslint-disable-next-line no-console
             console.log(project);
-            state.projects = [...state.projects.map((el) => {
+            state.projects.data = [...state.projects.data.map((el) => {
                 return parseInt(el.id) === parseInt(project.id) ? project : el
             })];
             if (parseInt(state.currentProject.id) === parseInt(project.id)) state.currentProject = project;
